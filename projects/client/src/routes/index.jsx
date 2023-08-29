@@ -1,7 +1,7 @@
 import { Route, createRoutesFromElements } from "react-router-dom";
 
-import Homepage from "../pages/Home";
+import SignInSide from "../components/tenant/login-page";
 
-const Routes = <Route path="/" element={<Homepage />} />;
+const Routes = <Route path="/" element={<SignInSide />} />;
 
 export const routes = createRoutesFromElements(Routes);
