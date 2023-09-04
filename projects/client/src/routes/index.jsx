@@ -1,6 +1,9 @@
 import { Route, createRoutesFromElements } from "react-router-dom";
-import HomepageView from "../views/Home";
+import { LoginPage } from "../pages/login";
 
-const Routes = <Route path="/" element={<HomepageView />} />;
+
+const Routes = <>
+    <Route path="/login" element={<LoginPage />} />;
+</> 
 
 export const routes = createRoutesFromElements(Routes);
