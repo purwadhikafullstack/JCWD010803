@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require("../../models");
 const user = db.user;
 const dbOtp = db.codeOtp;
 const jwt = require("jsonwebtoken");
@@ -6,56 +6,9 @@ const enc = require("bcrypt");
 const { Op } = require("sequelize");
 const handlebars = require("handlebars");
 const fs = require("fs");
-const transporter = require("../midlewares/transporter");
+const transporter = require("../../midlewares/transporter");
 
-const otpGenerate = () => {
-  const max = 9999;
-  const min = 1000;
-  const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
-  return randomNumber.toString();
-};
-
-const userController = {
-  login: async (req, res) => {
-    try {
-      const { data } = req.body;
-      const password = req.body.password;
-      const result = await user.findOne({
-        where: {
-          [Op.or]: [{ email: data }, { username: data }],
-        },
-      });
-      if (!result)
-        throw {
-          message: "Sorry, We could not find your account.",
-        };
-      isValid = await enc.compare(password, result.password);
-      if (!isValid)
-        throw {
-          message: "Sorry, We could not find your account.",
-        };
-      const payload = { id: result.id };
-      const token = jwt.sign(payload, "key", { expiresIn: "1d" });
-      res.status(200).send({
-        result,
-        token,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(400).send(error);
-    }
-  },
-  keepLogin: async (req, res) => {
-    try {
-      const result = await user.findOne({
-        where: { id: req.user.id },
-      });
-      res.status(200).send(result);
-    } catch (error) {
-      console.log(error);
-      res.status(400).send(error);
-    }
-  },
+const authController = {
   resetPassword: async (req, res) => {
     try {
       const { newPassword, confirmPassword } = req.body;
@@ -159,23 +112,4 @@ const userController = {
       res.status(400).send(error);
     }
   },
-  changePassword : async (req, res) => {
-    try {
-        const {password} = req.body
-        const salt = await enc.genSalt(10)
-        const hashPassword = await enc.hash(password, salt)
-        const result = await user.update(
-            {password : hashPassword},
-            {where : {id : req.user.id}}
-        )
-        res.status(200).send({
-          message:"success"
-        })
-    } catch (error) {
-      console.log(error);
-        res.status(400).send(error)
-    }
-}
 };
-
-module.exports = userController;

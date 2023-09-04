@@ -6,6 +6,9 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { setValue } from '../../redux/user-slice';
 
+
+
+
 export default function FormLoginUser() {
   const dispatch = useDispatch();
   const [selectLogin, setSelectLogin] = useState('email');
@@ -132,6 +135,7 @@ export default function FormLoginUser() {
                   className="text-red-500 text-base p-2"
                 />
               </div>
+              {/* <LoginWith setLogin={handleLoginChange} /> */}
               <button
                 className="
                   bg-bgPrimary
