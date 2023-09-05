@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { FireBaseLogin } from '../../components/user/login-firebase';
 import { useInView } from "react-intersection-observer";
 
-export default function LoginUser() {
+export const LoginUser = () => {
   const navigate = useNavigate()
 
   const handleClick = () => {

@@ -11,7 +11,6 @@ export default function FormLoginUser() {
   const [selectLogin, setSelectLogin] = useState('email');
   const [show, setShow] = useState(false)
   const data = useSelector((state) => state.user.value)
-  console.log(data);
 
   const validationSchema = Yup.object().shape({
     data: Yup.string().required(' Your account is required '),
@@ -40,7 +39,6 @@ export default function FormLoginUser() {
       //   // navigate('/')
       // }, 2000)
     } catch (error) {
-      console.log(error);
       swal.fire({
         icon: 'warning',
         iconColor: 'red',
@@ -59,7 +57,6 @@ export default function FormLoginUser() {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, action) => {
-          console.log(values);
           onLogin(values);
         }}
       >

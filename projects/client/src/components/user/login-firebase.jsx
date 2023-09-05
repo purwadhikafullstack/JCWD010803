@@ -29,7 +29,6 @@ export const FireBaseLogin = () => {
                 showConfirmButton: false,
             });
         } catch (error) {
-            console.log(error);
             swal.fire({
                 icon: 'warning',
                 iconColor: 'red',

@@ -1,9 +1,9 @@
 import { Route, createRoutesFromElements } from "react-router-dom";
-import { LoginPage } from "../pages/login";
+import { LoginUserPage } from "../pages/login-page";
 
 
 const Routes = <>
-    <Route path="/login" element={<LoginPage />} />;
+    <Route path="/login" element={<LoginUserPage />} />;
 </> 
 
 export const routes = createRoutesFromElements(Routes);
