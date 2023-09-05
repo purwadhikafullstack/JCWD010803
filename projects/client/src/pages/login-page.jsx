@@ -1,4 +1,4 @@
-import LoginUser from "../views/auth/login-user"
+import { LoginUser } from "../views/auth/login-user"
 
 export const LoginUserPage = () => {
     return(
