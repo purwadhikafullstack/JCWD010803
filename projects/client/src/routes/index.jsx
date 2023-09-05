@@ -5,7 +5,7 @@ import { ResetPasswordPage } from "../pages/reset-password-page";
 
 
 const Routes = <>
-    {/* <Route path="/login" element={<LoginPage />} />; */}
+    <Route path="/login" element={<LoginPage />} />;
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/reset-password/:Token" element={<ResetPasswordPage />} />
 </> 
