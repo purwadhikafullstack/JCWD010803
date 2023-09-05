@@ -93,7 +93,8 @@ export const ProfileSetting = () => {
 				</div>
 
 				<div className="w-1/2 h-fit rounded border-gray-300 border flex ">
-					<FormChangePassword />
+					{click === "changePassword" ? (<FormChangePassword />) : (null)}
+					
 				</div>
 			</div>
 		</div>
