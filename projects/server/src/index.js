@@ -1,4 +1,5 @@
 require("dotenv/config");
+const {userRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
