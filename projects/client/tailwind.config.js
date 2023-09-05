@@ -8,7 +8,12 @@ module.exports = {
     "./src/views/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        bgPrimary: "#2CA4A5",
+        bgPrimaryActive: "#28999A"
+      }
+    },
   },
   plugins: [],
 };

@@ -15,10 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      process.env.WHITELISTED_DOMAIN &&
-        process.env.WHITELISTED_DOMAIN.split(","),
-    ],
+    origin: '*',
   })
 );
 
