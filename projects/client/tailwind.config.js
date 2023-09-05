@@ -8,7 +8,11 @@ module.exports = {
     "./src/views/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage :{
+        'register-pattern' : "url('/src/assets/images/register-image.jpg')",
+      }
+    },
   },
   plugins: [],
 };
