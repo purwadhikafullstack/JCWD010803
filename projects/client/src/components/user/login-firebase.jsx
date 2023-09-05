@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux"
 import { googleAuth } from "../../firebase"
-import { setData } from "../../redux/firebase-slice"
 import { useNavigate } from "react-router-dom"
 import swal from 'sweetalert2'
 import { FcGoogle } from "react-icons/fc";
+import { setValue } from "../../redux/user-slice"
 
 
 export const FireBaseLogin = () => {
@@ -15,11 +15,12 @@ export const FireBaseLogin = () => {
 
             const auth = await googleAuth()
             const data = {
-                displayName: auth.user.displayName,
+                username: auth.user.displayName,
                 email: auth.user.email
             };
+            console.log(data);
+            dispatch(setValue(data))
             const token = auth.user.accessToken
-            dispatch(setData(data))
             localStorage.setItem('firebase-token', token)
             swal.fire({
                 icon: 'success',

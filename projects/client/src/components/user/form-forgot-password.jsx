@@ -5,7 +5,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik"
 import { useNavigate } from "react-router-dom"
 
 
-export const FormForgotPassword = ({ value, token }) => {
+export const FormForgotPassword = ({ value, token, id }) => {
   const navigate = useNavigate()
 
   const validationSchema = Yup.object().shape({
@@ -22,6 +22,7 @@ export const FormForgotPassword = ({ value, token }) => {
         timer: 1500,
       })
       token(response.data.token)
+      id(response.data.result.id)
       setTimeout(() => {
         value(true)
       }, 2000)

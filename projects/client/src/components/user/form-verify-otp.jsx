@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
  
 
-export const VerifyOtp = ({token}) => {
+export const VerifyOtp = ({token, id}) => {
     const navigate = useNavigate()
     const [otp, setOtp] = useState(["", "", "", ""]);
-    console.log(otp);
+    console.log(id);
 
     const handleClick = (elementIndex, event) => {
         if (/[^0-9]/.test(event.target.value)) {
@@ -26,7 +26,7 @@ export const VerifyOtp = ({token}) => {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault()
-            const response = await axios.post(`http://localhost:8000/api/user/checkOtp`, { otp: `${otp.join('')}` })
+            const response = await axios.post(`http://localhost:8000/api/user/checkOtp`, { otp: `${otp.join('')}`, id:id})
             Swal.fire({
                 icon: "success",
                 title: "Verify OTP success",

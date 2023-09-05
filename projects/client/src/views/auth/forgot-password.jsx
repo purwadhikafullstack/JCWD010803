@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 export const ForgotPassword = () => {
 	const [success, setSuccess] = useState(false)
 	const [token, setToken] = useState("")
+	const [id, setId] = useState("")
 
 
 	const handleChange = (value) => {
@@ -14,6 +15,9 @@ export const ForgotPassword = () => {
 	}
 	const getToken = (token) => {
 		setToken(token)
+	}
+	const getId = (id) => {
+		setId(id)
 	}
 
 	const [ref, inView] = useInView({
@@ -35,7 +39,7 @@ export const ForgotPassword = () => {
 								transition={{ duration: 1.5 }}
 							>
 								<div>
-									<VerifyOtp token={token} />
+									<VerifyOtp token={token} id={id} />
 								</div>
 							</motion.div>
 						</div>
@@ -59,7 +63,7 @@ export const ForgotPassword = () => {
 									<div className="mt-10 text-xl text-gray-600">
 										Enter the email address for verify your account.
 									</div>
-									<FormForgotPassword token={getToken} value={handleChange} />
+									<FormForgotPassword token={getToken} id={getId} value={handleChange} />
 								</div>
 							</motion.div>
 						</div>

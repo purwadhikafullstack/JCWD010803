@@ -25,10 +25,10 @@ function App() {
         auth.onAuthStateChanged(user => {
           const userData = {
             uid: user.uid,
-            displayName: user.displayName,
+            username: user.displayName,
             email: user.email
           };
-          dispatch(setData(userData))
+          dispatch(setValue(userData))
         })
       }
     };

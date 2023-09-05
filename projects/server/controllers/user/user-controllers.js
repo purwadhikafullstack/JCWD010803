@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require("../..//models");
 const user = db.user;
 const dbOtp = db.codeOtp;
 const jwt = require("jsonwebtoken");
@@ -6,7 +6,7 @@ const enc = require("bcrypt");
 const { Op } = require("sequelize");
 const handlebars = require("handlebars");
 const fs = require("fs");
-const transporter = require("../midlewares/transporter");
+const transporter = require("../../midlewares/transporter");
 
 const otpGenerate = () => {
   const max = 9999;
@@ -115,7 +115,7 @@ const userController = {
         otp: otpNumber,
       });
 
-      const data = await fs.readFileSync("./src/otp.html", "utf-8");
+      const data = await fs.readFileSync("./templates/otp.html", "utf-8");
       const tempCompile = await handlebars.compile(data);
       const tempResult = tempCompile({
         otp: otpNumber,
@@ -130,6 +130,7 @@ const userController = {
       const token = jwt.sign(payload, "key", { expiresIn: "1d" });
       res.status(200).send({
         message: "Check your email",
+        result,
         token,
       });
     } catch (error) {
@@ -139,9 +140,15 @@ const userController = {
   },
   checkOtp: async (req, res) => {
     try {
-      const { otp } = req.body;
+      const { otp, id } = req.body;
       const timeInIndonesia = new Date().getTime() + 7 * 60 * 60 * 1000;
       const time = new Date(timeInIndonesia);
+
+      const checkUser = await user.findOne({
+        where: { id: id },
+      });
+      console.log(checkUser);
+
       const result = await dbOtp.findOne({ where: { otp: otp } });
       if (!result)
         throw {
@@ -151,31 +158,42 @@ const userController = {
         throw {
           message: "OTP is expired",
         };
+
+      const deleteOtp = await dbOtp.destroy({
+        where: { userId: checkUser.id },
+      });
       res.status(200).send({
         message: "Verify OTP success",
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  changePassword: async (req, res) => {
+    try {
+      const { currentPassword, newPassword, confirmPassword } = req.body;
+      const checkUser = await user.findOne({
+        where: { id: req.user.id }
+      })
+      const isValid = await enc.compare(currentPassword, checkUser.password);
+      if (!isValid)
+        throw {
+          message: "Wrong current password",
+        };
+      const salt = await enc.genSalt(10);
+      const hashPassword = await enc.hash(newPassword, salt);
+      const result = await user.update(
+        { password: hashPassword },
+        { where: { id: req.user.id } }
+      );
+      res.status(200).send({
+        message: "success",
       });
     } catch (error) {
       console.log(error);
       res.status(400).send(error);
     }
   },
-  changePassword : async (req, res) => {
-    try {
-        const {password} = req.body
-        const salt = await enc.genSalt(10)
-        const hashPassword = await enc.hash(password, salt)
-        const result = await user.update(
-            {password : hashPassword},
-            {where : {id : req.user.id}}
-        )
-        res.status(200).send({
-          message:"success"
-        })
-    } catch (error) {
-      console.log(error);
-        res.status(400).send(error)
-    }
-}
 };
 
 module.exports = userController;
