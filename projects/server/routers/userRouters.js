@@ -10,6 +10,5 @@ router.post('/keepLogin',verifyToken , userController.keepLogin)
 router.patch('/resetPassword',verifyToken, checkResetPassword , userController.resetPassword)
 router.post('/sendMail', checkForgotPassword,userController.forgotPassword)
 router.post('/checkOtp', userController.checkOtp)
-router.patch('/changePassword',verifyToken,checkChangePassword, userController.changePassword)
 
 module.exports = router;
