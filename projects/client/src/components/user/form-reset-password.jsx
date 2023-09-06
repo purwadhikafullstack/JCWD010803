@@ -41,7 +41,6 @@ export const FormResetPassowrd = () => {
         title: "Change password failed",
         text: error.response.data.message
       })
-      console.log(error);
     }
   }
 
@@ -60,7 +59,6 @@ export const FormResetPassowrd = () => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             resetPassword(values)
-            console.log(values);
           }}
         >
           <Form>

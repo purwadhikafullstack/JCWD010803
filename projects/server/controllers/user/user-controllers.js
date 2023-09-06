@@ -41,7 +41,6 @@ const userController = {
         token,
       });
     } catch (error) {
-      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -52,7 +51,6 @@ const userController = {
       });
       res.status(200).send(result);
     } catch (error) {
-      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -73,7 +71,6 @@ const userController = {
         message: "Reset Password Success",
       });
     } catch (error) {
-      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -97,7 +94,6 @@ const userController = {
         },
       });
       const totalSend = await checkOtp.length;
-
       const timeInIndonesia = new Date().getTime() + 7 * 60 * 60 * 1000;
       const time = new Date(timeInIndonesia);
       time.setTime(time.getTime() + 5 * 60 * 1000);
@@ -105,16 +101,13 @@ const userController = {
       const otpNumber = otpGenerate();
       if (totalSend >= 5)
         throw {
-          message:
-            "Sorry, you have reached the maximum limit of OTP requests in a single day. Please try again tomorrow.",
+          message: "Sorry, you have reached the maximum limit of OTP requests in a single day. Please try again tomorrow.",
         };
-
       await dbOtp.create({
         userId: result.id,
         expiredDate: expiredDate,
         otp: otpNumber,
       });
-
       const data = await fs.readFileSync("./templates/otp.html", "utf-8");
       const tempCompile = await handlebars.compile(data);
       const tempResult = tempCompile({
@@ -134,7 +127,6 @@ const userController = {
         token,
       });
     } catch (error) {
-      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -143,11 +135,9 @@ const userController = {
       const { otp, id } = req.body;
       const timeInIndonesia = new Date().getTime() + 7 * 60 * 60 * 1000;
       const time = new Date(timeInIndonesia);
-
       const checkUser = await user.findOne({
         where: { id: id },
       });
-      console.log(checkUser);
 
       const result = await dbOtp.findOne({ where: { otp: otp } });
       if (!result)
@@ -173,8 +163,8 @@ const userController = {
     try {
       const { currentPassword, newPassword, confirmPassword } = req.body;
       const checkUser = await user.findOne({
-        where: { id: req.user.id }
-      })
+        where: { id: req.user.id },
+      });
       const isValid = await enc.compare(currentPassword, checkUser.password);
       if (!isValid)
         throw {
@@ -190,7 +180,6 @@ const userController = {
         message: "success",
       });
     } catch (error) {
-      console.log(error);
       res.status(400).send(error);
     }
   },

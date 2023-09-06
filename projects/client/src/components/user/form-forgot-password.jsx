@@ -34,7 +34,6 @@ export const FormForgotPassword = ({ value, token, id }) => {
         text: [error.response.data.message],
         timer: 2500,
       })
-      console.log(error);
     }
   }
 
@@ -50,17 +49,16 @@ export const FormForgotPassword = ({ value, token, id }) => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log(values);
           checkEmail(values)
         }}
       >
         <Form>
           <div className=" border-2 rounded mt-10">
             <Field className="
-                        w-full
-                        h-14
-                        px-5
-                        placeholder:text-xl"
+                w-full
+                h-14
+                px-5F
+                placeholder:text-xl"
               placeholder="Email Address"
               name="email"
             />

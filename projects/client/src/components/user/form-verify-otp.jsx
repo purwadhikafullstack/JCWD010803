@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 export const VerifyOtp = ({token, id}) => {
     const navigate = useNavigate()
     const [otp, setOtp] = useState(["", "", "", ""]);
-    console.log(id);
 
     const handleClick = (elementIndex, event) => {
         if (/[^0-9]/.test(event.target.value)) {
@@ -44,7 +43,6 @@ export const VerifyOtp = ({token, id}) => {
                 text: error.response.data.message,
                 timer: 2000
             })
-            console.log(error);
         }
     };
     return (
