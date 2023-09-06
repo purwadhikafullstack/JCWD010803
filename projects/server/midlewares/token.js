@@ -8,7 +8,6 @@ module.exports = {
             if (!token) throw{
                 message : "token is empty"
             }
-
             let verifiedAccount = jwt.verify(token, 'key')
             req.user = verifiedAccount
             next()

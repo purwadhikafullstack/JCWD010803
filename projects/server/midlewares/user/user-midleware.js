@@ -73,4 +73,24 @@ module.exports = {
       console.log(error);
     }
   },
+  checkNewPassword : async (req,res,next) => {
+    await body('newPassword').notEmpty().isStrongPassword({
+        minLength : 6,
+        minNumbers : 1,
+        minSymbols : 1,
+        minUppercase : 1
+    }).run(req) 
+    const validation = validationResult(req)
+
+    if (validation.isEmpty()) {
+        next()
+    }
+    else {
+        res.status(400).send({
+            status : false,
+            message : 'Password To Weak',
+            error : validation.array()
+        })
+    }
+}
 };
