@@ -1,27 +1,39 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import auth, { googleAuth } from "./firebase";
+import { setValue } from "./redux/user-slice";
+import { setData } from "./redux/firebase-slice";
 import axios from "axios";
-import logo from "./logo.svg";
-import "./App.css";
-import { useEffect, useState } from "react";
 
 function App() {
-  const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const firebaseToken = localStorage.getItem("firebase-token");
 
   useEffect(() => {
-    (async () => {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/greetings`
-      );
-      setMessage(data?.message || "");
-    })();
-  }, []);
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {message}
-      </header>
-    </div>
-  );
+    const keepLogin = async () => {
+      if (token) {
+        const response = await axios.post(
+          `http://localhost:8000/api/user/keepLogin`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        dispatch(setValue(response.data));
+      } if (firebaseToken) {
+        auth.onAuthStateChanged(user => {
+          const userData = {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email
+          };
+          dispatch(setData(userData))
+        })
+      }
+    };
+    keepLogin()
+  },[dispatch, token, firebaseToken]);
 }
 
 export default App;

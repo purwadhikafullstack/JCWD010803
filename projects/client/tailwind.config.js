@@ -9,8 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage :{
-        'register-pattern' : "url('/src/assets/images/register-image.jpg')",
+      colors:{
+        bgPrimary: "#2CA4A5",
+        bgPrimaryActive: "#28999A"
       }
     },
   },

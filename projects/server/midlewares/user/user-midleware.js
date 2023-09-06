@@ -1,7 +1,7 @@
-const {body, validationResult} = require('express-validator');
+const { body, validationResult } = require("express-validator");
 
 module.exports = {
-  checkregister : async(req, res, next) => {
+  checkregister: async (req, res, next) => {
     try {
       await body('firstname').trim().notEmpty().withMessage('firstname cannot be empty').run(req);
       await body('lastname').trim().notEmpty().withMessage('lastname cannot be empty').run(req);
@@ -18,11 +18,52 @@ module.exports = {
         minNumbers : 1,
         minSymbols : 1
       }).withMessage('Password must be a combination of 1 uppercase, 1 number and 1 symbol').run(req);
+
       const validation = validationResult(req);
       if (validation.isEmpty()) {
         next();
-      }else{
-          res.status(400).send({
+      } else {
+        res.status(400).send({
+          status: false,
+          message: "Validation Invalid",
+          error: validation.array(),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  checkForgotPassword: async (req, res, next) => {
+    try {
+      await body("email")
+        .trim()
+        .notEmpty()
+        .withMessage("email is require")
+        .run(req);
+      const validation = validationResult(req);
+      if (validation.isEmpty()) {
+        next();
+      } else {
+        res.status(400).send({
+          status: false,
+          message: "Validation Invalid",
+          error: validation.array(),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  checkResetPassword: async (req, res, next) => {
+    try {
+      await body('newPassword').trim().notEmpty().withMessage('New password is require').run(req)
+      await body('confirmPassword').trim().notEmpty().withMessage('Confirm password is require').run(req)
+      const validation = validationResult(req)
+      if (validation.isEmpty()) {
+        next()
+      }
+      else{
+        res.status(400).send({
           status : false,
           message : 'Validation Invalid',
           error : validation.array()
@@ -31,5 +72,5 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
-  }
-}
+  },
+};
