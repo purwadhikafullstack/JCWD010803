@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { setValue } from '../../redux/user-slice';
+import { useNavigate } from 'react-router-dom';
 
 export default function FormLoginUser() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [selectLogin, setSelectLogin] = useState('email');
   const [show, setShow] = useState(false)
@@ -21,8 +23,6 @@ export default function FormLoginUser() {
     setShow(!show)
   }
 
-
-
   const onLogin = async (data) => {
     try {
       const response = await axios.post('http://localhost:8000/api/user/login', data);
@@ -35,9 +35,9 @@ export default function FormLoginUser() {
         timer: 1500,
         showConfirmButton: false,
       });
-      // setTimeout(() => {
-      //   // navigate('/')
-      // }, 2000)
+      setTimeout(() => {
+        navigate('/')
+      }, 2000)
     } catch (error) {
       swal.fire({
         icon: 'warning',
@@ -47,12 +47,11 @@ export default function FormLoginUser() {
       });
     }
   };
-
   return (
     <div>
       <Formik
         initialValues={{
-          data:"",
+          data: "",
           password: ""
         }}
         validationSchema={validationSchema}

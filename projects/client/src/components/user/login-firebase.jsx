@@ -15,11 +15,11 @@ export const FireBaseLogin = () => {
 
             const auth = await googleAuth()
             const data = {
-                displayName: auth.user.displayName,
+                userName: auth.user.displayName,
                 email: auth.user.email
             };
             const token = auth.user.accessToken
-            dispatch(setData(data))
+            dispatch(setValue(data))
             localStorage.setItem('firebase-token', token)
             swal.fire({
                 icon: 'success',
