@@ -8,6 +8,7 @@ const Routes = <>
     <Route path="/login" element={ <LoginUser /> } />;
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/reset-password/:Token" element={<ResetPasswordPage />} />
+
 </> 
 
 export const routes = createRoutesFromElements(Routes);

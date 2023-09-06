@@ -35,7 +35,9 @@ const userController = {
           message: "Sorry, We could not find your account.",
         };
       const payload = { id: result.id };
-      const token = jwt.sign(payload, "key", { expiresIn: "1d" });
+      const token = jwt.sign(payload, process.env.TOKEN_KEY, {
+        expiresIn: "1d",
+      });
       res.status(200).send({
         result,
         token,
@@ -177,6 +179,7 @@ const userController = {
         { where: { id: req.user.id } }
       );
       res.status(200).send({
+
         message: "success",
       });
     } catch (error) {
