@@ -64,7 +64,6 @@ const userController = {
         message:'success'
       })
     } catch (error) {
-      // console.log(error);
       res.status(400).send(error);
     }
   },
