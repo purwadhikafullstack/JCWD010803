@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup'
 import swal from "sweetalert2";
 import axios from "axios"
+import { useState } from "react";
 
 export const FormChangePassword = () => {
     const token = localStorage.getItem('token')
@@ -49,11 +50,13 @@ export const FormChangePassword = () => {
                 <Formik
                     initialValues={{
                         currentPassword: "",
-                        newPassword: ""
+                        newPassword: "",
+                        confirmPassword: ""
                     }}
                     validationSchema={validationSchema}
-                    onSubmit={(values) => {
+                    onSubmit={(values,action) => {
                         onChangePassword(values)
+                        action.resetForm()
                     }}
                 >
                     <Form>

@@ -1,4 +1,4 @@
-export const ProfileSettingSelectBottom = () => {
+export const ProfileSettingSelectTop = () => {
     return (
         <div className="w-full">
             <div className="flex justify-between w-full bg-bgPrimary p-5">
