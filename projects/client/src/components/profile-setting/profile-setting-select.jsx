@@ -3,7 +3,7 @@ import { RxAvatar } from "react-icons/rx";
 import { BiKey } from "react-icons/bi";
 import { useState } from "react";
 
-export const ProfileSettingSelect = ({choose}) => {
+export const ProfileSettingSelect = ({choose, value}) => {
     const [click, setClick] = useState("")    
     const dataFireBase = useSelector((state) => state.firebase.value)
 	const data = useSelector((state) => state.user.value)
@@ -30,8 +30,8 @@ export const ProfileSettingSelect = ({choose}) => {
 							w-full 
 							h-16 
 							gap-3
-							${click === "changePassword" ? "bg-bgPrimary" : "null"}
-							${click === "changePassword" ? "text-white" : "text-bgPrimary"}
+							${value || click === "changePassword" ? "bg-bgPrimary" : "null"}
+							${value || click === "changePassword" ? "text-white" : "text-bgPrimary"}
 							border-b
 							cursor-pointer
 							`}
