@@ -8,14 +8,14 @@ import { FcGoogle } from "react-icons/fc";
 
 export const FireBaseLogin = () => {
     const dispatch = useDispatch()
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     const onButtonClick = async () => {
         try {
 
             const auth = await googleAuth()
             const data = {
-                displayName: auth.user.displayName,
+                userName: auth.user.displayName,
                 email: auth.user.email
             };
             const token = auth.user.accessToken
@@ -25,9 +25,12 @@ export const FireBaseLogin = () => {
                 icon: 'success',
                 title: 'Login Success',
                 text: 'Welcome!',
-                timer: 2500,
+                timer: 1500,
                 showConfirmButton: false,
             });
+            setTimeout(() => {
+                navigate('/')
+            },2000)
         } catch (error) {
             swal.fire({
                 icon: 'warning',

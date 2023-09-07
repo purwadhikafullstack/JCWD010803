@@ -57,7 +57,7 @@ export const FormChangePassword = () => {
                     }}
                 >
                     <Form>
-                        <div className="flex w-full border-b p-5 justify-between">
+                        <div className="flex w-full border-b p-2 justify-between">
                             <div className="my-auto">Change your password</div>
 
                             <div className="flex gap-3">

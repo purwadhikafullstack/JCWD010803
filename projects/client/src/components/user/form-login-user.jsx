@@ -5,12 +5,14 @@ import { useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { setValue } from '../../redux/user-slice';
+import { useNavigate } from 'react-router-dom';
 
 export default function FormLoginUser() {
   const dispatch = useDispatch();
   const [selectLogin, setSelectLogin] = useState('email');
   const [show, setShow] = useState(false)
   const data = useSelector((state) => state.user.value)
+  const navigate = useNavigate()
 
   const validationSchema = Yup.object().shape({
     data: Yup.string().required(' Your account is required '),
@@ -35,9 +37,9 @@ export default function FormLoginUser() {
         timer: 1500,
         showConfirmButton: false,
       });
-      // setTimeout(() => {
-      //   // navigate('/')
-      // }, 2000)
+      setTimeout(() => {
+        navigate('/')
+      }, 2000)
     } catch (error) {
       swal.fire({
         icon: 'warning',
