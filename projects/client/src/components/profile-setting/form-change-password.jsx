@@ -43,6 +43,9 @@ export const FormChangePassword = () => {
             })
         }
     }
+    const onCancel = () => {
+        window.location.reload()
+    }
 
     return (
         <div className="w-full">
@@ -75,6 +78,7 @@ export const FormChangePassword = () => {
                                     active:text-white 
                                     flex 
                                     justify-center"
+                                    onClick={onCancel}
                                 >
                                     Cancel
                                 </div>
