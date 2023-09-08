@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 
 export const FireBaseLogin = () => {
     const dispatch = useDispatch()
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     const onButtonClick = async () => {
         try {
@@ -19,15 +19,18 @@ export const FireBaseLogin = () => {
                 email: auth.user.email
             };
             const token = auth.user.accessToken
-            dispatch(setValue(data))
+            dispatch(setData(data))
             localStorage.setItem('firebase-token', token)
             swal.fire({
                 icon: 'success',
                 title: 'Login Success',
                 text: 'Welcome!',
-                timer: 2500,
+                timer: 1500,
                 showConfirmButton: false,
             });
+            setTimeout(() => {
+                navigate('/')
+            },2000)
         } catch (error) {
             swal.fire({
                 icon: 'warning',
