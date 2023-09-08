@@ -26,8 +26,6 @@ const Registration = () => {
         `http://localhost:8000/user/register`,
         data
       );
-      console.log(data);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
