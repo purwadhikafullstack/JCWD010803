@@ -8,11 +8,11 @@ import { setValue } from '../../redux/user-slice';
 import { useNavigate } from 'react-router-dom';
 
 export default function FormLoginUser() {
-  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [selectLogin, setSelectLogin] = useState('email');
   const [show, setShow] = useState(false)
   const data = useSelector((state) => state.user.value)
+  const navigate = useNavigate()
 
   const validationSchema = Yup.object().shape({
     data: Yup.string().required(' Your account is required '),
