@@ -23,8 +23,6 @@ export default function FormLoginUser() {
     setShow(!show)
   }
 
-
-
   const onLogin = async (data) => {
     try {
       const response = await axios.post('http://localhost:8000/api/user/login', data);
@@ -49,12 +47,11 @@ export default function FormLoginUser() {
       });
     }
   };
-
   return (
     <div>
       <Formik
         initialValues={{
-          data:"",
+          data: "",
           password: ""
         }}
         validationSchema={validationSchema}
