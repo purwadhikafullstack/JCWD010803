@@ -21,7 +21,7 @@ app.use(
 
 app.use(express.json());
 
-app.use("/user", userRouter);
+app.use("/api/user", userRouter);
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
