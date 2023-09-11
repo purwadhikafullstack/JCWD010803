@@ -16,7 +16,6 @@ const DatePicker = ({dateValue}) => {
     checkIn : startDate,
     checkOut : endDate
   }
-  console.log(dateValue);
 
   // Logic tanggal gabisa di-click apabila property-tetant tidak ada kamar dan tanggal,
   //   const disabledDates = [

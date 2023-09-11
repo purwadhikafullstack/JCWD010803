@@ -12,16 +12,22 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       user.belongsTo(models.roles, {foreignKey : 'roleId'});
+      user.hasMany(models.codeOtp)
     }
   }
   user.init({
-    firstName: {
+    firstname: {
       type : DataTypes.STRING,
       allowNull : false,
     },
-    lastName : {
+    lastname : {
       type : DataTypes.STRING
     },
+    username:{
+      type: DataTypes.STRING,
+      allowNull:false
+    },
+
     email : {
       type : DataTypes.STRING,
       allowNull : false,
@@ -31,8 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       type : DataTypes.STRING,
       allowNull : false
     },
-    phoneNumber : {
-      type : DataTypes.INTEGER,
+    phonenumber : {
+
+      type : DataTypes.STRING,
       allowNull : false,
       unique : true,
     },

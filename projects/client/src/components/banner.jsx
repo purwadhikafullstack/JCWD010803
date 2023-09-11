@@ -1,5 +1,5 @@
 import React from 'react';
-import BannerImage from '../assets/images/banner3.png';
+import BannerImage from '../assets/images/banner2.png';
 
 const Banner = () => {
   return (
@@ -14,6 +14,7 @@ const Banner = () => {
         </a>
       </div>
     </div>
+    
   );
 };
 

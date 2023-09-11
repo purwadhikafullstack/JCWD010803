@@ -36,7 +36,7 @@ const SearchModal = () => {
   });
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
-  console.log(startDate);
+
 
   const onBack = useCallback(() => setStep((prev) => prev - 1), []);
   const onNext = useCallback(() => setStep((prev) => prev + 1), []);
