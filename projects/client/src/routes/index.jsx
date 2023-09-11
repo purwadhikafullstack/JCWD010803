@@ -5,9 +5,7 @@ import { ProfileSettingPage } from "../pages/profile-setting-page";
 import { ForgotPasswordPage } from "../pages/forgot-password";
 import { ResetPasswordPage } from "../pages/reset-password-page";
 import { LoginUserPage } from "../pages/login-page";
-
-
-
+import Register from "../pages/Register";
 
 
 const Routes = <>

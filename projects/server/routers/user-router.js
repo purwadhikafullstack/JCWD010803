@@ -1,7 +1,9 @@
 const express = require('express');
 const userController = require('../controllers/user/user-controllers');
-const { checkregister, checkResetPassword, checkForgotPassword, checkNewPassword } = require('../midlewares/user/user-midleware');
+const { checkregister } = require('../midlewares/user/user-midleware');
 const { verifyToken } = require('../midlewares/token');
+const { checkForgotPassword, checkResetPassword, checkNewPassword } = require('../midlewares/userValidator');
+
 const router = require('express').Router();
 
 router.post('/login', userController.login)

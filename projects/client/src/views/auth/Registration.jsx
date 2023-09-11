@@ -35,7 +35,7 @@ const Registration = () => {
     <div className="min-h-screen py-7">
       <div className="container mx-auto flex flex-wrap bg-white shadow-xl">
         {/* kiri */}
-        <div className=" sm:block flex min-h-screen md:w-1/2">
+        <div className=" sm:block hidden flex min-h-screen md:w-1/2">
           <div className="w-full h-full flex bg-cover bg-[url(https://source.unsplash.com/random?hotel)] ">
             <div className="m-auto text-white brightness-100">
               <h1 className="text-3xl font-semibold mb-2 text-center">
