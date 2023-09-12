@@ -40,7 +40,7 @@ const Registration = () => {
             <div className="m-auto text-white brightness-100">
               <h1 className="text-3xl font-semibold mb-2 text-center">
                 Welcome
-              </h1>
+              </h1> 
               <p className="text-center">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
                 adipisci repellat laborum. Delectus nulla eveniet laborum
