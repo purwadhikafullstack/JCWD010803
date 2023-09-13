@@ -3,13 +3,9 @@ const { body, validationResult } = require("express-validator");
 module.exports = {
   checkregister: async (req, res, next) => {
     try {
-      await body('firstname').trim().notEmpty().withMessage('firstname cannot be empty').run(req);
-      await body('lastname').trim().notEmpty().withMessage('lastname cannot be empty').run(req);
-      await body('gender').trim().notEmpty().withMessage('gender cannot be empty').run(req);
       // await body('email').trim().notEmpty().isEmail().matches(/@(gmail|yahoo|rocketmail)\.com$/i).withMessage('Email must be gmail, yahoo and rocketmail').run(req);
       await body('email').trim().notEmpty().isEmail().withMessage('Email must not be empty').run(req);
       await body('phonenumber').trim().notEmpty().isLength({min: 10, max: 13}).withMessage('Phone number must between 10 - 13 length').run(req);
-      await body('birthdate').trim().notEmpty().withMessage('birthdate must be filled').run(req);
       await body('roleId').trim().notEmpty().withMessage('role must not be empty').run(req);
       await body('password').trim().notEmpty().isStrongPassword({
         minLength: 6,
