@@ -32,7 +32,7 @@ function App() {
         })
       }
     };
-    keepLogin()
+    // keepLogin()
   },[dispatch, token, firebaseToken]);
 }
 
