@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 const Navbar = () => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.user.value);
-  // const isVerified = data.result.isDelete;
   const token = localStorage.getItem("token");
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
@@ -35,7 +34,7 @@ const Navbar = () => {
         </Container>
       </div>
       <Categories />
-      {token === null ? null : data.isDelete  == false ?  (
+      {token === null ? null : data.isVerified  == false ?  (
         <div
           className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md ${hidden}"
           role="alert"
