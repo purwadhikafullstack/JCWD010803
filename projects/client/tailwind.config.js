@@ -11,7 +11,12 @@ module.exports = {
     extend: {
       colors:{
         bgPrimary: "#2CA4A5",
-        bgPrimaryActive: "#28999A"
+        bgPrimaryActive: "#28999A",
+        btnVerify : "#6ee7b7",
+        btnHverify : "#34d399"
+      },
+      screens:{
+        'xs' : '372px'
       }
     },
   },
