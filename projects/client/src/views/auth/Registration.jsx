@@ -2,11 +2,11 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import swal from 'sweetalert2';
+import swal from "sweetalert2";
 import { useInView } from "react-intersection-observer";
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { setValue } from '../../redux/user-slice';
+import { setValue } from "../../redux/user-slice";
 
 const Registration = () => {
   const dispatch = useDispatch();
@@ -30,27 +30,26 @@ const Registration = () => {
     try {
       const response = await axios.post(
         `http://localhost:8000/api/user/register`,
-       data
+        data
       );
       dispatch(setValue(response.data));
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem("token", response.data.token);
       swal.fire({
-        icon: 'success',
-        title: 'Register Success',
-        text: 'Welcome!',
+        icon: "success",
+        title: "Register Success",
+        text: "Welcome!",
         timer: 1500,
         showConfirmButton: false,
       });
       setTimeout(() => {
-        navigate('/')
-      }, 2000)
-      
+        navigate("/");
+      }, 2000);
     } catch (error) {
       console.log(error);
       swal.fire({
-        icon: 'warning',
-        iconColor: 'red',
-        title: 'Login Failed',
+        icon: "warning",
+        iconColor: "red",
+        title: "Login Failed",
         text: error.response.data.message,
       });
     }
@@ -59,19 +58,17 @@ const Registration = () => {
   return (
     <div className="flex flex-wrap">
       {/* kiri */}
-      <div className="md:w-3/5 h-screen bg-cover bg-[url(https://source.unsplash.com/random?hotel)]">
-
-      </div>
+      <div className="md:w-3/5 h-screen bg-cover bg-[url(https://source.unsplash.com/random?hotel)]"></div>
       {/* kanan */}
       <div className="md:w-2/5 xs:w-full ">
         <div className="flex flex-wrap min-h-full">
-          <motion.div 
+          <motion.div
             ref={ref}
-            initial={{ opacity: 0}}
+            initial={{ opacity: 0 }}
             animate={{ opacity: inView ? 1 : 0, x: inView ? 0 : 1000 }}
             transition={{ duration: 0.7 }}
             className="md:m-auto md:border-none xs:w-full xs:m-10"
-            >
+          >
             <div>
               <h2 className="text-4xl mb-5 text-center font-semibold text-bgPrimary">
                 Registration
