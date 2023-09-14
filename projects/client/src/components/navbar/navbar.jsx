@@ -1,12 +1,18 @@
+import { useState } from "react";
 import Container from "../container";
 import Categories from "./categories";
 import Logo from "./logo";
 import Search from "./search";
 import UserMenu from "./user-menu";
+import { SearchModal } from "../modal/search-modal";
 
 const Navbar = () => {
+
+  const [open, setOpen] = useState(false)
+
   return (
-    <div className="fixed w-full bg-white z-10 shadow-sm">
+    <div className="fixed w-full bg-white z-30 shadow-sm">
+      <SearchModal setOpen={setOpen} open={open} />
       <div className="py-4 border-b-[1px]
       "
       >
@@ -21,12 +27,11 @@ const Navbar = () => {
           "
           >
             <Logo />
-            <Search/>
-            <UserMenu/>
+            <Search setOpen={setOpen} />
+            <UserMenu />
           </div>
         </Container>
       </div>
-      <Categories/>
     </div>
   );
 }

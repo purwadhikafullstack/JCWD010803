@@ -7,7 +7,7 @@ import { ProfileSettingSelect } from "../../components/profile-setting/profile-s
 import { ProfileSettingSelectTop } from "../../components/profile-setting/profile-setting-select-top";
 
 export const ProfileSetting = () => {
-	const [click, setClick] = useState("")
+	const [click, setClick] = useState("changePassword")
 
 	const handleClick = (value) => {
 		setClick(value)
