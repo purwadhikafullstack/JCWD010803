@@ -1,8 +1,8 @@
 import React from "react";
-import Verifyemail from "../views/auth/verifiy-email";
+import VerifyAccount from "../views/auth/verify-account";
 
 const Verification = () => {
-  return <Verifyemail />
+  return <VerifyAccount />;
 };
 
 export default Verification;

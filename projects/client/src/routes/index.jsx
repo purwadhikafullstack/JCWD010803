@@ -6,8 +6,10 @@ import { ForgotPasswordPage } from "../pages/forgot-password";
 import { ResetPasswordPage } from "../pages/reset-password-page";
 import { LoginUserPage } from "../pages/login-page";
 import { SortPropertiesPage } from "../pages/sort-properties-page";
+import Verification from "../pages/verify-page";
 
-const Routes = <>
+const Routes = (
+  <>
     <Route path="/" element={<LandingPage />} />
     <Route path="/register" element={<Register />} />
     <Route path="/login" element={<LoginUserPage />} />;
@@ -15,9 +17,8 @@ const Routes = <>
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/reset-password/:Token" element={<ResetPasswordPage />} />
     <Route path="/properties" element={<SortPropertiesPage />} />
-</> 
+    <Route path="/verify" element={<Verification />} />
+  </>
+);
 
 export const routes = createRoutesFromElements(Routes);
-
-
-
