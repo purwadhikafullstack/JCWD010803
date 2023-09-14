@@ -90,12 +90,12 @@ const propertiesController = {
 
       const length = data.length;
       const filteredProperties = findProperty.filter((property) => {
-        if (property.room) {
-          return property.room.onBooking === null;
+        if (property.rooms && property.rooms.length > 0) {
+          const hasNullBooking = property.rooms.some((room) => room.onBooking === null);
+          return hasNullBooking;
         }
         return false;
-      });
-      res.status(200).send({
+      });      res.status(200).send({
         properties: filteredProperties,
         length,
         limit,

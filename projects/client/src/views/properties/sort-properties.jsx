@@ -60,7 +60,7 @@ export const SortProperties = () => {
   };
 
   const handleClick = (id) => {
-    navigate(`/property/${id}`)
+    navigate(`/property/${id}?checkIn=${checkIn}&checkOut=${checkOut}`)
   }
   
   useEffect(() => {
@@ -98,7 +98,7 @@ export const SortProperties = () => {
                         <div className=" mt-2 font-semibold text-lg text-gray-800"> {item.propertyName} </div>
                         <div className=" text-gray-700 text-sm "> {item.category.category} </div>
                         <div className=" font-thin text-gray-600"> {item.propertyDesc.slice(0, 70) + "..."} </div>
-                        <div className=" text-gray-800 text-md"> {formatRupiah(parseInt(item.room.price))} /   night  </div>
+                        <div className=" text-gray-800 text-md"> {formatRupiah(parseInt(item.rooms[0].price))} /   night  </div>
                       </div>
                     </div>
                   )

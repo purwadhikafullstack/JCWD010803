@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       properties.belongsTo(models.user);
       properties.belongsTo(models.categories);
-      properties.hasOne(models.rooms);
+      properties.hasMany(models.rooms);
     }
   }
   properties.init(

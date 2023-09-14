@@ -7,11 +7,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
-export const SearchModal = ({open, setOpen}) => {
-
+export const SearchModal = ({ open, setOpen }) => {
+	
 	const navigate = useNavigate()
-	const [startDate, setStartDate] = useState()
-	const [endDate, setendDate] = useState()
 	const [page, setPage] = useState(1)
 	const [category, setCategory] = useState([])
 	const [idCategory, setIdCategory] = useState("")
@@ -31,24 +29,32 @@ export const SearchModal = ({open, setOpen}) => {
 	const prevPage = () => {
 		setPage((prevPage) => Math.max(+prevPage - 1));
 	};
-
+	
 	const handleCloseModal = () => {
 		setOpen(false)
 	};
-
+	
+	const today = new Date();
+	const tomorrow = new Date();
+	tomorrow.setDate(today.getDate() + 1);
+	
 	const [state, setState] = useState([
 		{
-		  startDate: new Date(),
-		  endDate: new Date().setDate() + 1	,  
-		  key: 'selection'
+			startDate: today,
+			endDate: tomorrow,
+			key: 'selection'
 		}
-	  ]);
-
+	]);
+	
+	const [startDate, setStartDate] = useState(state[0].startDate)
+	const [endDate, setendDate] = useState(state[0].endDate)
+	console.log(startDate);
+	
 	const handleSearch = () => {
 		navigate(`/properties?categoryId=${idCategory}&checkIn=${startDate}&checkOut=${endDate}`)
 		setOpen(false)
 	}
-
+	
 	useEffect(() => {
 		getCategories()
 	}, [])
@@ -68,7 +74,7 @@ export const SearchModal = ({open, setOpen}) => {
 											<Select
 												options={category.map(item => ({
 													value: item.id,
-													label: item.category, 
+													label: item.category,
 												}))}
 												onChange={(item) => {
 													setIdCategory(item.value)
@@ -113,7 +119,7 @@ export const SearchModal = ({open, setOpen}) => {
 									}
 									{page === 2 ?
 										<div className="flex gap-5">
-											<button className=" bg-bgPrimary text-white p-2 rounded-full disabled:bg-teal-200 disabled:cursor-not-allowed disabled:hover:scale-100  hover:scale-105" disabled={!startDate || !endDate || !idCategory ? true : false}  onClick={handleSearch}>Search</button>
+											<button className=" bg-bgPrimary text-white p-2 rounded-full disabled:bg-teal-200 disabled:cursor-not-allowed" onClick={handleSearch}>Search</button>
 										</div>
 										:
 										null
