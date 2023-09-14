@@ -7,9 +7,8 @@ import { ResetPasswordPage } from "../pages/reset-password-page";
 import { LoginUserPage } from "../pages/login-page";
 import Verification from "../pages/verify-page";
 
-
-
-const Routes = <>
+const Routes = (
+  <>
     <Route path="/" element={<LandingPage />} />
     <Route path="/register" element={<Register />} />
     <Route path="/login" element={<LoginUserPage />} />;
@@ -20,6 +19,3 @@ const Routes = <>
 </> 
 
 export const routes = createRoutesFromElements(Routes);
-
-
-

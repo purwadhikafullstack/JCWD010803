@@ -1,12 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
-import swal from 'sweetalert2';
-import { useInView } from "react-intersection-observer";
-import { motion } from 'framer-motion'
-import { useDispatch } from "react-redux";
-import { setValue } from '../../redux/user-slice';
 
 const Registration = () => {
   const dispatch = useDispatch();
@@ -29,70 +23,148 @@ const Registration = () => {
   const onRegis = async (data) => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/user/register`,
-       data
+        `http://localhost:8000/user/register`,
+        data
       );
-      dispatch(setValue(response.data.result));
-      localStorage.setItem('token', response.data.token);
-      swal.fire({
-        icon: 'success',
-        title: 'Register Success',
-        text: 'Welcome!',
-        timer: 1500,
-        showConfirmButton: false,
-      });
-      setTimeout(() => {
-        navigate('/')
-      }, 2000)
-      
     } catch (error) {
       console.log(error);
-      swal.fire({
-        icon: 'warning',
-        iconColor: 'red',
-        title: 'Login Failed',
-        text: error.response.data.message,
-      });
     }
   };
 
   return (
-    <div className="flex flex-wrap">
-      {/* kiri */}
-      <div className="md:w-3/5 h-screen bg-cover bg-[url(https://source.unsplash.com/random?hotel)]">
-
-      </div>
-      {/* kanan */}
-      <div className="md:w-2/5 xs:w-full ">
-        <div className="flex flex-wrap min-h-full">
-          <motion.div 
-            ref={ref}
-            initial={{ opacity: 0}}
-            animate={{ opacity: inView ? 1 : 0, x: inView ? 0 : 1000 }}
-            transition={{ duration: 0.7 }}
-            className="md:m-auto md:border-none xs:w-full xs:m-10"
-            >
-            <div>
-              <h2 className="text-4xl mb-5 text-center font-semibold text-bgPrimary">
-                Registration
-              </h2>
+    <div className="min-h-screen py-7">
+      <div className="container mx-auto flex flex-wrap bg-white shadow-xl">
+        {/* kiri */}
+        <div className=" sm:block hidden flex min-h-screen md:w-1/2">
+          <div className="w-full h-full flex bg-cover bg-[url(https://source.unsplash.com/random?hotel)] ">
+            <div className="m-auto text-white brightness-100">
+              <h1 className="text-3xl font-semibold mb-2 text-center">
+                Welcome
+              </h1> 
+              <p className="text-center">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
+                adipisci repellat laborum. Delectus nulla eveniet laborum
+                veritatis rem dolores quam?
+              </p>
             </div>
-            <div>
-              <Formik
-                initialValues={{
-                  username: "",
-                  email: "",
-                  password: "",
-                  phonenumber: "",
-                  roleId: 1,
-                }}
-                validationSchema={validationSchema}
-                onSubmit={(values) => {
-                  onRegis(values);
-                }}
-              >
-                <Form action="#">
-                  <div className="xs:px-20 ">
+          </div>
+        </div>
+        {/* kanan */}
+        <div className="h-full p-4 md:w-1/2 ">
+          <div className="justify-center py-10 px-4 text-teal-600/50 ">
+            <h2 className=" text-4xl mb-5 text-center font-extrabold text-teal-600">
+              Registration
+            </h2>
+            <Formik
+              initialValues={{
+                firstname: "",
+                lastname: "",
+                gender: "",
+                birthdate: "",
+                username: "",
+                password: "",
+                email: "",
+                phonenumber: "",
+                roleId: 1,
+              }}
+              validationSchema={validationSchema}
+              onSubmit={(values) => {
+                onRegis(values);
+              }}
+            >
+              <Form action="#" className="w-full max-w-lg">
+                {/* firsname dan username */}
+                <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full md:w-1/2 px-3 mb-6 mt-4 md:mb-0">
+                    <label className=" block  tracking-wide text-gray-600 text-md font-bold mb-2">
+                      Firstname
+                    </label>
+                    <Field
+                      name="firstname"
+                      class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
+                      id="grid-first-name"
+                      type="text"
+                      placeholder="Firstname"
+                    ></Field>
+                    <ErrorMessage
+                      name="firstname"
+                      component={"div"}
+                      className="text-red-500 text-base p-2"
+                    />
+                  </div>
+                  <div className="w-full md:w-1/2 px-3 mt-4 ">
+                    <label className=" block  tracking-wide text-gray-700 text-md font-bold mb-2">
+                      Lastname
+                    </label>
+                    <Field
+                      name="lastname"
+                      class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-last-name"
+                      type="text"
+                      placeholder="Lastname"
+                    ></Field>
+                    <ErrorMessage
+                      name="lastname"
+                      component={"div"}
+                      className="text-red-500 text-base p-2"
+                    />
+                  </div>
+                </div>
+                {/*gender, birthdate  */}
+
+                <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label className=" block  tracking-wide text-gray-700 text-md font-bold mb-2">
+                      Gender
+                    </label>
+                    <div class="relative">
+                      <Field
+                        as="select"
+                        name="gender"
+                        className="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      >
+                        <option>Gender</option>
+                        <option value="Pria">Pria</option>
+                        <option value="Wanita">Wanita</option>
+                      </Field>
+                      <ErrorMessage
+                        name="gender"
+                        component={"div"}
+                        className="text-red-500 text-base p-2"
+                      />
+                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg
+                          class="fill-current h-4 w-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full md:w-1/2 px-3 ">
+                    <label className=" block  tracking-wide text-gray-700 text-md font-bold mb-2">
+                      Birthdate
+                    </label>
+                    <Field
+                      name="birthdate"
+                      class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-last-name"
+                      type="date"
+                      placeholder=""
+                    ></Field>
+                    <ErrorMessage
+                      name="birthdate"
+                      component={"div"}
+                      className="text-red-500 text-base p-2"
+                    />
+                  </div>
+                </div>
+
+                {/* username, password, email field */}
+                <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full px-3">
                     <label
                       className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2"
                       for="grid-username"
