@@ -35,7 +35,7 @@ const Navbar = () => {
         </Container>
       </div>
       <Categories />
-      {token === null ? null : data.result.isDelete  == false ?  (
+      {token === null ? null : data.isDelete  == false ?  (
         <div
           className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md ${hidden}"
           role="alert"
