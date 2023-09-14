@@ -4,9 +4,12 @@ import Categories from "./categories";
 import Logo from "./logo";
 import Search from "./search";
 import UserMenu from "./user-menu";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const data = useSelector((state) => state.user.value);
+  const isVerified = data.result.isDelete;
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div
@@ -31,14 +34,14 @@ const Navbar = () => {
         </Container>
       </div>
       <Categories />
-      <div
-        class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+      {isVerified == "false" ? (<div
+        className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md ${hidden}"
         role="alert"
       >
-        <div class="flex">
-          <div class="m-auto py-1">
+        <div className="flex">
+          <div className="m-auto py-1">
             <svg
-              class="fill-current h-6 w-6 text-teal-500 mr-4"
+              className="fill-current h-6 w-6 text-teal-500 mr-4"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
             >
@@ -47,13 +50,13 @@ const Navbar = () => {
           </div>
           <div className="flex flex-wrap w-full ">
             <div className="m-auto md:w-1/2">
-              <p class="font-bold">
+              <p className="font-bold">
                 Please verify your account first, to make any transaction
               </p>
             </div>
             <div className="m-auto md:w-1/2 text-right xs:mt-3 md:mt-0">
               <button
-                class="bg-btnVerify hover:bg-btnHverify text-gray-800 font-bold p-2 rounded "
+                className="bg-btnVerify hover:bg-btnHverify text-gray-800 font-bold p-2 rounded "
                 onClick={() => {
                   navigate("/verify");
                 }}
@@ -63,7 +66,8 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>) : (null)}
+      
     </div>
   );
 };
