@@ -1,5 +1,5 @@
 require("dotenv/config");
-const {userRouter} = require('../routers')
+const {userRouter, tenantRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
@@ -22,6 +22,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/user", userRouter);
+app.use("/api/tenant", tenantRouter)
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
