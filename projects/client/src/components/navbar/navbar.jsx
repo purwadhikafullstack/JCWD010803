@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-
 import Container from "../container";
 import Categories from "./categories";
 import Logo from "./logo";
@@ -10,7 +9,7 @@ import { useSelector } from "react-redux";
 const Navbar = () => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.user.value);
-  const isVerified = data.result.isDelete;
+  const token = localStorage.getItem("token");
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div
@@ -29,14 +28,13 @@ const Navbar = () => {
           "
           >
             <Logo />
-
             <Search />
             <UserMenu />
           </div>
         </Container>
       </div>
       <Categories />
-      {isVerified == "false" ? (
+      {token === null ? null : data.isVerified  == false ?  (
         <div
           className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md ${hidden}"
           role="alert"
@@ -70,7 +68,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      ) : null }
     </div>
   );
 };
