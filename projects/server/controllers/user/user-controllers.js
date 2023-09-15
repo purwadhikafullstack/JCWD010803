@@ -35,15 +35,14 @@ const userController = {
           phoneNumber, 
           roleId
         });
-
         const payloads = {
           id: result.id,
           username : result.username,
           email : result.email,
           password : result.password
-        };
+        }; 
 
-        const token = jwt.sign({payloads}, process.env.TOKEN_KEY);
+        const token = jwt.sign(payloads, process.env.TOKEN_KEY);
         
         res.status(200).send({
           result,
@@ -234,10 +233,11 @@ const userController = {
   },
   getOtp : async (req,res) => {
     try {
-      const {id, username, email} = req.user.payloads
+      const {id, username, email} = req.user;
       const checkUser = await user.findOne({
         where : {email}
       });
+      console.log(checkUser);
       const checkOtp = await dbOtp.findAll({
         where: {
           userId:id,
@@ -287,10 +287,8 @@ const userController = {
   },
   verifyAccount : async(req,res) =>{
     try {
-      // console.log(req.body);
-      // console.log(req.user);
       const {firstname, lastname, birthdate, gender, otp} =req.body;
-      const {id} = req.user.payloads;
+      const {id} = req.user;
       
       const timeInIndonesia = new Date().getTime() + 7 * 60 * 60 * 1000;
       const time = new Date(timeInIndonesia);
