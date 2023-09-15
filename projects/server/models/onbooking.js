@@ -3,29 +3,26 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class codeOtp extends Model {
+  class onBooking extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      codeOtp.belongsTo(models.user)
+      onBooking.belongsTo(models.rooms)
     }
   }
-  codeOtp.init({
-    otp: {
-      type: DataTypes.STRING,
-      unique: true
+  onBooking.init({
+    checkIn: {
+      type: DataTypes.DATE
     },
-    expiredDate: {
+    checkOut: {
       type: DataTypes.DATE
     }
   }, {
     sequelize,
-    modelName: 'codeOtp',
-    freezeTableName : true
+    modelName: 'onBooking',
   });
-  return codeOtp;
+  return onBooking;
 };

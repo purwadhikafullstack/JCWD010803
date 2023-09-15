@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 
+const Search = ({setOpen}) => {
 
-
-
-
-const Search = () => {
-  
-
+  const handleOpenModal = () => {
+    setOpen(true)
+  }
 
   return (
     <div
+    onClick={handleOpenModal}
       className="
-        border-[1px] 
+    border-[1px] 
         w-full 
         md:w-auto 
         py-2 
@@ -21,9 +20,9 @@ const Search = () => {
         hover:shadow-md 
         transition 
         cursor-pointer
-      "
+        "
     >
-      <div 
+      <div
         className="
           flex 
           flex-row 
@@ -31,7 +30,7 @@ const Search = () => {
           justify-between
         "
       >
-        <div 
+        <div
           className="
             text-sm 
             font-semibold 
@@ -40,7 +39,7 @@ const Search = () => {
         >
           Anywhere
         </div>
-        <div 
+        <div
           className="
             hidden 
             sm:block 
@@ -54,7 +53,7 @@ const Search = () => {
         >
           Anyweek
         </div>
-        <div 
+        <div
           className="
             text-sm 
             pl-6 
@@ -66,10 +65,10 @@ const Search = () => {
             gap-3
           "
         >
-            <BiSearch size={25} />
-          </div>
+          <BiSearch size={25} />
         </div>
       </div>
+    </div>
   );
 }
 

@@ -1,5 +1,5 @@
 require("dotenv/config");
-const {userRouter} = require('../routers')
+const {userRouter, propertyRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
@@ -9,7 +9,6 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 
-app.use(cors());
 
 
 
@@ -22,6 +21,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/user", userRouter);
+app.use("/api/properties", propertyRouter)
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
