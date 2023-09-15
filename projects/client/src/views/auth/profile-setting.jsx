@@ -5,6 +5,7 @@ import { BiKey } from "react-icons/bi";
 import { FormChangePassword } from "../../components/profile-setting/form-change-password";
 import { ProfileSettingSelect } from "../../components/profile-setting/profile-setting-select";
 import { ProfileSettingSelectTop } from "../../components/profile-setting/profile-setting-select-top";
+import FormChangeProfile from "../../components/profile-setting/form-change-profile";
 
 export const ProfileSetting = () => {
 	const [click, setClick] = useState("")
@@ -26,7 +27,8 @@ export const ProfileSetting = () => {
 					<ProfileSettingSelect choose={handleClick} value={click} />
 				</div>
 				<div className=" w-full sm:w-1/2 h-fit rounded border-gray-300 border flex ">
-					{click === "changePassword" ? (<FormChangePassword />) : (null)}
+					{click === "changePassword" ? (<FormChangePassword />) 
+					: click ==="changeProfile" ? (<FormChangeProfile />) : (null) }
 				</div>
 			</div>
 		</div>
