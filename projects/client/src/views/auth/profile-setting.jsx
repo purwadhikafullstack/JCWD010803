@@ -8,7 +8,7 @@ import { ProfileSettingSelectTop } from "../../components/profile-setting/profil
 import FormChangeProfile from "../../components/profile-setting/form-change-profile";
 
 export const ProfileSetting = () => {
-	const [click, setClick] = useState("")
+	const [click, setClick] = useState("changePassword")
 
 	const handleClick = (value) => {
 		setClick(value)
