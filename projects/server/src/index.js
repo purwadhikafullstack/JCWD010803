@@ -21,7 +21,6 @@ app.use(
 app.use(express.json());
 
 app.use("/api/user", userRouter);
-app.use("/api/tenant", tenantRouter);
 app.use("/api/properties", propertyRouter)
 
 app.get("/api", (req, res) => {
