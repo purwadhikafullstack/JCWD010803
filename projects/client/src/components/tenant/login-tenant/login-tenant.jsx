@@ -1,34 +1,48 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios"; // Import Axios
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert2";
 
 const LoginTenantForm = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      email: "",
+      data: "",
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Invalid email address")
-        .required("Email is required"),
+      data: Yup.string().required("Email or username is required"),
       password: Yup.string()
         .min(6, "Password must be at least 6 characters")
         .required("Password is required"),
     }),
-    onSubmit: (values) => {
-      // Send the login data to your backend using Axios
-      axios
-        .post("your-backend-login-api-url", values) // Replace with your backend login API URL
-        .then((response) => {
-          // Handle the response from the backend
-          console.log("Response from the backend:", response.data);
-        })
-        .catch((error) => {
-          // Handle any errors that occur during the request
-          console.error("Error sending login data to the backend:", error);
-        });
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/tenant/loginTenant",
+          values
+        );
+        localStorage.setItem("token", response.data.token)
+        swal.fire({
+          icon: 'success',
+          title: 'Login Success',
+          text: 'Welcome!',
+          timer: 1500,
+          showConfirmButton: false,
+      });
+      setTimeout(() => {
+          navigate('/dashboard')
+      },2000)
+      } catch (error) {
+        swal.fire({
+          icon: 'warning',
+          iconColor: 'red',
+          title: 'Login Failed',
+          text: error.response.data.message,
+      });
+      }
     },
   });
 
@@ -49,18 +63,18 @@ const LoginTenantForm = () => {
           </h1>
           <form className="mt-6" onSubmit={formik.handleSubmit}>
             <div className="my-4">
-              <label className="block text-gray-700">Email</label>
+              <label className="block text-gray-700">Email or Username</label>
               <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Enter Email Address"
+                type="text"
+                name="data"
+                id="data"
+                placeholder="Enter Email or Username"
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-teal-500 focus:bg-white focus:outline-none"
                 required=""
-                {...formik.getFieldProps("email")}
+                {...formik.getFieldProps("data")}
               />
-              {formik.touched.email && formik.errors.email ? (
-                <div className="text-red-500">{formik.errors.email}</div>
+              {formik.touched.data && formik.errors.data ? (
+                <div className="text-red-500">{formik.errors.data}</div>
               ) : null}
             </div>
             <div className="my-4">
@@ -82,7 +96,7 @@ const LoginTenantForm = () => {
             <button
               type="submit"
               className="w-full block bg-teal-500 hover:bg-teal-400 focus:bg-teal-400 text-white font-semibold rounded-lg px-4 py-3 mt-6"
-              disabled={formik.isSubmitting} // Disable the button while submitting
+              disabled={formik.isSubmitting}
             >
               Login
             </button>

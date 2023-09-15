@@ -84,7 +84,7 @@ function DropdownProfile({
             <li>
               <Link
                 className="font-medium text-sm text-teal-500 hover:text-teal-600 dark:hover:text-teal-400 flex items-center py-1 px-3"
-                to="/signin"
+                to="/login-tenant"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 Sign Out

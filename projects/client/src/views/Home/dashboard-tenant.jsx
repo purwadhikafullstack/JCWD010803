@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from '../../components/tenant/dashboard-tenant/header';
 import Sidebar from '../../components/tenant/dashboard-tenant/side-bar';
 
-const DashboardTenants = () => {
+const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -20,4 +20,4 @@ const DashboardTenants = () => {
   );
 };
 
-export default DashboardTenants;
+export default Dashboard;
