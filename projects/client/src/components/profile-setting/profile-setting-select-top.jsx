@@ -3,6 +3,10 @@ import { useState } from "react"
 export const ProfileSettingSelectTop = ({ choose, value }) => {
   const [click, setClick] = useState("")
 
+  const clickChangeProfile = () => {
+    setClick("changeProfile")
+    choose("changeProfile")
+  }
   const clickChangePassword = () => {
     setClick("changePassword")
     choose("changePassword")
@@ -22,15 +26,17 @@ export const ProfileSettingSelectTop = ({ choose, value }) => {
         >
           Change password
         </div>
+
         <div className={
         "my-auto"}
         >
-          Order history
+          Profile
         </div>
+
         <div className={
         "my-auto"}
         >
-          Profile detail
+          Order History
         </div>
         
       </div>
