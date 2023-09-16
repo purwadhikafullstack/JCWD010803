@@ -174,6 +174,7 @@ const propertiesController = {
           propertyDesc,
           propertyImg,
           propertyName,
+          propertyImg: propertyImg
         },
         {
           where: { id: propertyId },
