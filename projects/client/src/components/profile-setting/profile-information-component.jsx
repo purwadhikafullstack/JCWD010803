@@ -3,25 +3,38 @@ import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
+import swal from "sweetalert2";
 
 const ProfileInformation = () => {
   const data = useSelector((state) => state.user.value);
+  const token = localStorage.getItem("token");
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("Firstname is required"),
     lastName: Yup.string().required("Lastname is required"),
     gender: Yup.string().required("Gender is required"),
     email: Yup.string().required("email is required"),
-    birthdate: Yup.string().required("Birthdate is required")
+    birthdate: Yup.string().required("Birthdate is required"),
   });
 
   const onUpdate = async (data) => {
     try {
-      // const response = await axios.post();
-      console.log(data);
+      const response = await axios.post(
+        `http://localhost:8000/api/user/information-update`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      swal.fire({
+        icon: "success",
+        title: "Update Information Success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   return (
     <Formik
       initialValues={{
