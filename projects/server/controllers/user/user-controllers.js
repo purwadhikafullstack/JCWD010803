@@ -41,7 +41,6 @@ const userController = {
           phoneNumber,
           roleId,
         });
-
         const payloads = {
           id: result.id,
           username: result.username,
