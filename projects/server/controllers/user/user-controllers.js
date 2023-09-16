@@ -327,6 +327,15 @@ const userController = {
     } catch (error) {
       res.status(400).send(error)
     }
+  },
+  updateProfile : async (req,res) => {
+    try {
+      res.status(200).send({
+        message : "sukses"
+      })
+    } catch (error) {
+      res.status(400).send(error);
+    }
   }
 };
 

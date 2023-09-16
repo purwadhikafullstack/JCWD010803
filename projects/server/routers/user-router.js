@@ -15,4 +15,5 @@ router.post('/checkOtp', userController.checkOtp)
 router.patch('/changePassword', verifyToken,checkNewPassword, userController.changePassword)
 router.post('/otp', verifyToken, userController.getOtp);
 router.post('/verify', verifyToken, userController.verifyAccount);
+router.post('/information-update', userController.updateProfile);
 module.exports = router;
