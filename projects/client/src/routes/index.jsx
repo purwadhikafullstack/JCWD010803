@@ -18,7 +18,7 @@ const Routes = (
     <Route path="/reset-password/:Token" element={<ResetPasswordPage />} />
     <Route path="/properties" element={<SortPropertiesPage />} />
     <Route path="/verify" element={<Verification />} />
-  </>
+</> 
 );
 
 export const routes = createRoutesFromElements(Routes);

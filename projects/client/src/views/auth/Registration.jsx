@@ -32,7 +32,7 @@ const Registration = () => {
         `http://localhost:8000/api/user/register`,
         data
       );
-      dispatch(setValue(response.data));
+      dispatch(setValue(response.data.result));
       localStorage.setItem("token", response.data.token);
       swal.fire({
         icon: "success",
