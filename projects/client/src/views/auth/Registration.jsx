@@ -81,7 +81,7 @@ const Registration = () => {
                   email: "",
                   password: "",
                   phonenumber: "",
-                  roleId: 1,
+                  roleId: 2,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {

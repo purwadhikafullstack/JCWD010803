@@ -19,7 +19,13 @@ const otpGenerate = () => {
 const userController = {
   register: async (req, res) => {
     try {
-      const { username, email, password, phonenumber: phoneNumber, roleId } = req.body;
+      const {
+        username,
+        email,
+        password,
+        phonenumber: phoneNumber,
+        roleId,
+      } = req.body;
       const isExist = await user.findOne({
         where: {
           [Op.or]: [{ email }, { phoneNumber }],
@@ -28,27 +34,27 @@ const userController = {
       if (!isExist) {
         const salt = await enc.genSalt(10);
         const hashPassword = await enc.hash(password, salt);
+        
         const result = await user.create({
           username,
           email,
-          password : hashPassword,
-          phoneNumber, 
-          roleId
+          password: hashPassword,
+          phoneNumber,
+          roleId,
         });
-
-        
+        console.log(result);
         const payloads = {
           id: result.id,
-          username : result.username,
-          email : result.email,
-          password : result.password
-        }; 
+          username: result.username,
+          email: result.email,
+          password: result.password,
+        };
 
         const token = jwt.sign(payloads, process.env.TOKEN_KEY);
-        
+
         res.status(200).send({
           result,
-          token
+          token,
         });
       } else {
         if (isExist.email == email) {
@@ -58,6 +64,7 @@ const userController = {
           throw { message: "Nomor telpon sudah terdaftar" };
         }
       }
+      
     } catch (error) {
       res.status(400).send(error);
     }
@@ -233,16 +240,16 @@ const userController = {
       res.status(400).send(error);
     }
   },
-  getOtp : async (req,res) => {
+  getOtp: async (req, res) => {
     try {
-      const {id, username, email} = req.user;
+      const { id, username, email } = req.user;
       const checkUser = await user.findOne({
-        where : {email}
+        where: { email },
       });
       console.log(checkUser);
       const checkOtp = await dbOtp.findAll({
         where: {
-          userId:id,
+          userId: id,
           expiredDate: {
             [Op.and]: {
               [Op.gte]: new Date(new Date().setHours(7, 0, 0, 0)),
@@ -284,14 +291,14 @@ const userController = {
         message: "We have send OTP to your email",
       });
     } catch (error) {
-      res.status(400).send(error)
+      res.status(400).send(error);
     }
   },
-  verifyAccount : async(req,res) =>{
+  verifyAccount: async (req, res) => {
     try {
-      const {firstname, lastname, birthdate, gender, otp} =req.body;
-      const {id} = req.user;
-      
+      const { firstname, lastname, birthdate, gender, otp } = req.body;
+      const { id } = req.user;
+
       const timeInIndonesia = new Date().getTime() + 7 * 60 * 60 * 1000;
       const time = new Date(timeInIndonesia);
 
@@ -307,14 +314,14 @@ const userController = {
 
       const setData = await user.update(
         {
-          firstName : firstname,
-          lastName : lastname,
-          gender : gender,
-          birthdate : birthdate,
-          isVerified : true
+          firstName: firstname,
+          lastName: lastname,
+          gender: gender,
+          birthdate: birthdate,
+          isVerified: true,
         },
         {
-          where: {id:id}
+          where: { id: id },
         }
       );
       const deleteOtp = await dbOtp.destroy({
@@ -322,12 +329,91 @@ const userController = {
       });
 
       res.status(200).send({
-        message : "Account has been successfully verified"
-      })
+        message: "Account has been successfully verified",
+      });
     } catch (error) {
-      res.status(400).send(error)
+      res.status(400).send(error);
     }
-  }
+  },
+  updateProfile: async (req, res) => {
+    try {
+      const { id } = req.user;
+      const { firstName, lastName, username, email, gender, birthdate } =
+        req.body;
+
+      const result = await user.update(
+        {
+          firstName : firstName,
+          lastName : lastName,
+          gender : gender,
+          birthdate : birthdate,
+          email : email
+        },
+        {
+          where: {id:id}
+        }
+      );
+
+      res.status(200).send({
+        message: "Success"
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  updateAvatar : async (req, res) => {
+    try {
+      // console.log(req.file);
+      if (req.file == undefined) {
+        throw({message : 'Avatar Cannot be empty'});
+      }
+      const {destination, filename} = req.file;
+      const isExist = await user.findOne({
+        where : {id : req.user.id}
+      });
+
+      if (isExist.profileImg !== null) {
+        fs.unlinkSync(`${destination}/${isExist.profileImg}`);
+      }
+      const setData = await user.update(
+        {profileImg : filename},
+        {where :{
+          id : req.user.id
+      }});
+      res.status(200).send({
+        message : 'Photo Upload Successfully'
+      });
+    } catch (error) {
+      res.status(400).send(error);
+
+    }
+  },
+  updateProfile: async (req, res) => {
+    try {
+      const { id } = req.user;
+      const { firstName, lastName, username, email, gender, birthdate } =
+        req.body;
+
+      const result = await user.update(
+        {
+          firstName : firstName,
+          lastName : lastName,
+          gender : gender,
+          birthdate : birthdate,
+          email : email
+        },
+        {
+          where: {id:id}
+        }
+      );
+
+      res.status(200).send({
+        message: "Success"
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
 };
 
 module.exports = userController;
