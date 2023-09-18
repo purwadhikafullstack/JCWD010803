@@ -1,21 +1,23 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "../container";
 import Categories from "./categories";
 import Logo from "./logo";
 import Search from "./search";
 import UserMenu from "./user-menu";
+import { SearchModal } from "../modal/search-modal";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
+
+  const [open, setOpen] = useState(false)
   const navigate = useNavigate();
   const data = useSelector((state) => state.user.value);
   const token = localStorage.getItem("token");
   return (
-    <div className="fixed w-full bg-white z-10 shadow-sm">
-      <div
-        className="py-4 border-b-[1px]
-      "
-      >
+    <div className="fixed w-full bg-white z-30 shadow-sm">
+      <SearchModal setOpen={setOpen} open={open} />
+      <div className="py-4 border-b-[1px]">
         <Container>
           <div
             className="
@@ -28,7 +30,7 @@ const Navbar = () => {
           "
           >
             <Logo />
-            <Search />
+            <Search setOpen={setOpen} />
             <UserMenu />
           </div>
         </Container>

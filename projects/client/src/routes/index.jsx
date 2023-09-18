@@ -6,6 +6,7 @@ import { ProfileSettingPage } from "../pages/profile-setting-page";
 import { ForgotPasswordPage } from "../pages/forgot-password";
 import { ResetPasswordPage } from "../pages/reset-password-page";
 import { LoginUserPage } from "../pages/login-page";
+import { SortPropertiesPage } from "../pages/sort-properties-page";
 import Verification from "../pages/verify-page";
 
 
@@ -18,6 +19,7 @@ const Routes = (
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/register-tenant" element={<RegisterTenant />} />
     <Route path="/reset-password/:Token" element={<ResetPasswordPage />} />
+    <Route path="/properties" element={<SortPropertiesPage />} />
     <Route path="/verify" element={<Verification />} />
 </> 
 );
