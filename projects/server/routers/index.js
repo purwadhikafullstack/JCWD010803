@@ -5,4 +5,4 @@ module.exports = {
   userRouter,
   tenantRouter,
   propertyRouter
-
+}
