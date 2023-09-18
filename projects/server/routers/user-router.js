@@ -1,9 +1,11 @@
 const express = require('express');
 const { checkregister, checkResetPassword, checkForgotPassword, checkNewPassword } = require('../midlewares/user/user-midleware');
 const { verifyToken } = require('../midlewares/token');
+const { checkForgotPassword, checkResetPassword, checkNewPassword } = require('../midlewares/userValidator');
 const { userController } = require('../controllers/user');
-
+const { multerUpload } = require('../midlewares/avatar');
 const router = require('express').Router();
+
 
 router.post('/login', userController.login)
 router.post('/register', userController.register);
@@ -14,4 +16,7 @@ router.post('/checkOtp', userController.checkOtp)
 router.patch('/changePassword', verifyToken,checkNewPassword, userController.changePassword)
 router.post('/otp', verifyToken, userController.getOtp);
 router.post('/verify', verifyToken, userController.verifyAccount);
+router.post('/information-update', verifyToken, userController.updateProfile);
+router.post('/avatar', verifyToken, multerUpload('./public/avatars', 'ava').single('file'),userController.updateAvatar);
+
 module.exports = router;
