@@ -385,8 +385,35 @@ const userController = {
       });
     } catch (error) {
       res.status(400).send(error);
+
     }
-  }
+  },
+  updateProfile: async (req, res) => {
+    try {
+      const { id } = req.user;
+      const { firstName, lastName, username, email, gender, birthdate } =
+        req.body;
+
+      const result = await user.update(
+        {
+          firstName : firstName,
+          lastName : lastName,
+          gender : gender,
+          birthdate : birthdate,
+          email : email
+        },
+        {
+          where: {id:id}
+        }
+      );
+
+      res.status(200).send({
+        message: "Success"
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
 };
 
 module.exports = userController;
