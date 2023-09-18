@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       type : DataTypes.INTEGER,
       allowNull : false,
     },
+    roomName: {
+      type : DataTypes.STRING,
+      allowNull : false,
+      unique: true
+    },
     roomDesc: {
       type : DataTypes.STRING,
       allowNull : false,
