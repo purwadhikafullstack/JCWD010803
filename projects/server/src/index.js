@@ -8,16 +8,12 @@ const db = require("../models");
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-
-
-
-
 app.use(
   cors({
-    origin: '*',
+    origin: "*",
   })
 );
-
+app.use(express.static("./public"));
 app.use(express.json());
 
 app.use("/api/user", userRouter);
