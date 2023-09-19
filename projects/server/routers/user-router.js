@@ -3,7 +3,6 @@ const { checkregister, checkResetPassword, checkForgotPassword, checkNewPassword
 const { verifyToken } = require('../midlewares/token');
 const { checkForgotPassword, checkResetPassword, checkNewPassword } = require('../midlewares/userValidator');
 const { userController } = require('../controllers/user');
-const { multerUpload } = require('../midlewares/avatar');
 const router = require('express').Router();
 
 
