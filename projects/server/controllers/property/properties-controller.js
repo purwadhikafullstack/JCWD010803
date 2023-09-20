@@ -15,7 +15,7 @@ const propertiesController = {
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const sort = req.query.sort || "ASC";
-      const sortBy = req.query.sortBy ;
+      const sortBy = req.query.sortBy;
 
       const nowCheckIn = new Date(
         new Date(checkIn).getTime() + 7 * 60 * 60 * 1000
@@ -91,11 +91,14 @@ const propertiesController = {
       const length = data.length;
       const filteredProperties = findProperty.filter((property) => {
         if (property.rooms && property.rooms.length > 0) {
-          const hasNullBooking = property.rooms.some((room) => room.onBooking === null);
+          const hasNullBooking = property.rooms.some(
+            (room) => room.onBooking === null
+          );
           return hasNullBooking;
         }
         return false;
-      });      res.status(200).send({
+      });
+      res.status(200).send({
         properties: filteredProperties,
         length,
         limit,
@@ -165,7 +168,7 @@ const propertiesController = {
   },
   updateProperty: async (req, res) => {
     try {
-      const { propertyName, propertyDesc } = req.body;
+      const { propertyName, propertyDesc, categoryId } = req.body;
       const propertyImg = req.file.filename;
       const propertyId = req.params.id;
 
@@ -174,7 +177,7 @@ const propertiesController = {
           propertyDesc,
           propertyImg,
           propertyName,
-          propertyImg: propertyImg
+          categoryId
         },
         {
           where: { id: propertyId },
@@ -201,6 +204,36 @@ const propertiesController = {
         message: "delete success",
       });
     } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
+  myProperties: async (req, res) => {
+    try {
+      const sort = req.query.sort || "DESC"
+      const sortBy = "createdAt"
+      const limit = 4;
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
+      const {id} = req.user
+      const result = await properties.findAll({
+        where: { userId: id, isDelete: false },
+        order: [[sortBy, sort]],
+        offset: offset,
+        limit: limit,
+        include:{model: category}
+      });
+      const checkLength = await properties.findAll({
+        where: { userId: id, isDelete: false },
+      });
+      const length = checkLength.length
+      res.status(200).send({
+        result,
+        length,
+        limit
+      });
+    } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   },

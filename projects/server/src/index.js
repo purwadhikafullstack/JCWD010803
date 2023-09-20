@@ -8,20 +8,18 @@ const db = require("../models");
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-
-
-
-
 app.use(
   cors({
-    origin: '*',
+    origin: "*",
   })
 );
-
+app.use(express.static("./public"));
 app.use(express.json());
 
 app.use("/api/user", userRouter);
+app.use("/api/tenant", tenantRouter)
 app.use("/api/properties", propertyRouter)
+
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
