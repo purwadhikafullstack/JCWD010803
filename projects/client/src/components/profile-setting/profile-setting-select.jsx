@@ -7,17 +7,22 @@ export const ProfileSettingSelect = ({ choose, values }) => {
   const [click, setClick] = useState("");
   const dataFireBase = useSelector((state) => state.firebase.value);
   const data = useSelector((state) => state.user.value);
-  
 
   const clickChangeProfile = () => {
     setClick("changeProfile");
-		choose("changeProfile");
+    choose("changeProfile");
   };
 
   const clickChangePassword = () => {
     setClick("changePassword");
     choose("changePassword");
   };
+
+  const clickOrderList = () => {
+    setClick("orderList");
+    choose("orderList");
+  };
+
   return (
     <div className=" w-full hidden sm:flex">
       <div className=" border rounded border-gray-300 w-full h-fit pb-10">
@@ -77,8 +82,8 @@ export const ProfileSettingSelect = ({ choose, values }) => {
 						w-full 
 						h-16 
 						gap-3
-						${ values === "changeProfile" ? "bg-bgPrimary" : "null"}
-						${ values === "changeProfile" ? "text-white" : "text-bgPrimary"}
+						${values === "changeProfile" ? "bg-bgPrimary" : "null"}
+						${values === "changeProfile" ? "text-white" : "text-bgPrimary"}
 						border-b
 						cursor-pointer
 						`}
@@ -102,14 +107,17 @@ export const ProfileSettingSelect = ({ choose, values }) => {
 							w-full 
 							h-16 
 							gap-3
+              ${values === "orderList" ? "bg-bgPrimary" : "null"}
+						  ${values === "orderList" ? "text-white" : "text-bgPrimary"}
 							border-b
 							cursor-pointer
 							`}
-            onClick={clickChangePassword}
+            onClick={clickOrderList}
           >
             <div
               className={`
 								my-auto
+                ${click === "orderList" ? "animate-spin" : "null"}
 								`}
             >
               <BiKey size={"30"} />

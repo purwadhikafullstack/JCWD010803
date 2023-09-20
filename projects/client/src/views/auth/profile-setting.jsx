@@ -6,6 +6,7 @@ import { FormChangePassword } from "../../components/profile-setting/form-change
 import { ProfileSettingSelect } from "../../components/profile-setting/profile-setting-select";
 import { ProfileSettingSelectTop } from "../../components/profile-setting/profile-setting-select-top";
 import FormChangeProfile from "../../components/profile-setting/form-change-profile";
+import UserOrderList from "../../components/profile-setting/user-order-component";
 
 export const ProfileSetting = () => {
 	const [click, setClick] = useState("changePassword")
@@ -28,7 +29,8 @@ export const ProfileSetting = () => {
 				</div>
 				<div className=" w-full sm:w-1/2 h-fit rounded border-gray-300 border flex ">
 					{click === "changePassword" ? (<FormChangePassword />) 
-					: click ==="changeProfile" ? (<FormChangeProfile />) : (null) }
+					: click ==="changeProfile" ? (<FormChangeProfile />) 
+					: click ==="orderList" ? (<UserOrderList />) : (null) }
 				</div>
 			</div>
 		</div>
