@@ -1,5 +1,5 @@
 require("dotenv/config");
-const {userRouter, propertyRouter, roomRouter} = require('../routers')
+const {userRouter, propertyRouter, roomRouter, tenantRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
@@ -8,21 +8,19 @@ const db = require("../models");
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-
-
-
-
 app.use(
   cors({
-    origin: '*',
+    origin: "*",
   })
 );
-
+app.use(express.static("./public"));
 app.use(express.json());
 
 app.use("/api/user", userRouter);
 app.use("/api/room", roomRouter);
+app.use("/api/tenant", tenantRouter)
 app.use("/api/properties", propertyRouter)
+
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);

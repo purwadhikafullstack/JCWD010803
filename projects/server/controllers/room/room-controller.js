@@ -70,4 +70,34 @@ module.exports = {
       });
     }
   },
+  getRoomByProperties: async (req, res) => {
+    try {
+      const {propertyId} = req.params
+      const result = await room.findAll({
+        where: {propertyId : propertyId, isDelete: false},
+      })
+      res.status(200).send(result)
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error)
+    }
+  },
+  getRoomImage: async (req, res) => {
+    try {
+      const {roomId} = req.params
+      const limit = 1;
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
+      const result = await roomImg.findAll({
+        where : {roomId : roomId},
+        limit: limit,
+        offset: offset,
+      })
+
+      res.status(200).send(result)
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error)
+    }
+  }
 };
