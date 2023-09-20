@@ -11,14 +11,14 @@ const ProfileAvatar = () => {
   const dataFireBase = useSelector((state) => state.firebase.value);
   const data = useSelector((state) => state.user.value);
   const token = localStorage.getItem("token");
-  const [file, setFile] = useState(null); // Gunakan null untuk nilai awal file
+  const [file, setFile] = useState(null); 
   const navigate = useNavigate();
   const handleChange = (event) => {
     setFile(event.target.files[0]);
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Tambahkan preventDefault untuk mencegah pengiriman formulir bawaan
+    event.preventDefault(); 
 
     try {
       if (file) {
@@ -31,7 +31,7 @@ const ProfileAvatar = () => {
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data", // Perbaiki nama header
+              "Content-Type": "multipart/form-data",
             },
           }
         );
@@ -41,9 +41,13 @@ const ProfileAvatar = () => {
           text: " ",
           timer: 1500,
           showConfirmButton: false,
-        }).then(navigate("/profile-setting"))
+        });
       } else {
-        alert("file cannot be empty")
+        swal.fire({
+          icon: "warning",
+          iconColor: "red",
+          title: "File cannot be empty",
+        });
       }
     } catch (error) {
       console.error(error); 
@@ -73,7 +77,7 @@ const ProfileAvatar = () => {
 
           <label
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="file_input" // Gunakan htmlFor untuk label
+            htmlFor="file_input"
           >
             Choose your file
           </label>
@@ -81,7 +85,7 @@ const ProfileAvatar = () => {
           <input
             className="block w-full border border-gray-300 rounded-sm cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
             type="file"
-            id="file_input" // Gunakan id yang sesuai
+            id="file_input"
             name="file"
             onChange={handleChange}
           ></input>
