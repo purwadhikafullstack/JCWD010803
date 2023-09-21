@@ -10,5 +10,6 @@ router.get('/roomByProperty/:propertyId', roomController.getRoomByProperties)
 router.patch('/:id', roomController.updateRoom)
 router.post('/:id',multerUpload(`./public/room`, 'roomImg').array('roomImg'),checkRoom,roomController.addRoom)
 router.get('/roomImg/:roomId', roomController.getRoomImage)
+router.patch('/editImage/:id',multerUpload(`./public/room`, 'roomImg').single('roomImg') ,roomController.editImage)
 
 module.exports = router

@@ -143,6 +143,18 @@ const propertiesController = {
       res.status(400).send(error);
     }
   },
+  myProperties: async (req, res) => {
+    const {id} = req.user
+    try {
+      const result = await properties.findAll({
+        where: {userId : id, isDelete : false}
+      })
+      res.status(200).send(result)
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error)
+    }
+  }
 };
 
 module.exports = propertiesController;
