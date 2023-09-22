@@ -1,5 +1,5 @@
 require("dotenv/config");
-const {userRouter, propertyRouter, tenantRouter} = require('../routers')
+const {userRouter, tenantRouter, propertyRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
