@@ -20,7 +20,7 @@ const Routes = (
     <Route path="/login" element={<LoginUserPage />} />
     <Route path="/login-tenant" element={<LoginTenant />} />
     <Route path="/dashboard" element={<DashboardTenants />} />
-    <Route path="/dashboard/rooms" element={<RoomListTenant />} />
+    <Route path="/dashboard/rooms/:propertyId" element={<RoomListTenant />} />
     <Route path="/profile-setting" element={<ProfileSettingPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/register-tenant" element={<RegisterTenant />} />

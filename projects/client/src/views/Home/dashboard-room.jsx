@@ -18,12 +18,13 @@ const RoomList = () => {
   const [roomDesc, setRoomDesc] = useState("")
   const [price, setPrice] = useState("")
   const [openUpdateImage, setOpenUpdateImage] = useState(false)
+  const [propertyId, setPropertyId] = useState("")
 
   return (
     <div className="flex h-screen overflow-hidden">
       <DeleteRoomModal reload={reload} setReload={setReload} setopenModal={setOpenModal} openModal={openModal} id={id} />
       <EditRoomModal setReload={setReload} reload={reload} editModal={editModal} id={id} setEditModal={setEditModal} price={price} roomName={roomName} roomDesc={roomDesc} />
-      <CreateRoomModal setReload={setReload} reload={reload} openModal={openModalAdd} setOpenModal={setOpenModalAdd} />
+      <CreateRoomModal propertyId={propertyId} setReload={setReload} reload={reload} openModal={openModalAdd} setOpenModal={setOpenModalAdd} />
       <EditImageModal reload={reload} setReload={setReload} roomId={id} openModal={openUpdateImage} setOpenModal={setOpenUpdateImage} />
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -32,7 +33,7 @@ const RoomList = () => {
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/* Site header */}
         <div className='p-10'>
-          <RoomListTenant setOpenUpdateImage={setOpenUpdateImage} setRoomId={setRoomId} setOpenModalAdd={setOpenModalAdd} reload={reload} setId={setId} setRoomName={setRoomName} setRoomDesc={setRoomDesc} setPrice={setPrice} setOpenModal={setOpenModal} setEditModal={setEditModal} />
+          <RoomListTenant propertyId={propertyId} setPropertyId={setPropertyId} setOpenUpdateImage={setOpenUpdateImage} setRoomId={setRoomId} setOpenModalAdd={setOpenModalAdd} reload={reload} setId={setId} setRoomName={setRoomName} setRoomDesc={setRoomDesc} setPrice={setPrice} setOpenModal={setOpenModal} setEditModal={setEditModal} />
         </div>
       </div>
     </div>

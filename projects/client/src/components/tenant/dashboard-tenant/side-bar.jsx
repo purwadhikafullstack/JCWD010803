@@ -27,14 +27,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
   // close on click outside
   useEffect(() => {
-    if (pathname === '/dashboard') {
+    if (pathname === '/dashboard' || '/dashboard/rooms/:propertyId') {
       setPropertyActive(true)
       setRoomActive(false)
-      setOrderActive(false)
-    }
-    else if (pathname === '/dashboard/rooms') {
-      setRoomActive(true)
-      setPropertyActive(false)
       setOrderActive(false)
     }
     else if (pathname === '/dashboard/order-list') {
@@ -119,9 +114,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           <div>
             <div className={`${propertyActive ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard")}>
               Properties
-            </div>
-            <div className={`${roomActive ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard/rooms")}>
-              Rooms
             </div>
             <div className={`${orderActive ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard/order-list")}>
               Order list

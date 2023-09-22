@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react'
 import { AiFillEdit } from "react-icons/ai";
 import { RiImageEditFill } from "react-icons/ri";
-import axios from 'axios'
 import { SortingRoomList } from '../../../navbar/sorting-room-list';
-import { ListPropertySelect } from '../../../navbar/list-property-select';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AiOutlineArrowLeft } from 'react-icons/ai'
+import axios from 'axios'
+
 
 
 export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId, setEditModal, setRoomName, setRoomDesc, setPrice, setOpenModalAdd }) => {
     const [room, setRoom] = useState([])
-    const [roomImages, setRoomImages] = useState([]); // Menyimpan gambar-gambar kamar
-    const [propertyId, setPropertyId] = useState("")
+    const [roomImages, setRoomImages] = useState([]);
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState("ASC")
     const [sortBy, setSortBy] = useState("roomName")
-    console.log(propertyId);
+    const { propertyId } = useParams()
+    const navigate = useNavigate()
+
 
     const getRoomByProperty = async () => {
         try {
@@ -51,6 +54,9 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
     const getId = (value) => {
         setId(value)
     }
+    const back = () => {
+        navigate('/dashboard')
+    }
 
 
     useEffect(() => {
@@ -70,10 +76,14 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
         <div>
             <div className=' text-4xl text-bgPrimary'>My Rooms</div>
             <div className='flex justify-between mt-10 items-end'>
-                <div className='bg-bgPrimary p-2 rounded-md text-white hover:bg-bgPrimaryActive hover:scale-95 cursor-pointer w-fit transition-all' onClick={() => setOpenModalAdd(true)}>Do you want to add room?</div>
+                <div className='flex gap-10 items-center'>
+                    <div>
+                        <div className=' text-gray-800 cursor-pointer hover:scale-95' onClick={() => back()}> <AiOutlineArrowLeft size={'30'} /> </div>
+                    </div>
+                    <div className='bg-bgPrimary p-2 rounded-md text-white hover:bg-bgPrimaryActive hover:scale-95 cursor-pointer w-fit transition-all' onClick={() => setOpenModalAdd(true)}>Do you want to add room?</div>
+                </div>
                 <div className='flex gap-10'>
                     <SortingRoomList sortBy={sortBy} sort={sort} setSort={setSort} setSortBy={setSortBy} />
-                    <ListPropertySelect setPropertyId={setPropertyId} />
                 </div>
             </div>
             <div className='mt-10'>
