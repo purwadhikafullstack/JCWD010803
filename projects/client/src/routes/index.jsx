@@ -10,6 +10,7 @@ import { LoginUserPage } from "../pages/login-page";
 import { SortPropertiesPage } from "../pages/sort-properties-page";
 import Verification from "../pages/verify-page";
 import DashboardTenants from "../pages/dashboard-tenants";
+import { OrderListPage } from "../pages/order-list-page";
 
 
 const Routes = (
@@ -19,6 +20,7 @@ const Routes = (
     <Route path="/login" element={<LoginUserPage />} />
     <Route path="/login-tenant" element={<LoginTenant />} />
     <Route path="/dashboard" element={<DashboardTenants />} />
+    <Route path="/dashboard/order-list" element={<OrderListPage />} />
     <Route path="/profile-setting" element={<ProfileSettingPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
     <Route path="/register-tenant" element={<RegisterTenant />} />
