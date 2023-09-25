@@ -21,7 +21,6 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
     const getRoomByProperty = async () => {
         try {
             const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${1}&sort=${sort}&sortBy=${sortBy}`);
-            console.log(response.data);
             setRoom(response.data);
         } catch (error) {
             console.error('Error fetching room by property:', error);
@@ -87,66 +86,79 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
                 </div>
             </div>
             <div className='mt-10'>
-                {room.map((item, index) => (
-                    <div className='w-full h-36 flex gap-1 mb-5 border' key={item.id}>
-                        {roomImages[index]?.map((image) => (
-                            <div className='w-2/5 h-full'>
-
-                                <img
-                                    className='w-full h-full'
-                                    key={image.id}
-                                    src={`http://localhost:8000/room/${image.image}`}
-                                    alt={image.imageName}
-                                />
-                            </div>
-                        ))}
-                        <div className='flex w-full justify-between'>
-                            <div className='w-2/4 my-auto px-10'>
-                                <div className=' text-gray-900 text-xl'>
-                                    {item.roomName}
-                                </div>
-                                <div className=' text-gray-600 mb-2 text-sm'>
-                                    {item.roomDesc.slice(0, 170) + '...'}
-                                </div>
-                                <div className=' text-gray-700 font-semibold'>
-                                    {formatToRupiah(parseInt(item.price))}.00 / Night
-                                </div>
-                            </div>
-                            <div className=' flex p-2 items-end'>
-                                <div className='flex items-end gap-5'>
-                                    <div
-                                        className='text-gray-800 cursor-pointer hover:scale-95'
-                                        onClick={() => {
-                                        }}
-                                    ><RiImageEditFill
-                                            onClick={() => {
-                                                getId(item.id)
-                                                setOpenUpdateImage(true)
-                                            }} size={"25"} /></div>
-                                    <div
-                                        className='text-gray-800 cursor-pointer hover:scale-95'
-                                        onClick={() => {
-                                            setEditModal(true)
-                                            getId(item.id)
-                                            setPrice(item.price)
-                                            setRoomDesc(item.roomDesc)
-                                            setRoomName(item.roomName)
-                                        }}
-                                    ><AiFillEdit size={"25"} /></div>
-                                    <div
-                                        className=' hover:bg-red-900 hover:scale-95 transition-all cursor-pointer  bg-red-700 text-white p-1 rounded'
-                                        onClick={() => {
-                                            open()
-                                            getId(item.id)
-                                        }}
-                                    >
-                                        Delete
+                {room.length !== 0 ?
+                    <div>
+                        {room?.map((item, index) => (
+                            <div className='w-full h-36 flex gap-1 mb-5 border' key={item.id}>
+                                {roomImages[index]?.map((image) => (
+                                    <div className='w-2/5 h-full'>
+                                        <img
+                                            className='w-full h-full'
+                                            key={image.id}
+                                            src={`http://localhost:8000/room/${image.image}`}
+                                            alt={image.imageName}
+                                        />
+                                    </div>
+                                ))}
+                                <div className='flex w-full justify-between'>
+                                    <div className='w-2/4 my-auto px-10'>
+                                        <div className=' text-gray-900 text-xl'>
+                                            {item.roomName}
+                                        </div>
+                                        <div className=' text-gray-600 mb-2 text-sm'>
+                                            {item.roomDesc.slice(0, 170) + '...'}
+                                        </div>
+                                        <div className=' text-gray-700 font-semibold'>
+                                            {formatToRupiah(parseInt(item.price))}.00 / Night
+                                        </div>
+                                    </div>
+                                    <div className=' flex p-2 items-end'>
+                                        <div className='flex items-end gap-5'>
+                                            <div
+                                                className='text-gray-800 cursor-pointer hover:scale-95'
+                                                onClick={() => {
+                                                }}
+                                            ><RiImageEditFill
+                                                    onClick={() => {
+                                                        getId(item.id)
+                                                        setOpenUpdateImage(true)
+                                                    }} size={"25"} /></div>
+                                            <div
+                                                className='text-gray-800 cursor-pointer hover:scale-95'
+                                                onClick={() => {
+                                                    setEditModal(true)
+                                                    getId(item.id)
+                                                    setPrice(item.price)
+                                                    setRoomDesc(item.roomDesc)
+                                                    setRoomName(item.roomName)
+                                                }}
+                                            ><AiFillEdit size={"25"} /></div>
+                                            <div
+                                                className=' hover:bg-red-900 hover:scale-95 transition-all cursor-pointer  bg-red-700 text-white p-1 rounded'
+                                                onClick={() => {
+                                                    open()
+                                                    getId(item.id)
+                                                }}
+                                            >
+                                                Delete
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        ))}
+
+                    </div>
+                    :
+                    <div className='flex justify-center items-center w-full h-auto mt-64'>
+                        <div>
+                            <div className=' flex justify-center w-full text-7xl'>Oops..</div>
+                            <div className=' font-thin text-5xl'>
+                                Room is unavailable
+                            </div>
                         </div>
                     </div>
-                ))}
+                }
             </div>
         </div>
     )

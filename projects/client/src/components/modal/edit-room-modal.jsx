@@ -3,9 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
 export const EditRoomModal = ({ setReload, reload, editModal, setEditModal, price, roomName, roomDesc, id }) => {
-    console.log(roomName);
-
-
+    
     const validationSchema = Yup.object().shape({
         roomName: Yup.string().required('Room name is required'),
         roomDesc: Yup.string().required('Room description is required'),

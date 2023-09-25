@@ -6,7 +6,6 @@ import Select from "react-select";
 
 
 export const FormAddPropertyCat = ({ setPage, onClick, propertyCategory, page, setPropertyCategory, categoryName, setCategoryName }) => {
-  console.log(categoryName);
   const [data, setData] = useState("")
   const [category, setCategory] = useState([])
   const next = () => {

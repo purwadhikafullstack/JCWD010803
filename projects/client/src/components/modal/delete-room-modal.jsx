@@ -4,7 +4,6 @@ export const DeleteRoomModal = ({openModal,setopenModal, id, setReload, reload})
     const deleteRoom = async () => {
         try {
             const response = await axios.patch(`http://localhost:8000/api/room/delete/${id}`)
-            console.log(response.data);
             setReload(!reload)
             setopenModal(false)
         } catch (error) {

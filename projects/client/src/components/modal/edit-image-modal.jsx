@@ -4,13 +4,10 @@ import { useEffect, useState } from "react"
 import { AiFillEdit } from "react-icons/ai";
 
 export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenModal }) => {
-    console.log(roomId);
 
     const [imageInput, setImageInput] = useState(null)
     const [id, setId] = useState("")
-    console.log(id);
     const [data, setData] = useState([])
-    console.log(imageInput);
 
     const getImageRoom = async () => {
         try {

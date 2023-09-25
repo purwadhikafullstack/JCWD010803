@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/tenant/dashboard-tenant/side-bar';
 import { RoomListTenant } from '../../components/tenant/dashboard-tenant/content/room-list-tenant';
 import { DeleteRoomModal } from '../../components/modal/delete-room-modal';
 import { EditRoomModal } from '../../components/modal/edit-room-modal';
 import { CreateRoomModal } from '../../components/modal/create-room-modal';
 import { EditImageModal } from '../../components/modal/edit-image-modal';
+import { useNavigate } from 'react-router-dom';
 
 const RoomList = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,6 +20,15 @@ const RoomList = () => {
   const [price, setPrice] = useState("")
   const [openUpdateImage, setOpenUpdateImage] = useState(false)
   const [propertyId, setPropertyId] = useState("")
+  const token = localStorage.getItem('token')
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if (!token) {
+      return navigate('/login-tenant')
+    }
+  })
 
   return (
     <div className="flex h-screen overflow-hidden">

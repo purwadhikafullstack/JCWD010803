@@ -11,14 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       onBooking.belongsTo(models.rooms)
+      onBooking.belongsTo(models.user)
+      onBooking.belongsTo(models.userTransactions)
     }
   }
   onBooking.init({
     checkIn: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      allowNull: false
     },
     checkOut: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    isCanceled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     sequelize,

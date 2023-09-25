@@ -22,7 +22,6 @@ export const SortProperties = () => {
   const checkOut = queryParams.get('checkOut')
   const sorting = queryParams.get('sort')
   const sortingBy = queryParams.get('sortBy')
-  console.log(sortingBy);
 
   const maxPage = Math.ceil(length / limit)
   
