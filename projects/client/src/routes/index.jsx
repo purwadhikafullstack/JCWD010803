@@ -10,6 +10,7 @@ import { LoginUserPage } from "../pages/login-page";
 import { SortPropertiesPage } from "../pages/sort-properties-page";
 import Verification from "../pages/verify-page";
 import DashboardTenants from "../pages/dashboard-tenants";
+import { AddPropertyPage } from "../pages/add-property-page";
 
 
 const Routes = (
@@ -25,6 +26,7 @@ const Routes = (
     <Route path="/reset-password/:Token" element={<ResetPasswordPage />} />
     <Route path="/properties" element={<SortPropertiesPage />} />
     <Route path="/verify" element={<Verification />} />
+    <Route path="/dashboard/add-property" element={<AddPropertyPage />} />
   </>
 );
 
