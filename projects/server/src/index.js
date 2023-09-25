@@ -1,5 +1,5 @@
 require("dotenv/config");
-const {userRouter, tenantRouter, propertyRouter} = require('../routers')
+const {userRouter, propertyRouter, roomRouter, tenantRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
@@ -17,8 +17,8 @@ app.use(express.static("./public"));
 app.use(express.json());
 
 app.use("/api/user", userRouter);
+app.use("/api/room", roomRouter);
 app.use("/api/tenant", tenantRouter)
-app.use("/api/tenant", tenantRouter);
 app.use("/api/properties", propertyRouter)
 
 
