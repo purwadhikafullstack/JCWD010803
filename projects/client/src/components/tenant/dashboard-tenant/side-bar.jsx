@@ -8,13 +8,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
   const navigate = useNavigate()
   const { pathname } = location;
+  console.log(pathname);
 
   const trigger = useRef(null);
   const sidebar = useRef(null);
   const [propertyActive, setPropertyActive] = useState(false)
-  const [roomActive, setRoomActive] = useState(false)
   const [orderActive, setOrderActive] = useState(false)
-
   const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
@@ -24,24 +23,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     navigate(`/${value}`)
   }
 
+  const logout = () => {
+    localStorage.removeItem('token')
+  }
 
-  // close on click outside
   useEffect(() => {
-    if (pathname === '/dashboard') {
-      setPropertyActive(true)
-      setRoomActive(false)
-      setOrderActive(false)
-    }
-    else if (pathname === '/dashboard/rooms') {
-      setRoomActive(true)
-      setPropertyActive(false)
-      setOrderActive(false)
-    }
-    else if (pathname === '/dashboard/order-list') {
-      setOrderActive(true)
-      setRoomActive(false)
-      setPropertyActive(false)
-    }
     const clickHandler = ({ target }) => {
       if (!sidebar.current || !trigger.current) return;
       if (
@@ -54,7 +40,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  },[pathname]);
 
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
@@ -90,7 +76,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         className={`flex flex-col absolute z-40 left-0 top-0 lg:static 
         lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll 
         lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 
-        2xl:!w-64 shrink-0 bg-zinc-100 border-r shadow-xl transition-all duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-64"
+        2xl:!w-64 shrink-0 border-r shadow-xl bg-white transition-all duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-64"
           }`}
       >
         {/* LogoImage di tengah atas sidebar */}
@@ -117,13 +103,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className="space-y-8">
           {/* Pages group */}
           <div>
-            <div className={`${propertyActive ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard")}>
+            <div className={`${pathname !== '/dashboard/order-list'  ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard")}>
               Properties
             </div>
-            <div className={`${roomActive ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard/rooms")}>
-              Rooms
-            </div>
-            <div className={`${orderActive ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard/order-list")}>
+            <div className={`${pathname === '/dashboard/order-list' ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard/order-list")}>
               Order list
             </div>
             <ul className="mt-3">
@@ -152,7 +135,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               <div className=" flex justify-center mb-10 w-fit ">Akmal Hamidi</div>
             </div>
             <div className="w-full flex justify-center">
-              <div className=" bg-bgPrimary flex justify-center w-fit hover:bg-bgPrimaryActive hover:scale-95 text-white transition-all p-2 text-lg rounded-md cursor-pointer ">Log out</div>
+              <div onClick={() => logout()} className=" bg-bgPrimary flex justify-center w-fit hover:bg-bgPrimaryActive hover:scale-95 text-white transition-all p-2 text-lg rounded-md cursor-pointer ">Log out</div>
             </div>
           </div>
         </div>

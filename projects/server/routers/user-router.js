@@ -2,6 +2,7 @@ const express = require('express');
 const { checkregister, checkResetPassword, checkForgotPassword, checkNewPassword } = require('../midlewares/user/user-midleware');
 const { verifyToken } = require('../midlewares/token');
 const { userController } = require('../controllers/user');
+const { multerUpload } = require('../midlewares/multer');
 const router = require('express').Router();
 
 

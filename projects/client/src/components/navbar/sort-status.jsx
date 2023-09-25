@@ -20,6 +20,7 @@ export const SortStatus = ({ setStatus, setStatusName}) => {
     return (
         <div className="flex gap-5 items-center">
             <Select
+                className=" w-52"
                 options={data.map(item => ({
                     value: item.id,
                     label: item.status,
