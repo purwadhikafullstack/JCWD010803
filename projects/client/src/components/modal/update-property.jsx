@@ -8,7 +8,6 @@ export const UpdatePropertyModal = ({ reload, setReload,location, open, setOpen,
 
   const [category, setCategory] = useState([])
   const [file, setFile] = useState(null)
-  console.log(file);
   const [idCategory, setIdCategory] = useState(propertyCategory)
   const getCategories = async () => {
     try {

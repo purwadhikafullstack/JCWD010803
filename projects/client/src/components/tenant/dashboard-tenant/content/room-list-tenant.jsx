@@ -16,13 +16,11 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
     const [sortBy, setSortBy] = useState("roomName")
     const { propertyId } = useParams()
     const navigate = useNavigate()
-    console.log(room.length);
 
 
     const getRoomByProperty = async () => {
         try {
             const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${1}&sort=${sort}&sortBy=${sortBy}`);
-            console.log(response.data);
             setRoom(response.data);
         } catch (error) {
             console.error('Error fetching room by property:', error);

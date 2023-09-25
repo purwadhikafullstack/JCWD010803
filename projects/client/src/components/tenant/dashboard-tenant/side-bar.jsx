@@ -8,7 +8,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
   const navigate = useNavigate()
   const { pathname } = location;
-  console.log(pathname);
 
   const trigger = useRef(null);
   const sidebar = useRef(null);
