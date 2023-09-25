@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/tenant/dashboard-tenant/side-bar';
-import { MyProperties } from '../../components/tenant/content/properties-list';
 import { UpdatePropertyModal } from '../../components/modal/update-property';
 import { ModalDeleteProperty } from '../../components/modal/confirm-delete-property';
+import { MyProperties } from '../../components/tenant/dashboard-tenant/content/properties-list';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -15,6 +16,14 @@ const Dashboard = () => {
   const [location, setLocation] = useState("")
   const [propertyImg, setPropertyImg] = useState("")
   const [reload, setReload] = useState(true)
+  const token = localStorage.getItem('token')
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!token) {
+      return navigate('/login-tenant')
+    }
+  },[token])
 
   return (
     <div className="flex h-screen overflow-hidden">

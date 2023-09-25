@@ -7,7 +7,6 @@ import { motion } from 'framer-motion'
 export const FormAddPropertyImage = ({ file, setFile, setPage, page }) => {
 
     const [data, setData] = useState(file)
-    console.log(data);
     const next = () => {
         setPage(page + 1)
     }

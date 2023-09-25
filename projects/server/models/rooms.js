@@ -35,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
     isAvailable: {
       type : DataTypes.BOOLEAN,
       defaultValue : true
+    },
+    roomName: {
+      type : DataTypes.STRING,
     }
   }, {
     sequelize,

@@ -42,7 +42,6 @@ const userController = {
           phoneNumber,
           roleId,
         });
-        console.log(result);
         const payloads = {
           id: result.id,
           username: result.username,
@@ -246,7 +245,6 @@ const userController = {
       const checkUser = await user.findOne({
         where: { email },
       });
-      console.log(checkUser);
       const checkOtp = await dbOtp.findAll({
         where: {
           userId: id,
@@ -363,7 +361,6 @@ const userController = {
   },
   updateAvatar : async (req, res) => {
     try {
-      // console.log(req.file);
       if (req.file == undefined) {
         throw({message : 'Avatar Cannot be empty'});
       }

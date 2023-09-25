@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup'
 
-export const CreateRoomModal = ({ propertyId, openModal, setOpenModal, setReload, reload }) => {
+export const CreateRoomModal = ({openModal, setOpenModal, setReload, reload}) => {
     const params = useParams()
 
     const [file1, setFile1] = useState(null)
@@ -29,11 +29,7 @@ export const CreateRoomModal = ({ propertyId, openModal, setOpenModal, setReload
             formData.append("roomImg", file2)
             formData.append("roomImg", file3)
             formData.append("roomImg", file4)
-            const response = await axios.post(`http://localhost:8000/api/room/${params.propertyId}`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            })
+            const response = await axios.post(`http://localhost:8000/api/room/${params.propertyId}`, formData)
             setOpenModal(false)
             setReload(!reload)
         } catch (error) {

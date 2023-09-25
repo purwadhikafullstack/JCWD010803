@@ -6,6 +6,6 @@ const { AuthController } = require('../controllers/tenant')
 const router = express.Router()
 
 // router.post('/registerTenant', multerUpload(`./public/tenant/KTP`, 'IDCard').single('file'), checkRegister , AuthController.regisTenant)
-router.post('/loginTenant' ,AuthController.loginTenant)
+router.post('/loginTenant', AuthController.loginTenant)
 
 module.exports = router
