@@ -42,6 +42,7 @@ const userController = {
           phoneNumber,
           roleId,
         });
+        console.log(result);
         const payloads = {
           id: result.id,
           username: result.username,
