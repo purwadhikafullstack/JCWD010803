@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Header from '../../components/tenant/dashboard-tenant/header';
 import Sidebar from '../../components/tenant/dashboard-tenant/side-bar';
 import { MyProperties } from '../../components/tenant/content/properties-list';
 import { UpdatePropertyModal } from '../../components/modal/update-property';
@@ -27,7 +26,6 @@ const Dashboard = () => {
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/* Site header */}
-        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {/* Content area content */}
         <div className='p-20'>
           <MyProperties setConfirmOpen={setConfirmOpen} reload={reload} setOpen={setOpen} propertyCategory={setPropCat} propertyDesc={setPropDesc} propertyName={setPropName} propertyImg={setPropertyImg} id={setId} location={setLocation} />
