@@ -7,6 +7,7 @@ import { SortStatus } from "../navbar/sort-status";
 
 export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
 
+
   const token = localStorage.getItem('token')
   const [data, setData] = useState([])
   const [page, setPage] = useState(1)

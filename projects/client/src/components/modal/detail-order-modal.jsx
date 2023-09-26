@@ -1,14 +1,11 @@
 export const DetailOrderModal = ({ open, setOpen, data, orderId }) => {
-    console.log(data);
 
     const formatRupiah = (number) => {
         return number.toLocaleString("id-ID", {
-            style: "currency",
-            currency: "IDR",
+          style: "currency",
+          currency: "IDR",
         });
-    }
-
-
+      }
     return (
         <div className={`z-50 fixed w-full h-screen ${open ? "flex" : "hidden"} justify-center items-center`}>
             <div className="w-full h-full bg-black opacity-60 relative"></div>
