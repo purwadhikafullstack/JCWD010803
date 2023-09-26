@@ -1,23 +1,31 @@
-import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaTimes, FaHome, FaChevronDown } from 'react-icons/fa'; // Import ikon yang diperlukan
+import { RxAvatar } from 'react-icons/rx'
+import React, { useState, useEffect, useRef } from "react";
 import LogoImage from "../../../assets/images/dashboardtenants.png";
-
-import SidebarLinkGroup from "./sidebar-link";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
+  const navigate = useNavigate()
   const { pathname } = location;
 
   const trigger = useRef(null);
   const sidebar = useRef(null);
-
+  const [propertyActive, setPropertyActive] = useState(false)
+  const [orderActive, setOrderActive] = useState(false)
   const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
-  // close on click outside
+  const click = (value) => {
+    navigate(`/${value}`)
+  }
+
+  const logout = () => {
+    localStorage.removeItem('token')
+  }
+
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!sidebar.current || !trigger.current) return;
@@ -31,9 +39,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  },[pathname]);
 
-  // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
       if (!sidebarOpen || keyCode !== 27) return;
@@ -56,9 +63,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     <div>
       {/* Sidebar backdrop (mobile only) */}
       <div
-        className={`fixed inset-0 bg-gray-400 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
-          sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 bg-gray-400 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${sidebarOpen ? "opacity-100" : " pointer-events-none"
+          }`}
         aria-hidden="true"
       ></div>
 
@@ -69,16 +75,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         className={`flex flex-col absolute z-40 left-0 top-0 lg:static 
         lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll 
         lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 
-        2xl:!w-64 shrink-0 bg-zinc-100 p-4 transition-all duration-200 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-64"
-        }`}
+        2xl:!w-64 shrink-0 border-r shadow-xl bg-white transition-all duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-64"
+          }`}
       >
         {/* LogoImage di tengah atas sidebar */}
-        <div className="flex justify-center items-center mb-10">
-          <img src={LogoImage} alt="ComfyCribz" className="w-30 h-30" />
-        </div>
-
-        {/* Sidebar header */}
         <div className="flex justify-between pr-3 sm:px-2">
           {/* Close button */}
           <button
@@ -92,96 +92,24 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             <FaTimes size={24} />
           </button>
         </div>
+        <div className="flex justify-center p-4 items-center mb-10">
+          <img src={LogoImage} alt="ComfyCribz" className="w-20 h-20" />
+        </div>
+
+        {/* Sidebar header */}
 
         {/* Links */}
         <div className="space-y-8">
           {/* Pages group */}
           <div>
-            <h3 className="text-sm uppercase text-slate-500 font-semibold pl-3">
-              <span className="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6" aria-hidden="true">
-                •••
-              </span>
-              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">ComfyCribs For Tenants</span>
-            </h3>
+            <div className={`${pathname !== '/dashboard/order-list'  ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard")}>
+              Properties
+            </div>
+            <div className={`${pathname === '/dashboard/order-list' ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard/order-list")}>
+              Order list
+            </div>
             <ul className="mt-3">
               {/* Dashboard */}
-              <SidebarLinkGroup activecondition={pathname === '/' || pathname.includes('dashboard')}>
-                {(handleClick, open) => {
-                  return (
-                    <>
-                      <a
-                        href="#0"
-                        className={`block text-slate-200 truncate transition duration-150 ${
-                          pathname === '/dashboard' || pathname.includes('dashboard') ? 'hover:text-slate-200' : 'hover:text-white'
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded ? handleClick() : setSidebarExpanded(true);
-                        }}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <FaHome size={24} className={`fill-current ${pathname === '/dashboard' || pathname.includes('dashboard') ? 'text-zinc-300' : 'text-slate-400'}`} />
-                            <span className="text-xl font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                              Dashboard
-                            </span>
-                          </div>
-                          {/* Icon */}
-                          <div className="flex shrink-0 ml-2">
-                            <FaChevronDown
-                              size={12}
-                              className={`w-3 h-3 shrink-0 ml-1 fill-current text-teal-900 ${open && 'rotate-180'}`}
-                            />
-                          </div>
-                        </div>
-                      </a>
-                      <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                        <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/"
-                              className={({ isActive }) =>
-                                `block transition duration-150 truncate ${isActive ? 'text-teal-100' : 'text-slate-400 hover:text-slate-200'}`
-                              }
-                            >
-                              <span className="text-xl font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                My Properties
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/dashboard/myproperties"
-                              className={({ isActive }) =>
-                                `block transition duration-150 truncate ${isActive ? 'text-teal-100' : 'text-slate-400 hover:text-slate-200'}`
-                              }
-                            >
-                              <span className="text-xl font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                My Reports
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/dashboard/myreports"
-                              className={({ isActive }) =>
-                                `block transition duration-150 truncate ${isActive ? 'text-teal-100' : 'text-slate-400 hover:text-slate-200'}`
-                              }
-                            >
-                              <span className="text-xl font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                My Finance
-                              </span>
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                    </>
-                  );
-                }}
-              </SidebarLinkGroup>          
             </ul>
           </div>
         </div>
@@ -193,11 +121,21 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               <span className="sr-only">Expand / collapse sidebar</span>
               <FaChevronDown
                 size={24}
-                className={`w-6 h-6 fill-current sidebar-expanded:rotate-180 ${
-                  sidebarExpanded ? 'rotate-180' : ''
-                }`}
+                className={`w-6 h-6 fill-current sidebar-expanded:rotate-180 ${sidebarExpanded ? 'rotate-180' : ''
+                  }`}
               />
             </button>
+          </div>
+        </div>
+        <div className="h-full pb-5 justify-center items-end flex">
+          <div>
+            <div>
+              <div className="flex justify-center w-full mb-2"><RxAvatar size={"40"} /></div>
+              <div className=" flex justify-center mb-10 w-fit ">Akmal Hamidi</div>
+            </div>
+            <div className="w-full flex justify-center">
+              <div onClick={() => logout()} className=" bg-bgPrimary flex justify-center w-fit hover:bg-bgPrimaryActive hover:scale-95 text-white transition-all p-2 text-lg rounded-md cursor-pointer ">Log out</div>
+            </div>
           </div>
         </div>
       </div>

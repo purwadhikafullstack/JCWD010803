@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       onBooking.belongsTo(models.rooms)
       onBooking.belongsTo(models.user)
+      onBooking.belongsTo(models.userTransactions)
     }
   }
   onBooking.init({

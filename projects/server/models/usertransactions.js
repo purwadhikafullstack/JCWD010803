@@ -14,12 +14,16 @@ module.exports = (sequelize, DataTypes) => {
       userTransactions.belongsTo(models.rooms)
       userTransactions.belongsTo(models.paymentMethode)
       userTransactions.belongsTo(models.status)
+      userTransactions.hasOne(models.onBooking)
     }
   }
   userTransactions.init({
     paymentImg: {
       type: DataTypes.STRING
     },
+    totalPayment: {
+      type: DataTypes.BIGINT
+    }
   }, {
     sequelize,
     modelName: 'userTransactions',

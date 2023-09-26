@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   rooms.init({
+    roomName: {
+      type : DataTypes.STRING,
+      allowNull : false,
+      unique: true
+    },
     price: {
       type : DataTypes.INTEGER,
       allowNull : false,
@@ -30,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
     isAvailable: {
       type : DataTypes.BOOLEAN,
       defaultValue : true
+    },
+    roomName: {
+      type : DataTypes.STRING,
     }
   }, {
     sequelize,
