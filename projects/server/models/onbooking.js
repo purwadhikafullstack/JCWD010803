@@ -8,8 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      onBooking.belongsTo(models.rooms);
-      onBooking.belongsTo(models.user);
+      onBooking.belongsTo(models.rooms)
+      onBooking.belongsTo(models.user)
+      onBooking.belongsTo(models.userTransactions)
     }
   }
   onBooking.init(
@@ -30,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "onBooking",
+      freezeTableName : true
     }
   );
   return onBooking;

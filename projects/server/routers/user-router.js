@@ -17,4 +17,5 @@ router.post('/otp', verifyToken, userController.getOtp);
 router.post('/verify', verifyToken, userController.verifyAccount);
 router.post('/information-update', verifyToken, userController.updateProfile);
 router.post('/avatar', verifyToken, multerUpload('./public/avatars', 'ava').single('file'),userController.updateAvatar);
+router.get('/orders', verifyToken, userController.getOrderList);
 module.exports = router;

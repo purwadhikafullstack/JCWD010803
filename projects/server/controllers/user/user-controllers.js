@@ -1,6 +1,11 @@
 const db = require("../..//models");
 const user = db.user;
 const dbOtp = db.codeOtp;
+const userTransaction = db.userTransactions;
+const booking = db.onBooking;
+const rooms = db.rooms;
+const property = db.properties;
+const statusPay = db.status;
 const jwt = require("jsonwebtoken");
 const enc = require("bcrypt");
 const { Op } = require("sequelize");
@@ -34,7 +39,7 @@ const userController = {
       if (!isExist) {
         const salt = await enc.genSalt(10);
         const hashPassword = await enc.hash(password, salt);
-        
+
         const result = await user.create({
           username,
           email,
@@ -64,7 +69,6 @@ const userController = {
           throw { message: "Nomor telpon sudah terdaftar" };
         }
       }
-      
     } catch (error) {
       res.status(400).send(error);
     }
@@ -343,49 +347,104 @@ const userController = {
 
       const result = await user.update(
         {
-          firstName : firstName,
-          lastName : lastName,
-          gender : gender,
-          birthdate : birthdate,
-          email : email
+          firstName: firstName,
+          lastName: lastName,
+          gender: gender,
+          birthdate: birthdate,
+          email: email,
         },
         {
-          where: {id:id}
+          where: { id: id },
         }
       );
 
       res.status(200).send({
-        message: "Success"
+        message: "Success",
       });
     } catch (error) {
       res.status(400).send(error);
     }
   },
-  updateAvatar : async (req, res) => {
+  updateAvatar: async (req, res) => {
     try {
       if (req.file == undefined) {
-        throw({message : 'Avatar Cannot be empty'});
+        throw { message: "Avatar Cannot be empty" };
       }
-      const {destination, filename} = req.file;
+      const { destination, filename } = req.file;
       const isExist = await user.findOne({
-        where : {id : req.user.id}
+        where: { id: req.user.id },
       });
 
       if (isExist.profileImg !== null) {
         fs.unlinkSync(`${destination}/${isExist.profileImg}`);
       }
       const setData = await user.update(
-        {profileImg : filename},
-        {where :{
-          id : req.user.id
-      }});
+        { profileImg: filename },
+        {
+          where: {
+            id: req.user.id,
+          },
+        }
+      );
       res.status(200).send({
-        message : 'Photo Upload Successfully'
+        message: "Photo Upload Successfully",
       });
     } catch (error) {
       res.status(400).send(error);
     }
-  }
+  },
+  getOrderList: async (req, res) => {
+    try {
+      console.log(req.user);
+      // const result = await booking.findAll()
+      // console.log(result);
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 10;
+      const offset = (page - 1) * limit;
+      const result = await userTransaction.findAll({
+        include: [
+          {
+            model: booking,
+            on: {
+              id: sequelize.col("booking.userTransactionId"),
+            },
+          },
+          {
+            model: room,
+            on: {
+              roomId: sequelize.col("usertransactions.roomId"),
+            },
+            include: [
+              {
+                model: property,
+                on: {
+                  propertyId: sequelize.col("rooms.propertyId"),
+                },
+              },
+            ],
+          },
+          {
+            model: statusPay,
+            on: {
+              statusId: sequelize.col("usertransactions.statusId"),
+            },
+          },
+        ],
+        where: {
+          userId: req.user.id,
+        },
+      });
+      res.status(200).send({
+        totalpage: Math.ceil(total / limit),
+        currentpage: page,
+        liked_blogs: total,
+        result,
+        status: true,
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
 };
 
 module.exports = userController;

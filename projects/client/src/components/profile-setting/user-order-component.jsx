@@ -1,29 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Accordion from "./accordion-component";
-
-const accordionData = [
-  {
-    title : "section 1",
-    content : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum vel, optio corporis dolorum nihil repellat odit accusamus a explicabo doloribus?"
-  },
-  {
-    title : "section 2",
-    content : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum vel, optio corporis dolorum nihil repellat odit accusamus a explicabo doloribus?"
-  },
-  {
-    title : "section 3",
-    content : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum vel, optio corporis dolorum nihil repellat odit accusamus a explicabo doloribus?"
-  }
-]
+import axios from "axios";
 
 
 
 const UserOrderList = () => {
+  const [orderList, setOrderList] = useState([]);
+  const token = localStorage.getItem("token");
+
+  const getDataOrder = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/user/orders",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      //bakal error kalau ga ada data
+      // setOrderList(response.data.getOrders);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    getDataOrder();
+  },[]);
 
   return (
     <div className="w-full p-1 flex flex-col space-y-2">
-      <form className="md:flex flex-wrap xs:p-2 md:p-2 border">
-        <div className="flex flex-wrap -mx-3 mb-2 w-full">
+      <form className="md:flex flex-wrap xs:p-2 md:p-2">
+        <div className="flex flex-wrap justify-between -mx-3 mb-2 w-full ">
           <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -82,16 +90,16 @@ const UserOrderList = () => {
             />
           </div>
           <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0 flex flex-wrap">
-            <div className="md:pt-6 xs:w-1/4 md:w-3/4 ">
-              <div>
-                <button className="p-2.5 text-center w-full bg-bgPrimary text-white hover:font-semibold">Search</button>
-              </div>
+            <div className=" xs:w-1/4 md:w-3/4 flex flex-col justify-end p-0.5">
+              <button className="p-2.5 text-center w-full bg-bgPrimary text-white hover:font-semibold rounded-sm ">
+                Search
+              </button>
             </div>
           </div>
         </div>
       </form>
-      <div className="max-h-96 overflow-y-auto flex flex-col space-y-1 border">
-      <Accordion sections={accordionData}/>
+      <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 border">
+        {/* <Accordion sections={accordionData} /> */}
       </div>
       <div className="flex justify-center space-x-1">
         <div>Prev</div>
@@ -100,7 +108,6 @@ const UserOrderList = () => {
         <div>Next</div>
       </div>
     </div>
-    
   );
 };
 

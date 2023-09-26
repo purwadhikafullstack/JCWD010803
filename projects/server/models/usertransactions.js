@@ -11,20 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       userTransactions.belongsTo(models.user);
       userTransactions.belongsTo(models.rooms);
       userTransactions.belongsTo(models.paymentMethode);
+      userTransactions.belongsTo(models.status);
+      userTransactions.hasOne(models.onBooking);
     }
   }
   userTransactions.init(
     {
       paymentImg: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
-      isConfirmed: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
-      isRejected: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+      totalPayment: {
+        type: DataTypes.BIGINT,
       },
     },
     {
