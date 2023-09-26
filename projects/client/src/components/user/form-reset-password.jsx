@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import * as Yup from "yup"
 import { ErrorMessage, Field, Form, Formik } from "formik"
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 
 export const FormResetPassowrd = () => {
   const navigate = useNavigate()

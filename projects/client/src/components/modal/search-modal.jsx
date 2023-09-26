@@ -48,7 +48,6 @@ export const SearchModal = ({ open, setOpen }) => {
 	
 	const [startDate, setStartDate] = useState(state[0].startDate)
 	const [endDate, setendDate] = useState(state[0].endDate)
-	console.log(startDate);
 	
 	const handleSearch = () => {
 		navigate(`/properties?categoryId=${idCategory}&checkIn=${startDate}&checkOut=${endDate}`)

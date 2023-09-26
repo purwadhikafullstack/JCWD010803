@@ -39,7 +39,6 @@ const userController = {
       if (!isExist) {
         const salt = await enc.genSalt(10);
         const hashPassword = await enc.hash(password, salt);
-
         const result = await user.create({
           username,
           email,
@@ -69,6 +68,7 @@ const userController = {
           throw { message: "Nomor telpon sudah terdaftar" };
         }
       }
+      
     } catch (error) {
       res.status(400).send(error);
     }
@@ -250,7 +250,6 @@ const userController = {
       const checkUser = await user.findOne({
         where: { email },
       });
-      console.log(checkUser);
       const checkOtp = await dbOtp.findAll({
         where: {
           userId: id,
