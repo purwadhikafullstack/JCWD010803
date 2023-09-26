@@ -94,12 +94,19 @@ export const DetailOrderModal = ({ open, setOpen, data, orderId }) => {
                             <div className=" text-3xl w-full  text-gray-700 font-semibold">Invoice</div>
                             <div className="h-full">
                                 <div className="p-2 h-3/4 mt-5 w-full border-dashed border-gray-300 rounded-lg border-2 ">
-                                    {data.userTransaction.paymentImg !== null ?
-                                        <img className="w-full max-h-full rounded" src={`http://localhost:8000/payment/${data.userTransaction.paymentImg}`} alt="" />
-                                        :
-                                        <div className=" w-full h-full flex text-center justify-center items-center text-gray-500">
-                                             payment proof has not been attached.
+                                    {data ?
+                                        <div className="h-full">
+
+                                            {data.userTransaction.paymentImg !== null ?
+                                                <img className="w-full h-full rounded" src={`http://localhost:8000/payment/${data.userTransaction.paymentImg}`} alt="" />
+                                                :
+                                                <div className=" w-full h-full flex text-center justify-center items-center text-gray-500">
+                                                    payment proof has not been attached.
+                                                </div>
+                                            }
                                         </div>
+                                        :
+                                        "undefined"
                                     }
                                 </div>
                             </div>

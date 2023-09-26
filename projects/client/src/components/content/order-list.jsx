@@ -5,7 +5,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import axios from 'axios'
 import { SortStatus } from "../navbar/sort-status";
 
-export const OrderListComponent = ({setOpen, setDetail, setOrderId}) => {
+export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
 
   const token = localStorage.getItem('token')
   const [data, setData] = useState([])
@@ -31,12 +31,12 @@ export const OrderListComponent = ({setOpen, setDetail, setOrderId}) => {
   }
   const detailOrder = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:8000/api/order/${id}`)
-        setDetail(response.data)
+      const response = await axios.get(`http://localhost:8000/api/order/${id}`)
+      setDetail(response.data)
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-}
+  }
 
   const nextPage = () => {
     if (page < maxPage) {
@@ -83,13 +83,13 @@ export const OrderListComponent = ({setOpen, setDetail, setOrderId}) => {
           </tr>
           <tbody>
             {data.map((item, index) => (
-              <tr 
-              onClick={() => {
-                setOpen(true)
-                detailOrder(item.id)
-                setOrderId(item.id)
-              }} 
-              className=" border-b-2 hover:scale-95 h-24 transition-all cursor-pointer">
+              <tr
+                onClick={() => {
+                  setOpen(true)
+                  detailOrder(item.id)
+                  setOrderId(item.id)
+                }}
+                className=" border-b-2 hover:scale-95 h-24 transition-all cursor-pointer">
                 <th>
                   {new Date(new Date(item.createdAt).getTime() - 7 * 60 * 60 * 1000).toLocaleString()}
                 </th>
@@ -99,9 +99,12 @@ export const OrderListComponent = ({setOpen, setDetail, setOrderId}) => {
                 <th className=" border-b-2">{item.room.roomName}</th>
                 <th className=" text-gray-600 border-b-2 p-2 w-56">
                   <div
-                    className={`${item.status.id === 1 || item.status.id === 2
-                      ? "bg-orange-400"
-                      : "null"
+                    className={`${item.status.id === 1
+                        ? "bg-orange-400"
+                        : "null"
+                      } ${item.status.id === 2
+                        ? "bg-blue-400"
+                        : "null"
                       } ${item.status.id === 3
                         ? "bg-green-600"
                         : "null"
