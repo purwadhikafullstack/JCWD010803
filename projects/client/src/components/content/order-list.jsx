@@ -5,7 +5,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import axios from 'axios'
 import { SortStatus } from "../navbar/sort-status";
 
-export const OrderListComponent = ({setOpen, setDetail, setOrderId}) => {
+export const OrderListComponent = ({setOpen,reload , setDetail, setOrderId}) => {
 
   const token = localStorage.getItem('token')
   const [data, setData] = useState([])
@@ -61,7 +61,7 @@ export const OrderListComponent = ({setOpen, setDetail, setOrderId}) => {
 
   useEffect(() => {
     getOrder()
-  }, [status, sort])
+  }, [status, sort, reload])
 
   return (
     <div className="p-14">

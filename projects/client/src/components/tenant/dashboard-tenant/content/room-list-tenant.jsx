@@ -15,6 +15,7 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
     const [sort, setSort] = useState("ASC")
     const [sortBy, setSortBy] = useState("roomName")
     const { propertyId } = useParams()
+    const token = localStorage.getItem('token')
     const navigate = useNavigate()
 
 
@@ -60,6 +61,9 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
 
     useEffect(() => {
         getRoomByProperty();
+        if (!token) {
+            navigate('/login-tenant')
+        }
     }, [reload, sort, sortBy, propertyId]);
 
     useEffect(() => {

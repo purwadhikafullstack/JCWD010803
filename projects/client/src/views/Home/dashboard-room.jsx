@@ -28,7 +28,7 @@ const RoomList = () => {
     if (!token) {
       return navigate('/login-tenant')
     }
-  })
+  },[])
 
   return (
     <div className="flex h-screen overflow-hidden">

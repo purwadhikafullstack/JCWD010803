@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     roomName: {
       type : DataTypes.STRING,
+    },
+    QTY: {
+      type : DataTypes.INTEGER,
+      allowNull : false
     }
   }, {
     sequelize,

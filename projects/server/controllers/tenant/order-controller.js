@@ -148,17 +148,50 @@ const property = db.properties;
   },
   rejectTransaction: async (req, res) => {
     try {
-      const { transactionId, roomId, id } = req.body;
+      const { transactionId, roomId } = req.body;
       const changeStatus = transaction.update(
         { statusId: 4 },
         { where: { id: transactionId } }
       );
       const cancelBooking = await booking.update(
         { isCanceled: true },
-        { where: { roomId: roomId, userId: id } }
+        { where: { userTransactionId: transactionId} }
       );
+      const checkRoom = await room.findOne({
+        where : {id : roomId}
+      })
+      const quantityAdjustment = await room.update(
+        {QTY : checkRoom.QTY + 1},
+        {where : {id : roomId}}
+      )
       res.status(200).send({
         message: "reject success",
+      });
+    }
+    catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  cancelOrder : async (req, res) => {
+    try {
+      const { transactionId, roomId } = req.body;
+      const changeStatus = transaction.update(
+        { statusId: 5 },
+        { where: { id: transactionId } }
+      );
+      const cancelBooking = await booking.update(
+        { isCanceled: true },
+        { where: { userTransactionId: transactionId} }
+      );
+      const checkRoom = await room.findOne({
+        where : {id : roomId}
+      })
+      const quantityAdjustment = await room.update(
+        {QTY : checkRoom.QTY + 1},
+        {where : {id : roomId}}
+      )
+      res.status(200).send({
+        message: "Cancel success",
       });
     }
     catch (error) {
