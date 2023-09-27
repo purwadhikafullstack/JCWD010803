@@ -5,7 +5,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import axios from 'axios'
 import { SortStatus } from "../navbar/sort-status";
 
-export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
+export const OrderListComponent = ({ setOpen, reload,setDetail, setOrderId }) => {
 
 
   const token = localStorage.getItem('token')
@@ -67,12 +67,12 @@ export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
   return (
     <div className="p-14">
       <div className=" text-4xl text-bgPrimary">My order list</div>
-      <div className="mb-10 mt-20 w-full items-center gap-5 flex justify-end">
+      <div className="mb-10 mt-20 w-full items-center gap-5 md:flex block justify-end">
         <div>Sort by status :</div>
         <div> <SortStatus setStatusName={setStatusName} statusName={statusName} status={status} setStatus={setStatus} /> </div>
       </div>
-      <div className=" text-gray-600 w-full p-5 rounded-lg shadow-md">
-        <table className=" text-gray-600 w-full">
+      <div className=" text-gray-600 w-full overflow-x-auto p-5 rounded-lg shadow-md">
+        <table className=" min-w-max sm:w-full text-gray-600 w-full">
           <tr className=" text-gray-600 border-b ">
             <th onClick={sorting} className=" gap-2 justify-center flex cursor-pointer text-gray-500 py-5">
               <div>TRANSACTION DATE</div>
