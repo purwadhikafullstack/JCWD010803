@@ -6,17 +6,15 @@ export const DetailOrderModal = ({ open, setOpen, data, orderId }) => {
           currency: "IDR",
         });
       }
-      
-
     return (
         <div className={`z-50 fixed w-full h-screen ${open ? "flex" : "hidden"} justify-center items-center`}>
             <div className="w-full h-full bg-black opacity-60 relative"></div>
-            <div className={`w-1/3 h-fit p-10 rounded-lg bg-white absolute shadow-lg`}>
+            <div className={`w-2/4 h-fit p-10 rounded-lg bg-white absolute shadow-lg`}>
                 <div className=" w-full px-20 z-10 justify-end flex absolute">
                     <div onClick={() => setOpen(false)} className="text-2xl text-gray-700 hover:scale-95 cursor-pointer transition-all">X</div>
                 </div>
                 <div className="text-4xl text-bgPrimary relative">Detail Order</div>
-                <div className=" w-full flex">
+                <div className=" w-full h-full flex">
                     <div className=" w-full h-full mt-10">
                         <div className=" text-3xl text-gray-700 font-semibold">Property</div>
                         <div className="mt-7">
@@ -46,7 +44,7 @@ export const DetailOrderModal = ({ open, setOpen, data, orderId }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full pl-10 border-gray-300 border-l h-full mt-10">
+                    <div className="w-full pl-10 border-gray-300 border-x h-full mt-10">
                         <div className=" text-3xl text-gray-700 font-semibold">Payment</div>
                         <div className="mt-7">
                             <div className="mb-5">
@@ -75,7 +73,7 @@ export const DetailOrderModal = ({ open, setOpen, data, orderId }) => {
                                     Total Price
                                 </div>
                                 <div className=" text-gray-600 font-thin">
-                                    {data? formatRupiah(data.userTransaction.totalPayment) : "undefined"}
+                                    {data ? formatRupiah(data.userTransaction.totalPayment) : "undefined"}
                                 </div>
                             </div>
                             <div className="mb-5">
@@ -83,7 +81,30 @@ export const DetailOrderModal = ({ open, setOpen, data, orderId }) => {
                                     Payment Methode
                                 </div>
                                 <div className=" text-gray-600 font-thin">
-                                    Transfer {data? data.userTransaction.paymentMethode.methode : "undefined"}
+                                    Transfer {data ? data.userTransaction.paymentMethode.methode : "undefined"}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-full border-gray-300 pl-10 mt-10">
+                        <div className="w-full h-full">
+                            <div className=" text-3xl w-full  text-gray-700 font-semibold">Invoice</div>
+                            <div className="h-full">
+                                <div className="p-2 h-3/4 mt-5 w-full border-dashed border-gray-300 rounded-lg border-2 ">
+                                    {data ?
+                                        <div className="h-full">
+
+                                            {data.userTransaction.paymentImg !== null ?
+                                                <img className="w-full h-full rounded" src={`http://localhost:8000/payment/${data.userTransaction.paymentImg}`} alt="" />
+                                                :
+                                                <div className=" w-full h-full flex text-center justify-center items-center text-gray-500">
+                                                    payment proof has not been attached.
+                                                </div>
+                                            }
+                                        </div>
+                                        :
+                                        "undefined"
+                                    }
                                 </div>
                             </div>
                         </div>

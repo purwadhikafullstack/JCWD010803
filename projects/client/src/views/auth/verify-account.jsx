@@ -112,7 +112,7 @@ const VerifyAccount = () => {
               >
                 <Form action="#">
                   <div className="xs:mx-20 ">
-                    <label className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2">
+                    <label className=" block  tracking-wide text-gray-700 text-md font-bold mb-2">
                       Firstname
                     </label>
                     <Field
@@ -129,7 +129,7 @@ const VerifyAccount = () => {
                     />
                   </div>
                   <div className="xs:mx-20 ">
-                    <label className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2">
+                    <label className=" block  tracking-wide text-gray-700 text-md font-bold mb-2">
                       Lastname
                     </label>
                     <Field
@@ -147,7 +147,7 @@ const VerifyAccount = () => {
                   </div>
                   <div className="xs:mx-20 md:flex  md:mt-2  justify-between">
                     <div className="md:w-2/5">
-                      <label className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2 ">
+                      <label className=" block  tracking-wide text-gray-700 text-md font-bold mb-2 ">
                         Gender
                       </label>
                       <Field
@@ -167,7 +167,7 @@ const VerifyAccount = () => {
                       />
                     </div>
                     <div className="md:w-2/5">
-                      <label className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2">
+                      <label className=" block  tracking-wide text-gray-700 text-md font-bold mb-2">
                         Birthdate
                       </label>
                       <Field
@@ -185,7 +185,7 @@ const VerifyAccount = () => {
                     </div>
                   </div>
                   <div className="xs:mt-2 xs:mx-20">
-                    <label className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2">
+                    <label className=" block  tracking-wide text-gray-700 text-md font-bold mb-2">
                       OTP
                     </label>
                     <div className="md:flex ">
