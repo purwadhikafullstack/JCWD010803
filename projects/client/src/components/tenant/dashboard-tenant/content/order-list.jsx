@@ -3,9 +3,9 @@ import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-ico
 import { IoIosArrowUp } from "react-icons/io";
 
 import axios from 'axios'
-import { SortStatus } from "../navbar/sort-status";
+import { SortStatus } from "../../../navbar/sort-status";
 
-export const OrderListComponent = ({ setOpen, reload,setDetail, setOrderId }) => {
+export const OrderListComponent = ({ setOpen, reload, setDetail, setOrderId }) => {
 
 
   const token = localStorage.getItem('token')
@@ -62,7 +62,7 @@ export const OrderListComponent = ({ setOpen, reload,setDetail, setOrderId }) =>
 
   useEffect(() => {
     getOrder()
-  }, [status, sort, reload])
+  }, [status, sort, page,reload])
 
   return (
     <div className="p-14">
@@ -101,8 +101,8 @@ export const OrderListComponent = ({ setOpen, reload,setDetail, setOrderId }) =>
                 <th className=" text-gray-600 border-b-2 p-2 w-56">
                   <div
                     className={`${item.status.id === 1
-                        ? "bg-orange-400"
-                        : "null"
+                      ? "bg-orange-400"
+                      : "null"
                       } ${item.status.id === 2
                         ? "bg-blue-400"
                         : "null"
@@ -126,13 +126,13 @@ export const OrderListComponent = ({ setOpen, reload,setDetail, setOrderId }) =>
         </table>
       </div>
       <div className=" flex justify-center items-center h-14 gap-5">
-        {length < limit && page > 1 ?
+        {page > 1 ?
           <div onClick={prevPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowLeftCircleFill size={"30"} /> </div>
           :
           null
         }
-        {maxPage < 2 ? null : <div className=" text-xl font-thin"> page {page} </div>}
-        {length > limit || page < maxPage ?
+        <div className=" text-xl font-thin"> page {page} </div>
+        {page < maxPage ?
           <div onClick={nextPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowRightCircleFill size={"30"} /> </div>
           :
           null

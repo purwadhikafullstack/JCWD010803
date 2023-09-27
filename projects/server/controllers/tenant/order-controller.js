@@ -39,8 +39,31 @@ const property = db.properties;
               ],
             },
           ],
+          offset: offset,
+          limit: limit,
         });
-        const length = result.length;
+        const getLength = await transaction.findAll({
+          where: { statusId: statusId },
+          include: [
+            { model: status },
+            { model: user },
+            {
+              model: room,
+              include: [
+                {
+                  model: properties,
+                  where: { userId: id },
+                  include: [
+                    {
+                      model: user,
+                    }
+                  ],
+                },
+              ],
+            },
+          ],
+        });
+        const length = getLength.length;
         const filteredOrder = result.filter((order) => {
           if (order.room) {
             const myOrder = order.room !== null;
@@ -76,7 +99,27 @@ const property = db.properties;
           offset: offset,
           order: [["createdAt", sort]],
         });
-        const length = result.length;
+        const getLength = await transaction.findAll({
+          include: [
+            { model: status },
+            { model: user },
+            {
+              model: room,
+              include: [
+                {
+                  model: properties,
+                  where: { userId: id },
+                  include: [
+                    {
+                      model: user,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        });
+        const length = getLength.length;
         const filteredOrder = result.filter((order) => {
           if (order.room) {
             const myOrder = order.room !== null;

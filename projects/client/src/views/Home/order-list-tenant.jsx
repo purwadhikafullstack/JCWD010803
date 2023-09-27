@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Sidebar from "../../components/tenant/dashboard-tenant/side-bar"
-import { OrderListComponent } from "../../components/content/order-list";
+import { OrderListComponent } from "../../components/tenant/dashboard-tenant/content/order-list";
 import { DetailOrderModal } from "../../components/modal/detail-order-modal";
 
 export const OrderList = () => {
