@@ -9,7 +9,7 @@ const statusPay = db.status;
 const category = db.categories;
 const jwt = require("jsonwebtoken");
 const enc = require("bcrypt");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const handlebars = require("handlebars");
 const fs = require("fs");
 const transporter = require("../../midlewares/transporter");
@@ -69,7 +69,6 @@ const userController = {
           throw { message: "Nomor telpon sudah terdaftar" };
         }
       }
-      
     } catch (error) {
       res.status(400).send(error);
     }
@@ -401,48 +400,50 @@ const userController = {
 
       const result = await user.update(
         {
-          firstName : firstName,
-          lastName : lastName,
-          gender : gender,
-          birthdate : birthdate,
-          email : email
+          firstName: firstName,
+          lastName: lastName,
+          gender: gender,
+          birthdate: birthdate,
+          email: email,
         },
         {
-          where: {id:id}
+          where: { id: id },
         }
       );
 
       res.status(200).send({
-        message: "Success"
+        message: "Success",
       });
     } catch (error) {
       res.status(400).send(error);
     }
   },
-  updateAvatar : async (req, res) => {
+  updateAvatar: async (req, res) => {
     try {
       if (req.file == undefined) {
-        throw({message : 'Avatar Cannot be empty'});
+        throw { message: "Avatar Cannot be empty" };
       }
-      const {destination, filename} = req.file;
+      const { destination, filename } = req.file;
       const isExist = await user.findOne({
-        where : {id : req.user.id}
+        where: { id: req.user.id },
       });
 
       if (isExist.profileImg !== null) {
         fs.unlinkSync(`${destination}/${isExist.profileImg}`);
       }
       const setData = await user.update(
-        {profileImg : filename},
-        {where :{
-          id : req.user.id
-      }});
+        { profileImg: filename },
+        {
+          where: {
+            id: req.user.id,
+          },
+        }
+      );
       res.status(200).send({
-        message : 'Photo Upload Successfully'
+        message: "Photo Upload Successfully",
       });
     } catch (error) {
       res.status(400).send(error);
-
     }
   },
   getOrderList: async (req, res) => {
@@ -461,12 +462,10 @@ const userController = {
           {
             model: rooms,
             include: [
-              { 
+              {
                 model: property,
-                include : [
-                  { model : category}
-                ]
-              }
+                include: [{ model: category }],
+              },
             ],
           },
         ],
@@ -474,12 +473,38 @@ const userController = {
 
       res.status(200).send({
         result,
-        message : "oke"
+        message: "oke",
       });
     } catch (error) {
       res.status(400).send(error);
     }
   },
+  uploadPayment : async (req, res) => {
+    try {
+      const {fileName, id, userId} = req.body;
+      if (req.file == undefined) {
+        throw { message: "Receipt Cannot be empty" };
+      }
+      const result = await userTransaction.update(
+        {
+          paymentImg : fileName,
+          statusId : 2
+        },
+        {
+          where :{
+            [Op.and] : [{id : id}, {userId : userId}]
+          }
+        }
+      );
+      
+      res.status(200).send({
+        message : "sukses",
+        result
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  }
 };
 
 module.exports = userController;

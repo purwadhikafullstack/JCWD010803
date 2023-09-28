@@ -31,6 +31,7 @@ module.exports = {
         }
         return multer({storage, fileFilter})
     },
+    
     multerUpload: (directory = "./public", name = "PIMG") => {
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {

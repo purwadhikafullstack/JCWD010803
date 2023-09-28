@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import UploadPay from "../modal/upload-payment";
+
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -11,6 +13,7 @@ function formatDate(inputDate) {
 }
 
 function stayLong(checkInDate, checkOutDate) {
+
   const i = new Date(checkInDate);
   const o = new Date(checkOutDate);
   const long =
@@ -25,6 +28,8 @@ const AccordionSection = ({
   setActiveIndex,
   sectionIndex,
 }) => {
+
+  const [openModal, setOpenModal] = useState(false);
   const toggleSection = () => {
     const nextIndex = isActiveSection ? null : sectionIndex;
     setActiveIndex(nextIndex);
@@ -63,14 +68,17 @@ const AccordionSection = ({
           <div>Ini adalah konten</div>
           <div className="text-right">
             {section.statusId == 1 ? (
-              <button
-                className="bg-bgPrimary p-1 text-white font-semibold rounded-sm"
-                onClick={() => {
-                  alert("payment method");
-                }}
-              >
-                Upload Payment
-              </button>
+              <>
+                <button
+                  className="bg-bgPrimary p-1 text-white font-semibold rounded-sm"
+                  onClick={() => {
+                    setOpenModal(true);
+                  }}
+                >
+                  Upload Payment
+                </button>
+                {openModal && <UploadPay closeModal={setOpenModal} data={section} />}
+              </>
             ) : null}
           </div>
         </div>
