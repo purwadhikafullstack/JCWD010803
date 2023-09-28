@@ -1,3 +1,4 @@
+
 'use strict';
 const {
   Model
@@ -13,12 +14,16 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  status.init({
-    status: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'status',
-    timestamps: false
-  });
+  status.init(
+    {
+      status: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "status",
+      freezeTableName: true,
+      timestamps: false,
+    }
+  );
   return status;
 };
