@@ -392,68 +392,11 @@ const userController = {
       res.status(400).send(error);
     }
   },
-  updateProfile: async (req, res) => {
-    try {
-      const { id } = req.user;
-      const { firstName, lastName, username, email, gender, birthdate } =
-        req.body;
-
-      const result = await user.update(
-        {
-          firstName: firstName,
-          lastName: lastName,
-          gender: gender,
-          birthdate: birthdate,
-          email: email,
-        },
-        {
-          where: { id: id },
-        }
-      );
-
-      res.status(200).send({
-        message: "Success",
-      });
-    } catch (error) {
-      res.status(400).send(error);
-    }
-  },
-  updateAvatar: async (req, res) => {
-    try {
-      if (req.file == undefined) {
-        throw { message: "Avatar Cannot be empty" };
-      }
-      const { destination, filename } = req.file;
-      const isExist = await user.findOne({
-        where: { id: req.user.id },
-      });
-
-      if (isExist.profileImg !== null) {
-        fs.unlinkSync(`${destination}/${isExist.profileImg}`);
-      }
-      const setData = await user.update(
-        { profileImg: filename },
-        {
-          where: {
-            id: req.user.id,
-          },
-        }
-      );
-      res.status(200).send({
-        message: "Photo Upload Successfully",
-      });
-    } catch (error) {
-      res.status(400).send(error);
-    }
-  },
   getOrderList: async (req, res) => {
     try {
-      console.log(req.user);
-      // const result = await booking.findAll()
-      // console.log(result);
-      // const page = +req.query.page || 1;
-      // const limit = +req.query.limit || 10;
-      // const offset = (page - 1) * limit;
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 10;
+      const offset = (page - 1) * limit;
       const result = await userTransaction.findAll({
         where: { userId: req.user.id },
         include: [
