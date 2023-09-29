@@ -6,9 +6,10 @@ const booking = db.onBooking;
 const rooms = db.rooms;
 const property = db.properties;
 const statusPay = db.status;
+const category = db.categories;
 const jwt = require("jsonwebtoken");
 const enc = require("bcrypt");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const handlebars = require("handlebars");
 const fs = require("fs");
 const transporter = require("../../midlewares/transporter");
@@ -68,7 +69,6 @@ const userController = {
           throw { message: "Nomor telpon sudah terdaftar" };
         }
       }
-      
     } catch (error) {
       res.status(400).send(error);
     }
@@ -394,56 +394,60 @@ const userController = {
   },
   getOrderList: async (req, res) => {
     try {
-      console.log(req.user);
-      // const result = await booking.findAll()
-      // console.log(result);
       const page = +req.query.page || 1;
       const limit = +req.query.limit || 10;
       const offset = (page - 1) * limit;
       const result = await userTransaction.findAll({
+        where: { userId: req.user.id },
         include: [
+          { model: booking },
+          { model: statusPay },
           {
-            model: booking,
-            on: {
-              id: sequelize.col("booking.userTransactionId"),
-            },
-          },
-          {
-            model: room,
-            on: {
-              roomId: sequelize.col("usertransactions.roomId"),
-            },
+            model: rooms,
             include: [
               {
                 model: property,
-                on: {
-                  propertyId: sequelize.col("rooms.propertyId"),
-                },
+                include: [{ model: category }],
               },
             ],
           },
-          {
-            model: statusPay,
-            on: {
-              statusId: sequelize.col("usertransactions.statusId"),
-            },
-          },
         ],
-        where: {
-          userId: req.user.id,
-        },
       });
+
       res.status(200).send({
-        totalpage: Math.ceil(total / limit),
-        currentpage: page,
-        liked_blogs: total,
         result,
-        status: true,
+        message: "oke",
       });
     } catch (error) {
       res.status(400).send(error);
     }
   },
+  uploadPayment : async (req, res) => {
+    try {
+      const {fileName, id, userId} = req.body;
+      if (req.file == undefined) {
+        throw { message: "Receipt Cannot be empty" };
+      }
+      const result = await userTransaction.update(
+        {
+          paymentImg : fileName,
+          statusId : 2
+        },
+        {
+          where :{
+            [Op.and] : [{id : id}, {userId : userId}]
+          }
+        }
+      );
+      
+      res.status(200).send({
+        message : "sukses",
+        result
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  }
 };
 
 module.exports = userController;

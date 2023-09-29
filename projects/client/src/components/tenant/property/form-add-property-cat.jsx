@@ -3,10 +3,12 @@ import { useInView } from "react-intersection-observer";
 import { motion } from 'framer-motion'
 import axios from "axios";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 
 export const FormAddPropertyCat = ({ setPage, onClick, propertyCategory, page, setPropertyCategory, categoryName, setCategoryName }) => {
   const [data, setData] = useState("")
+  const navigate = useNavigate();
   const [category, setCategory] = useState([])
   const next = () => {
     setPage(page + 1)

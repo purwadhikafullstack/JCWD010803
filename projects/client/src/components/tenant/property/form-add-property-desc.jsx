@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { useInView } from "react-intersection-observer";
 import { motion } from 'framer-motion'
+import { useNavigate } from "react-router-dom";
 
 export const FormAddPropertyDesc = ({ setPage, propertyDesc, page, setPropertyDesc }) => {
     const [data, setData] = useState(propertyDesc)
+    const navigate = useNavigate();
     const next = () => {
         setPage(page + 1)
     }
