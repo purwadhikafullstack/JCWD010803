@@ -31,20 +31,24 @@ const LoginTenantForm = () => {
           text: 'Welcome!',
           timer: 1500,
           showConfirmButton: false,
-      });
-      setTimeout(() => {
+        });
+        setTimeout(() => {
           navigate('/dashboard')
-      },2000)
+        }, 2000)
       } catch (error) {
         swal.fire({
           icon: 'warning',
           iconColor: 'red',
           title: 'Login Failed',
           text: error.response.data.message,
-      });
+        });
       }
     },
   });
+
+  const back = () => {
+    navigate('/')
+  }
 
   return (
     <section className="flex flex-col md:flex-row h-screen items-center">
@@ -102,15 +106,20 @@ const LoginTenantForm = () => {
             </button>
           </form>
           <hr className="my-6 border-gray-300 w-full" />
-          <p className="mt-8">
-            Don't have an account?{" "}
-            <a
-              href="/registerTenant"
-              className="text-teal-500 hover:text-teal-700 font-semibold"
-            >
-              Sign Up
-            </a>
-          </p>
+          <div className=" sm:flex block justify-between">
+            <p className="">
+              Don't have an account?{" "}
+              <a
+                href="/registerTenant"
+                className="text-teal-500 hover:text-teal-700 font-semibold"
+              >
+                Sign Up
+              </a>
+            </p>
+            <p 
+            onClick={back}
+            className=" sm:mt-0 mt-2 text-gray-500 underline hover:text-gray-800 cursor-pointer text-sm sm:text-gray-500">Back to COMFYCRIBZ</p>
+          </div>
         </div>
       </div>
     </section>

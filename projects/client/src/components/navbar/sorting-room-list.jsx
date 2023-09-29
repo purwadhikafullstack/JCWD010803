@@ -1,6 +1,6 @@
 export const SortingRoomList = ({sort, sortBy, setSort, setSortBy}) => {
     return(
-        <div className='flex gap-4'>
+        <div className='flex w-full md:justify-start justify-center gap-4'>
                     <div class="flex items-center space-x-2 ">
                         <input
                             type="radio"
@@ -11,7 +11,7 @@ export const SortingRoomList = ({sort, sortBy, setSort, setSortBy}) => {
                             onChange={(e) => { setSort("ASC"); setSortBy("roomName") }}
                             checked={sort == "ASC" && sortBy == "roomName" ? true : false}
                         />
-                        <label for="1" class="text-gray-700">A - Z</label>
+                        <div for="1" class="text-gray-700">A - Z</div>
                     </div>
                     <div class="flex items-center space-x-2">
                         <input
@@ -23,7 +23,7 @@ export const SortingRoomList = ({sort, sortBy, setSort, setSortBy}) => {
                             onChange={(e) => { setSort("DESC"); setSortBy("roomName") }}
                             checked={sort == "DESC" && sortBy == "roomName" ? true : false}
                         />
-                        <label for="DESC" class="text-gray-700">Z - A</label>
+                        <div for="DESC" class="text-gray-700">Z - A</div>
                     </div>
                     <div class="flex items-center space-x-2">
                         <input
@@ -35,7 +35,7 @@ export const SortingRoomList = ({sort, sortBy, setSort, setSortBy}) => {
                             onChange={(e) => { setSort("DESC"); setSortBy("price") }}
                             checked={sort == "DESC" && sortBy == "price" ? true : false}
                         />
-                        <label for="DESC" class="text-gray-700">Highest price</label>
+                        <div for="DESC" class="text-gray-700">Highest price</div>
                     </div>
                     <div class="flex items-center space-x-2">
                         <input
@@ -47,7 +47,7 @@ export const SortingRoomList = ({sort, sortBy, setSort, setSortBy}) => {
                             onChange={(e) => { setSort("ASC"); setSortBy("price") }}
                             checked={sort == "ASC" && sortBy == "price" ? true : false}
                         />
-                        <label for="ASC" class="text-gray-700">Lowest price</label>
+                        <div for="ASC" class="text-gray-700">Lowest price</div>
                     </div>
                 </div>
     )

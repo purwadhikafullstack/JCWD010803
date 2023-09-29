@@ -1,4 +1,5 @@
 require("dotenv/config");
+
 const {userRouter, propertyRouter, roomRouter, orderRouter, tenantRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
@@ -71,7 +72,7 @@ app.listen(PORT, (err) => {
   if (err) {
     console.log(`ERROR: ${err}`);
   } else {
-    // db.sequelize.sync({ alter: true });
+    db.sequelize.sync({ alter: true });
     console.log(`APP RUNNING at ${PORT}✅`);
   }
 });

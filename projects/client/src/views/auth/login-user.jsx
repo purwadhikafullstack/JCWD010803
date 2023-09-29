@@ -14,6 +14,10 @@ export const LoginUser = () => {
     triggerOnce: true,
   });
 
+  const toRegis = () => {
+    navigate("/register")
+  }
+
   return (
 
     <div className=' flex h-screen min-w-full justify-end'>
@@ -37,7 +41,7 @@ export const LoginUser = () => {
 
             <div className='flex mt-5 underline text-gray-500  w-full justify-between text-sm'>
               <div className='cursor-pointer' onClick={handleClick}>Forgot password?</div>
-              <div className='cursor-pointer'>Don't have an account? Sign Up</div>
+              <div onClick={toRegis} className='cursor-pointer'>Don't have an account? Sign Up</div>
             </div>
           </motion.div>
         </div>
