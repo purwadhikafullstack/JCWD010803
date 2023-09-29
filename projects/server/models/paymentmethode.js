@@ -1,3 +1,4 @@
+
 'use strict';
 const {
   Model
@@ -13,12 +14,16 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  paymentMethode.init({
-    methode: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'paymentMethode',
-    timestamps: false
-  });
+  paymentMethode.init(
+    {
+      methode: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "paymentMethode",
+      freezeTableName: true,
+      timestamps: false,
+    }
+  );
   return paymentMethode;
 };
