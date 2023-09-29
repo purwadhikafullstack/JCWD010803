@@ -29,6 +29,9 @@ const propertiesController = {
           {
             model: rooms,
             attributes: ["price"],
+            where : {
+              QTY: {[Op.ne] : 0}
+            },
             include: [
               {
                 model: booking,
@@ -64,6 +67,9 @@ const propertiesController = {
         include: [
           {
             model: rooms,
+            where : {
+              QTY: {[Op.ne] : 0}
+            },
             include: [
               {
                 model: booking,

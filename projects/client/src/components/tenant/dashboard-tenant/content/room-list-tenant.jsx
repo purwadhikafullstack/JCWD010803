@@ -15,6 +15,7 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
     const [sort, setSort] = useState("ASC")
     const [sortBy, setSortBy] = useState("roomName")
     const { propertyId } = useParams()
+    const token = localStorage.getItem('token')
     const navigate = useNavigate()
 
 
@@ -60,6 +61,9 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
 
     useEffect(() => {
         getRoomByProperty();
+        if (!token) {
+            navigate('/login-tenant')
+        }
     }, [reload, sort, sortBy, propertyId]);
 
     useEffect(() => {
@@ -74,14 +78,14 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
     return (
         <div>
             <div className=' text-4xl text-bgPrimary'>My Rooms</div>
-            <div className='flex justify-between mt-10 items-end'>
+            <div className='md:flex block justify-between mt-10 items-end'>
                 <div className='flex gap-10 items-center'>
                     <div>
                         <div className=' text-gray-800 cursor-pointer hover:scale-95' onClick={() => back()}> <AiOutlineArrowLeft size={'30'} /> </div>
                     </div>
                     <div className='bg-bgPrimary p-2 rounded-md text-white hover:bg-bgPrimaryActive hover:scale-95 cursor-pointer w-fit transition-all' onClick={() => setOpenModalAdd(true)}>Do you want to add room?</div>
                 </div>
-                <div className='flex gap-10'>
+                <div className='flex md:mt-0 mt-5 gap-10'>
                     <SortingRoomList sortBy={sortBy} sort={sort} setSort={setSort} setSortBy={setSortBy} />
                 </div>
             </div>
@@ -89,9 +93,9 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
                 {room.length !== 0 ?
                     <div>
                         {room?.map((item, index) => (
-                            <div className='w-full h-36 flex gap-1 mb-5 border' key={item.id}>
+                            <div className='w-full h-fit flex gap-1 mb-5 border' key={item.id}>
                                 {roomImages[index]?.map((image) => (
-                                    <div className='w-2/5 h-full'>
+                                    <div className='w-2/5 md:block hidden h-full'>
                                         <img
                                             className='w-full h-full'
                                             key={image.id}
@@ -100,7 +104,7 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
                                         />
                                     </div>
                                 ))}
-                                <div className='flex w-full justify-between'>
+                                <div className='md:flex block w-full justify-between'>
                                     <div className='w-2/4 my-auto px-10'>
                                         <div className=' text-gray-900 text-xl'>
                                             {item.roomName}

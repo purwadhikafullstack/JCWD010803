@@ -3,6 +3,7 @@ import { FaTimes, FaHome, FaChevronDown } from 'react-icons/fa'; // Import ikon 
 import { RxAvatar } from 'react-icons/rx'
 import React, { useState, useEffect, useRef } from "react";
 import LogoImage from "../../../assets/images/dashboardtenants.png";
+import Swal from 'sweetalert2'
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
@@ -24,6 +25,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
   const logout = () => {
     localStorage.removeItem('token')
+    Swal.fire({
+      icon: "success",
+      title: "Good bye..",
+      timer: 1000
+    })
+    setTimeout(() => {
+      navigate('/login-tenant')
+    },700)
   }
 
   useEffect(() => {
@@ -134,7 +143,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               <div className=" flex justify-center mb-10 w-fit ">Akmal Hamidi</div>
             </div>
             <div className="w-full flex justify-center">
-              <div onClick={() => logout()} className=" bg-bgPrimary flex justify-center w-fit hover:bg-bgPrimaryActive hover:scale-95 text-white transition-all p-2 text-lg rounded-md cursor-pointer ">Log out</div>
+              <div onClick={logout} className=" bg-bgPrimary flex justify-center w-fit hover:bg-bgPrimaryActive hover:scale-95 text-white transition-all p-2 text-lg rounded-md cursor-pointer ">Log out</div>
             </div>
           </div>
         </div>

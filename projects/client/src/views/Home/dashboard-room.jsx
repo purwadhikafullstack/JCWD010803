@@ -28,7 +28,7 @@ const RoomList = () => {
     if (!token) {
       return navigate('/login-tenant')
     }
-  })
+  },[])
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -41,8 +41,25 @@ const RoomList = () => {
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        
         {/* Site header */}
         <div className='p-10'>
+        <button
+              className="text-slate-500 hover:text-slate-600 lg:hidden"
+              aria-controls="sidebar"
+              aria-expanded={sidebarOpen}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSidebarOpen(!sidebarOpen);
+              }}
+            >
+              <span className="sr-only">Open sidebar</span>
+              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="5" width="16" height="2" />
+                <rect x="4" y="11" width="16" height="2" />
+                <rect x="4" y="17" width="16" height="2" />
+              </svg>
+            </button>
           <RoomListTenant propertyId={propertyId} setPropertyId={setPropertyId} setOpenUpdateImage={setOpenUpdateImage} setRoomId={setRoomId} setOpenModalAdd={setOpenModalAdd} reload={reload} setId={setId} setRoomName={setRoomName} setRoomDesc={setRoomDesc} setPrice={setPrice} setOpenModal={setOpenModal} setEditModal={setEditModal} />
         </div>
       </div>

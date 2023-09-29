@@ -8,6 +8,7 @@ module.exports = {
   userRouter,
   propertyRouter,
   tenantRouter,
+  propertyRouter,
   orderRouter,
   roomRouter
 };
