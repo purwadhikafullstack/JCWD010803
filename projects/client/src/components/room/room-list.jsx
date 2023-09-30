@@ -102,7 +102,7 @@ export const RoomList = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className='w-full my-auto'>
+                                <div className='w-full my-auto ml-5'>
                                     <div className='w-full flex gap-10 '>
                                         <div className=' text-md text-gray-500'>
                                             <div className='flex gap-2 items-center'>
@@ -130,7 +130,7 @@ export const RoomList = () => {
                                         </div>
                                     </div>
                                     <div className=' mt-5 text-sm text-gray-500'>
-                                        Thank you for logging into your account! Enjoy special rates.
+                                        Thank you for logging into your account! Enjoy special prices.
                                     </div>
                                 </div>
                                 <div className='w-full my-auto flex justify-end'>
