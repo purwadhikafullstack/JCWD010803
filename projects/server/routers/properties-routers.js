@@ -5,6 +5,7 @@ const { verifyToken } = require('../midlewares/token');
 
 const router = require('express').Router()
 
+router.get('/myProperties', verifyToken,propertiesController.myProperties)
 router.get('/sortProperties', propertiesController.sortProperty)
 router.get('/image/:filename', propertiesController.getPropertyimage);
 router.get('/allCategories', propertiesController.getAllCategory)
@@ -12,7 +13,6 @@ router.post('/',verifyToken, propertyImg("./public/property", "property").single
 router.patch('/:id', propertyImg("./public/property", "property").single('file'),checkProperty ,propertiesController.updateProperty)
 router.patch('/delete/:id', propertiesController.deleteProperty)
 router.get('/:id', propertiesController.detailProperty)
-router.get('/myProperties', verifyToken,propertiesController.myProperties)
 
 
 

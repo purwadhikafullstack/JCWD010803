@@ -155,7 +155,7 @@ const propertiesController = {
   },
   addProperty: async (req, res) => {
     try {
-      const { propertyName, propertyDesc, categoryId } = req.body;
+      const { propertyName, propertyDesc, categoryId, detailLocation } = req.body;
       const userId = req.user.id;
       const propertyImg = req.file.filename;
       const result = await properties.create({
@@ -164,12 +164,14 @@ const propertiesController = {
         propertyDesc,
         propertyImg,
         userId,
+        detailLocation
       });
       res.status(200).send({
         message: "add properties success",
         result,
       });
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -219,7 +221,7 @@ const propertiesController = {
     try {
       const sort = req.query.sort || "DESC";
       const sortBy = "createdAt";
-      const limit = 4;
+      const limit = 10;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const { id } = req.user;
