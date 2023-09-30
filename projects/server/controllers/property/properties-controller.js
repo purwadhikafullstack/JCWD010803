@@ -15,7 +15,7 @@ const propertiesController = {
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const sort = req.query.sort || "ASC";
-      const sortBy = req.query.sortBy ;
+      const sortBy = req.query.sortBy;
 
       const nowCheckIn = new Date(
         new Date(checkIn).getTime() + 7 * 60 * 60 * 1000
@@ -29,6 +29,9 @@ const propertiesController = {
           {
             model: rooms,
             attributes: ["price"],
+            where : {
+              QTY: {[Op.ne] : 0}
+            },
             include: [
               {
                 model: booking,
@@ -64,6 +67,9 @@ const propertiesController = {
         include: [
           {
             model: rooms,
+            where : {
+              QTY: {[Op.ne] : 0}
+            },
             include: [
               {
                 model: booking,
@@ -91,11 +97,14 @@ const propertiesController = {
       const length = data.length;
       const filteredProperties = findProperty.filter((property) => {
         if (property.rooms && property.rooms.length > 0) {
-          const hasNullBooking = property.rooms.some((room) => room.onBooking === null);
+          const hasNullBooking = property.rooms.some(
+            (room) => room.onBooking === null
+          );
           return hasNullBooking;
         }
         return false;
-      });      res.status(200).send({
+      });
+      res.status(200).send({
         properties: filteredProperties,
         length,
         limit,
@@ -140,6 +149,98 @@ const propertiesController = {
       const result = await category.findAll();
       res.status(200).send(result);
     } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  addProperty: async (req, res) => {
+    try {
+      const { propertyName, propertyDesc, categoryId } = req.body;
+      const userId = req.user.id;
+      const propertyImg = req.file.filename;
+      const result = await properties.create({
+        categoryId,
+        propertyName,
+        propertyDesc,
+        propertyImg,
+        userId,
+      });
+      res.status(200).send({
+        message: "add properties success",
+        result,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
+  updateProperty: async (req, res) => {
+    try {
+      const { propertyName, propertyDesc, categoryId } = req.body;
+      const propertyImg = req.file.filename;
+      const propertyId = req.params.id;
+
+      const result = await properties.update(
+        {
+          propertyDesc,
+          propertyImg,
+          propertyName,
+          categoryId
+        },
+        {
+          where: { id: propertyId },
+        }
+      );
+      res.status(200).send({
+        message: "update properties success",
+        result,
+      });
+    } catch (error) {
+			console.log(error);
+      res.status(400).send(error);
+    }
+  },
+  deleteProperty: async (req, res) => {
+    try {
+      const propertyId = req.params.id;
+
+      const result = await properties.update(
+        { isDelete: true },
+        { where: { id: propertyId } }
+      );
+      res.status(200).send({
+        message: "delete success",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
+  myProperties: async (req, res) => {
+    try {
+      const sort = req.query.sort || "DESC"
+      const sortBy = "createdAt"
+      const limit = 4;
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
+      const {id} = req.user
+      const result = await properties.findAll({
+        where: { userId: id, isDelete: false },
+        order: [[sortBy, sort]],
+        offset: offset,
+        limit: limit,
+        include:{model: category}
+      });
+      const checkLength = await properties.findAll({
+        where: { userId: id, isDelete: false },
+      });
+      const length = checkLength.length
+      res.status(200).send({
+        result,
+        length,
+        limit
+      });
+    } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   },

@@ -1,23 +1,38 @@
 const db = require('../../models')
 const onBooking = db.onBooking
 const transaction = db.userTransactions
+const room = db.rooms
 
 const transactionController = {
     addBooking : async (req, res) => {
         try {
             const {checkIn, checkOut, roomId, paymentMethode} = req.body
             const {id} = req.user
-            const addBooking = await onBooking.create({
-                checkIn,
-                checkOut,
-                roomId,
-                userId : id
+            const roomData = await room.findOne({
+                where : {id : roomId}
             })
+            const checkInDate = new Date(new Date(checkIn).setHours(24,0,0,0));
+            const checkOutDate = new Date(new Date(checkOut).setHours(24,0,0,0));
+            const rangeDate = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
+            const totalPayment = rangeDate * roomData.price
             const addTransaction = await transaction.create({
                 userId : id,
                 roomId,
                 paymentMethodeId : paymentMethode,
+                statusId : 1,
+                totalPayment
             })
+            const addBooking = await onBooking.create({
+                checkIn,
+                checkOut,
+                roomId,
+                userId : id,
+                userTransactionId : addTransaction.id
+            })
+            const minusQTY = await room.update(
+                {QTY : roomData.QTY - 1},
+                {where : {id : roomId}}
+                )
             res.status(200).send({
                 message: "booking success"
             })
