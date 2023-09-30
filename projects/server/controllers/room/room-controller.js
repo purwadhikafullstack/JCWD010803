@@ -118,4 +118,15 @@ module.exports = {
       console.log(error);
     }
   },
+  roomById : async (req, res) => {
+    try {
+      const {id} = req.params
+      const result = await room.findOne({
+        where : {id : id}
+      })
+      res.status(200).send(result)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  }
 };

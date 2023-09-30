@@ -4,6 +4,7 @@ const properties = db.properties;
 const rooms = db.rooms;
 const booking = db.onBooking;
 const category = db.categories;
+const user = db.user;
 
 const propertiesController = {
   sortProperty: async (req, res) => {
@@ -29,8 +30,8 @@ const propertiesController = {
           {
             model: rooms,
             attributes: ["price"],
-            where : {
-              QTY: {[Op.ne] : 0}
+            where: {
+              QTY: { [Op.ne]: 0 },
             },
             include: [
               {
@@ -67,8 +68,8 @@ const propertiesController = {
         include: [
           {
             model: rooms,
-            where : {
-              QTY: {[Op.ne] : 0}
+            where: {
+              QTY: { [Op.ne]: 0 },
             },
             include: [
               {
@@ -183,7 +184,7 @@ const propertiesController = {
           propertyDesc,
           propertyImg,
           propertyName,
-          categoryId
+          categoryId,
         },
         {
           where: { id: propertyId },
@@ -194,7 +195,7 @@ const propertiesController = {
         result,
       });
     } catch (error) {
-			console.log(error);
+      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -216,30 +217,46 @@ const propertiesController = {
   },
   myProperties: async (req, res) => {
     try {
-      const sort = req.query.sort || "DESC"
-      const sortBy = "createdAt"
+      const sort = req.query.sort || "DESC";
+      const sortBy = "createdAt";
       const limit = 4;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
-      const {id} = req.user
+      const { id } = req.user;
       const result = await properties.findAll({
         where: { userId: id, isDelete: false },
         order: [[sortBy, sort]],
         offset: offset,
         limit: limit,
-        include:{model: category}
+        include: { model: category },
       });
       const checkLength = await properties.findAll({
         where: { userId: id, isDelete: false },
       });
-      const length = checkLength.length
+      const length = checkLength.length;
       res.status(200).send({
         result,
         length,
-        limit
+        limit,
       });
     } catch (error) {
       console.log(error);
+      res.status(400).send(error);
+    }
+  },
+  detailProperty: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await properties.findOne({
+        where: { id: id },
+        include: 
+        [
+          { model: category }, 
+          { model: user }
+        ],
+      });
+      res.status(200).send(result);
+    } catch (error) {
       res.status(400).send(error);
     }
   },

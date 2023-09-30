@@ -11,6 +11,7 @@ router.get('/allCategories', propertiesController.getAllCategory)
 router.post('/',verifyToken, propertyImg("./public/property", "property").single('file'), checkProperty, propertiesController.addProperty)
 router.patch('/:id', propertyImg("./public/property", "property").single('file'),checkProperty ,propertiesController.updateProperty)
 router.patch('/delete/:id', propertiesController.deleteProperty)
+router.get('/:id', propertiesController.detailProperty)
 router.get('/myProperties', verifyToken,propertiesController.myProperties)
 
 
