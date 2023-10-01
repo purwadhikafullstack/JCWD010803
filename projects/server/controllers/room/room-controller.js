@@ -5,7 +5,7 @@ const roomImg = db.roomImg;
 module.exports = {
   addRoom: async (req, res) => {
     try {
-      const { roomName, price, roomDesc } = req.body;
+      const { roomName, QTY,price, roomDesc } = req.body;
       const propertyId = req.params.id;
       const data = req.files;
 
@@ -14,6 +14,7 @@ module.exports = {
         roomDesc,
         price,
         propertyId,
+        QTY
       });
       const pathImg = data.map((item) => {
         return {
