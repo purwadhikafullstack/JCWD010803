@@ -17,7 +17,7 @@ const UserOrderList = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      //bakal error kalau ga ada data
+      
       setOrderList(response.data.result);
     } catch (error) {
       console.log(error);

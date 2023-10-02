@@ -20,4 +20,6 @@ router.post('/information-update', verifyToken, userController.updateProfile);
 router.post('/avatar', verifyToken, multerUpload('./public/avatars', 'ava').single('file'),userController.updateAvatar);
 router.get('/orders', verifyToken, userController.getOrderList);
 router.post('/upload-payment',multerUpload('./public/payment', 'pc').single('file'), userController.uploadPayment);
+router.post('/review', userController.postReview);
+
 module.exports = router;

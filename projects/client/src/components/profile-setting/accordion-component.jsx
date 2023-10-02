@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import UploadPay from "../modal/upload-payment";
+import ReviewModal from "../modal/review-modal";
 
 
 function formatDate(inputDate) {
@@ -19,7 +20,6 @@ function stayLong(checkInDate, checkOutDate) {
   const long =
     i.getDate().toString().padStart(2, "0") -
     o.getDate().toString().padStart(2, "0");
-    console.log();
   return `${long}`;
 }
 
@@ -33,6 +33,7 @@ const AccordionSection = ({
 }) => {
 
   const [openModal, setOpenModal] = useState(false);
+
   const toggleSection = () => {
     const nextIndex = isActiveSection ? null : sectionIndex;
     setActiveIndex(nextIndex);
@@ -60,12 +61,11 @@ const AccordionSection = ({
           </div>
         ) : (
           <div className="py-1 flex flex-wrap justify-end ">
-            <span className="text-[#f59e0b]">{section.status.status}</span>
+            <span className="text-[#f59e0b]">{section.status.status} {section.statusId == 7 && section.isReview == false ? (" - Give A Review") : (null)} </span>
           </div>
         )}
       </div>
 
-      {/* ini nih yang bikin sembunyi */}
       {isActiveSection && (
         <div>
           {/* <div>Ini adalah konten</div> */}
@@ -84,6 +84,9 @@ const AccordionSection = ({
               </>
             ) : null}
           </div>
+          {section.statusId == 7 && section.isReview == false ? (
+            <ReviewModal toggleSection={toggleSection} setReload={setReload} reload={reload} data={section}/>
+          ) : (null)}
         </div>
       )}
     </div>
