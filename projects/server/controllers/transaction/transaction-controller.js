@@ -12,8 +12,9 @@ const transactionController = {
             const roomData = await room.findOne({
                 where : {id : roomId}
             })
-            const checkInDate = new Date(new Date(checkIn).setHours(24,0,0,0));
-            const checkOutDate = new Date(new Date(checkOut).setHours(24,0,0,0));
+            const checkInDate = new Date(new Date(checkIn));
+            const checkOutDate = new Date(new Date(checkOut).setHours(17,0,0,0));
+            console.log(checkOutDate);
             const rangeDate = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
             const totalPayment = rangeDate * roomData.price
             const addTransaction = await transaction.create({
@@ -24,8 +25,8 @@ const transactionController = {
                 totalPayment
             })
             const addBooking = await onBooking.create({
-                checkIn,
-                checkOut,
+                checkIn : checkInDate,
+                checkOut: checkOutDate,
                 roomId,
                 userId : id,
                 userTransactionId : addTransaction.id
