@@ -25,7 +25,7 @@ app.use("/api/properties", propertyRouter)
 app.use("/api/transaction", transactionRouter)
 app.use("/api/order", orderRouter)
 
-  schedule.scheduleJob('1 1 0 * * *', autoComplete);
+  schedule.scheduleJob('1 1 10 * * *', autoComplete);
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
