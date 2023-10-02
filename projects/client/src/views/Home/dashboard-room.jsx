@@ -60,6 +60,8 @@ const RoomList = () => {
                 <rect x="4" y="17" width="16" height="2" />
               </svg>
             </button>
+            <div>
+            </div>
           <RoomListTenant propertyId={propertyId} setPropertyId={setPropertyId} setOpenUpdateImage={setOpenUpdateImage} setRoomId={setRoomId} setOpenModalAdd={setOpenModalAdd} reload={reload} setId={setId} setRoomName={setRoomName} setRoomDesc={setRoomDesc} setPrice={setPrice} setOpenModal={setOpenModal} setEditModal={setEditModal} />
         </div>
       </div>
