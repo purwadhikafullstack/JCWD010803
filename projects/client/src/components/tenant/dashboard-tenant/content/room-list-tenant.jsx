@@ -110,7 +110,7 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
                                             {item.roomName}
                                         </div>
                                         <div className=' text-gray-600 mb-2 text-sm'>
-                                            {item.roomDesc.slice(0, 80) + '...'}
+                                            {item.roomDesc.slice(0, 100) + '...'}
                                         </div>
                                         <div className=' text-gray-700 font-semibold'>
                                             {formatToRupiah(parseInt(item.price))}.00 / Night

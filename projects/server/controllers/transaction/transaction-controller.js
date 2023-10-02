@@ -2,6 +2,7 @@ const db = require('../../models')
 const onBooking = db.onBooking
 const transaction = db.userTransactions
 const room = db.rooms
+const paymentMethode = db.paymentMethode
 
 const transactionController = {
     addBooking : async (req, res) => {
@@ -53,7 +54,7 @@ const transactionController = {
             console.log(error);
             res.status(400).send(error)
         }
-    }
+    },
 }
 
 module.exports = transactionController

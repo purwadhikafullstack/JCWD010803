@@ -15,10 +15,9 @@ const UserOrderList = () => {
         {
           headers: { Authorization: `Bearer ${token}` },
         }
-      )
+      );
       //bakal error kalau ga ada data
-      // setOrderList(response.data.getOrders);
-      console.log(response);
+      setOrderList(response.data.result);
     } catch (error) {
       console.log(error);
     }
@@ -100,6 +99,9 @@ const UserOrderList = () => {
       </form>
       <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 border">
         {/* <Accordion sections={accordionData} /> */}
+        {orderList.length > 0 ? (
+          <Accordion sections={orderList} />
+        ) : (null)}
       </div>
       <div className="flex justify-center space-x-1">
         <div>Prev</div>
@@ -108,6 +110,7 @@ const UserOrderList = () => {
         <div>Next</div>
       </div>
     </div>
+    
   );
 };
 
