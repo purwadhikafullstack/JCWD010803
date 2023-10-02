@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       userTransactions.belongsTo(models.paymentMethode);
       userTransactions.belongsTo(models.status);
       userTransactions.hasOne(models.onBooking);
+      userTransactions.hasOne(models.review);
     }
   }
   userTransactions.init(

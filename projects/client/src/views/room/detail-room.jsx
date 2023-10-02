@@ -161,7 +161,12 @@ export const DetailRoom = () => {
                             </div>
                         </div>
                     </div>
+                    <hr className="mt-10"></hr>
+                    <div>
+                        review
+                    </div>
                 </div>
+                
             </div>
             <div className="mt-20"> <Footer /> </div>
         </div>

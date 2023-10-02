@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import swal from "sweetalert2";
 import axios from "axios";
 
-const UploadPay = ({ closeModal, data }) => {
+const UploadPay = ({ closeModal, data, reload, setReload }) => {
   const [imageInput, setImageInput] = useState(null);
   const handleClick = async (file) => {
     try {
@@ -22,7 +22,7 @@ const UploadPay = ({ closeModal, data }) => {
             },
           }
         );
-        console.log(response);
+        setReload(!reload)
             
       } else {
         swal.fire({

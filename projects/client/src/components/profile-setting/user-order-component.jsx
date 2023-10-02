@@ -6,6 +6,7 @@ import axios from "axios";
 
 const UserOrderList = () => {
   const [orderList, setOrderList] = useState([]);
+  const [reload, setReload] = useState(false)
   const token = localStorage.getItem("token");
 
   const getDataOrder = async () => {
@@ -25,7 +26,7 @@ const UserOrderList = () => {
 
   useEffect(()=>{
     getDataOrder();
-  },[]);
+  },[reload]);
 
   return (
     <div className="w-full p-1 flex flex-col space-y-2">
@@ -100,7 +101,7 @@ const UserOrderList = () => {
       <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 border">
         {/* <Accordion sections={accordionData} /> */}
         {orderList.length > 0 ? (
-          <Accordion sections={orderList} />
+          <Accordion reload={reload} setReload={setReload} sections={orderList} />
         ) : (null)}
       </div>
       <div className="flex justify-center space-x-1">

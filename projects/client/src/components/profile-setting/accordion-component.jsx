@@ -18,7 +18,8 @@ function stayLong(checkInDate, checkOutDate) {
   const o = new Date(checkOutDate);
   const long =
     i.getDate().toString().padStart(2, "0") -
-    i.getDate().toString().padStart(2, "0");
+    o.getDate().toString().padStart(2, "0");
+    console.log();
   return `${long}`;
 }
 
@@ -27,6 +28,8 @@ const AccordionSection = ({
   isActiveSection,
   setActiveIndex,
   sectionIndex,
+  setReload,
+  reload
 }) => {
 
   const [openModal, setOpenModal] = useState(false);
@@ -65,7 +68,7 @@ const AccordionSection = ({
       {/* ini nih yang bikin sembunyi */}
       {isActiveSection && (
         <div>
-          <div>Ini adalah konten</div>
+          {/* <div>Ini adalah konten</div> */}
           <div className="text-right">
             {section.statusId == 1 ? (
               <>
@@ -77,7 +80,7 @@ const AccordionSection = ({
                 >
                   Upload Payment
                 </button>
-                {openModal && <UploadPay closeModal={setOpenModal} data={section} />}
+                {openModal && <UploadPay setReload={setReload} reload={reload} closeModal={setOpenModal} data={section} />}
               </>
             ) : null}
           </div>
@@ -87,7 +90,7 @@ const AccordionSection = ({
   );
 };
 
-const Accordion = ({ sections }) => {
+const Accordion = ({ sections, setReload, reload }) => {
   const [activeIndex, setActiveIndex] = useState();
   return (
     <>
@@ -98,6 +101,8 @@ const Accordion = ({ sections }) => {
           isActiveSection={index === activeIndex}
           setActiveIndex={setActiveIndex}
           sectionIndex={index}
+          setReload={setReload}
+          reload={reload}
         />
       ))}
     </>
