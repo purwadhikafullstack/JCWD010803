@@ -4,6 +4,8 @@ const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
 const db = require("../models");
+const schedule = require('node-schedule');
+const autoComplete = require("../scheduler/auto-complete");
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -23,6 +25,7 @@ app.use("/api/properties", propertyRouter)
 app.use("/api/transaction", transactionRouter)
 app.use("/api/order", orderRouter)
 
+  schedule.scheduleJob('1 1 0 * * *', autoComplete);
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
