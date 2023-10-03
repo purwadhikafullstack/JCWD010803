@@ -9,6 +9,10 @@ router.patch('/cancel',orderController.cancelOrder)
 router.patch('/confirm',orderController.confirmTransaction)
 router.post('/myOrder',verifyToken, orderController.orderMyProperty)
 router.get('/status', orderController.getAllStatus)
+router.get('/sales', orderController.salesRooms);
+
+
+// router ini harus paling bawah
 router.get('/:id', orderController.orderById)
 
 module.exports = router

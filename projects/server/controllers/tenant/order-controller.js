@@ -240,6 +240,21 @@ const property = db.properties;
     catch (error) {
       res.status(400).send(error)
     }
+  },
+  salesRooms : async (req, res) => {
+    try {
+
+      const result = await transaction.count({
+        where : {statusId : 7}
+      });
+
+      res.status(200).send({
+        message : "Sukses",
+        result
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
   }
 
 };
