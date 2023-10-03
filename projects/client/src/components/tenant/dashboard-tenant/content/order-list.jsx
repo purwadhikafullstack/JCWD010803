@@ -128,22 +128,6 @@ export const OrderListComponent = ({ setOpen, reload, setDetail, setOrderId }) =
                     {item.status.status}
                   </div>
                 </th>
-                <th className="flex gap-5 justify-center py-2">
-                  {item.status.id === 4 || item.status.id === 5 ?
-                    <div className=" font-thin text-gray-700" x>
-                      Order is canceled
-                    </div>
-                    :
-                    <div className="flex gap-5">
-                      <div className={`${item.status.id === 3? "hidden" : "flex"}  p-1 cursor-pointer transition-all hover:bg-green-700 bg-green-600 rounded-lg text-white font-thin w-16`}>Confirm</div>
-                      {item.status.id === 3 ?
-                        <div className="p-1 cursor-pointer transition-all hover:bg-red-700 bg-red-600 rounded-lg text-white font-thin w-16">Cancel</div>
-                        :
-                        <div className={` p-1 cursor-pointer transition-all hover:bg-red-700 bg-red-600 rounded-lg text-white font-thin w-16`}>Reject</div>
-                      }
-                    </div>
-                  }
-                </th>
               </tr>
             ))}
           </tbody>
