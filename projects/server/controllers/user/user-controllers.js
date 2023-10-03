@@ -7,6 +7,7 @@ const rooms = db.rooms;
 const property = db.properties;
 const statusPay = db.status;
 const category = db.categories;
+const review = db.review;
 const jwt = require("jsonwebtoken");
 const enc = require("bcrypt");
 const { Op, where } = require("sequelize");
@@ -444,6 +445,41 @@ const userController = {
         message : "sukses",
         result
       })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  postReview : async (req, res) => {
+    try {
+      console.log(req.body.review);
+      const transactionIsExist = await userTransaction.findOne({
+        where: {
+          [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }],
+        }
+      });
+      if (transactionIsExist) {
+        const result = await userTransaction.update(
+          {
+            isReview : true
+          },
+          {
+            where :{
+              [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }]
+            }
+          }
+          );
+          const setReview = await review.create({
+            userReview : req.body.review,
+            userTransactionId : req.body.id
+          });
+          res.status(200).send({
+            message : "Give a review success"
+          })
+      }else{
+        throw {
+          message : "Transaction not exist"
+        }
+      }
     } catch (error) {
       res.status(400).send(error)
     }

@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       propertyDesc: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
       },
       propertyImg: {

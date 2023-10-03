@@ -2,8 +2,8 @@ const express = require('express');
 const { checkregister, checkResetPassword, checkForgotPassword, checkNewPassword } = require('../midlewares/user/user-midleware');
 const { verifyToken } = require('../midlewares/token');
 const { userController } = require('../controllers/user');
-const { multerUpload } = require('../midlewares/avatar');
-// const { multerUpload } = require('../midlewares/multer');
+// const { multerUpload } = require('../midlewares/avatar');
+const { multerUpload } = require('../midlewares/multer');
 const router = require('express').Router();
 
 
@@ -20,4 +20,6 @@ router.post('/information-update', verifyToken, userController.updateProfile);
 router.post('/avatar', verifyToken, multerUpload('./public/avatars', 'ava').single('file'),userController.updateAvatar);
 router.get('/orders', verifyToken, userController.getOrderList);
 router.post('/upload-payment',multerUpload('./public/payment', 'pc').single('file'), userController.uploadPayment);
+router.post('/review', userController.postReview);
+
 module.exports = router;

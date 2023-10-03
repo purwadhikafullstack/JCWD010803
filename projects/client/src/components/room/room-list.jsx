@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaScroll } from "react-icons/fa6";
 import { FiWifi } from "react-icons/fi";
 import { GiForkKnifeSpoon } from "react-icons/gi";
