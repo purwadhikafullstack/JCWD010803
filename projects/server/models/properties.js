@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       propertyDesc: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
       },
       propertyImg: {
@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      detailLocation: {
+        type: DataTypes.STRING,
+        allowNull: false
+      }
     },
     {
       sequelize,

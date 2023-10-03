@@ -58,7 +58,8 @@ export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenMo
                     <div className="p-2 ">
 
                         <div className="p-2 flex flex-wrap gap-7 justify-center">
-                            {data?.map(item => {
+                            {data?
+                            data.map(item => {
                                 return (
                                     <div>
                                         <img src={`http://localhost:8000/room/${item.image}`} className="w-40 h-40 rounded-md" alt="" />
@@ -75,17 +76,20 @@ export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenMo
                                                 <input
                                                     type="file"
                                                     id="fileInput"
-                                                    className="hidden" // Sembunyikan input file dengan kelas "hidden"
+                                                    className="hidden"
                                                     onChange={(e) => setImageInput(e.target.files[0])}
                                                 />
                                             </div>
                                         </div>
                                     </div>
                                 )
-                            })}
+                            })
+                            :
+                            "undefined"
+                        }
                         </div>
                     </div>
-                    {/* <button className="bg-teal-500" onClick={() => editImage(id, imageInput)}>save</button> */}
+                    <button className="bg-teal-500" onClick={() => editImage(id, imageInput)}>save</button>
                 </div>
             </div>
         </div >
