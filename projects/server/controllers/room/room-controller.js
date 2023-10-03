@@ -86,12 +86,22 @@ module.exports = {
       const sort = req.query.sort || "DESC"
       const sortBy = req.query.sortBy || "createdAt"
 
+      const checkLength = await room.findAll({
+        where : {propertyId: propertyId, isDelete: false}
+      })
+      const length = checkLength.length
+
       const result = await room.findAll({
         where: { propertyId: propertyId, isDelete: false },
         offset: offset,
+        limit: limit,
         order: [[sortBy, sort]],
       });
-      res.status(200).send(result);
+      res.status(200).send({
+        result,
+        length,
+        limit
+      });
     } catch (error) {
       console.log(error);
       res.status(400).send(error);

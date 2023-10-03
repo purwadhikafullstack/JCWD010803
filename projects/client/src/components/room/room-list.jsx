@@ -4,6 +4,7 @@ import { FaScroll } from "react-icons/fa6";
 import { FiWifi } from "react-icons/fi";
 import { GiForkKnifeSpoon } from "react-icons/gi";
 import { TbSmokingNo } from "react-icons/tb";
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import axios from 'axios'
 
 
@@ -11,17 +12,24 @@ import axios from 'axios'
 export const RoomList = () => {
     const [room, setRoom] = useState([])
     const [roomImages, setRoomImages] = useState([]);
+    console.log(roomImages[0]);
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState("ASC")
     const [sortBy, setSortBy] = useState("createdAt")
+    const [length, setLength] = useState("")
+    const [limit, setLimit] = useState("")
+    const maxPage = Math.ceil(length / limit)
+
     const { id } = useParams()
     const navigate = useNavigate()
 
 
     const getRoomByProperty = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${id}?page=${1}&sort=${sort}&sortBy=${sortBy}`);
-            setRoom(response.data);
+            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${id}?page=${page}&sort=${sort}&sortBy=${sortBy}`);
+            setRoom(response.data.result);
+            setLength(response.data.length)
+            setLimit(response.data.limit)
         } catch (error) {
             console.error('Error fetching room by property:', error);
         }
@@ -29,13 +37,25 @@ export const RoomList = () => {
 
     const fetchRoomImages = async (roomId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/RoomImg/${roomId}?page=${page}`);
+            const response = await axios.get(`http://localhost:8000/api/room/RoomImg/${roomId}`);
             const data = response.data;
             return data;
         } catch (error) {
             console.error('Error fetching room images:', error);
             return [];
         }
+    };
+
+    const nextPage = () => {
+        if (page < maxPage) {
+            setPage((prevPage) => Math.max(+prevPage + 1, 1));
+        };
+    };
+
+    const prevPage = () => {
+        if (page > 1) {
+            setPage((prevPage) => Math.max(+prevPage - 1, 1));
+        };
     };
 
     const formatToRupiah = (angka) => {
@@ -61,7 +81,7 @@ export const RoomList = () => {
 
     useEffect(() => {
         getRoomByProperty();
-    }, [sort, sortBy]);
+    }, [sort, page,sortBy]);
 
     useEffect(() => {
         const fetchImagesForRooms = async () => {
@@ -70,7 +90,7 @@ export const RoomList = () => {
         };
 
         fetchImagesForRooms();
-    }, [room, page]);
+    }, [room,page]);
 
     return (
         <div className='w-full pl-52'>
@@ -148,6 +168,19 @@ export const RoomList = () => {
                                 </div>
                             </div>
                         ))}
+                        <div className=" flex justify-center items-center h-14 gap-5">
+                            {page > 1 ?
+                                <div onClick={prevPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowLeftCircleFill size={"30"} /> </div>
+                                :
+                                null
+                            }
+                            {maxPage < 2 ? null : <div className=" text-xl font-thin"> page {page} </div>}
+                            {page < maxPage ?
+                                <div onClick={nextPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowRightCircleFill size={"30"} /> </div>
+                                :
+                                null
+                            }
+                        </div>
 
                     </div>
                     :
