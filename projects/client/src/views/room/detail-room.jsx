@@ -1,20 +1,24 @@
 import axios from "axios";
 import Navbar from "../../components/navbar/navbar"
 import Footer from '../../components/footer';
+import Swal from 'sweetalert2'
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from 'react-date-range';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaScroll } from "react-icons/fa6";
 import { FiWifi } from "react-icons/fi";
 import { GiForkKnifeSpoon } from "react-icons/gi";
+import { IoIosArrowBack } from "react-icons/io";
 import { TbSmokingNo } from "react-icons/tb";
 
 export const DetailRoom = () => {
     const { id } = useParams()
     const [roomImages, setRoomImages] = useState([]);
     const [data, setData] = useState({})
+    const navigate = useNavigate()
+    const token = localStorage.getItem('token')
 
     const today = new Date();
     const tomorrow = new Date();
@@ -49,6 +53,9 @@ export const DetailRoom = () => {
             return [];
         }
     };
+    const back = () => {
+        navigate(`/property/${data.propertyId}`)
+    }
 
     const formatToRupiah = (angka) => {
         const formatter = new Intl.NumberFormat('id-ID', {
@@ -57,6 +64,23 @@ export const DetailRoom = () => {
             minimumFractionDigits: 0
         });
         return formatter.format(angka);
+    }
+    const checkInDate = new Date(new Date(startDate));
+    const checkOutDate = new Date(new Date(endDate));
+    const rangeDate = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
+
+    const toBooking = () => {
+        if (!token) {
+            Swal.fire({
+                icon: "warning",
+                iconColor: "red",
+                title: "Sorry, You must log in before placing an order"
+            })
+        }
+        else {
+            navigate(`/book?checkIn=${checkInDate}&checkOut=${checkOutDate}&totalPayment=${rangeDate * data.price}&roomId=${id}`)
+            window.scrollTo(0, 0);
+        }
     }
 
     useEffect(() => {
@@ -72,7 +96,12 @@ export const DetailRoom = () => {
             <div> <Navbar /> </div>
             <div className="pt-40 w-full flex justify-center">
                 <div className=" h-full w-4/6">
-                    <div className=" pt-5 ">
+                    <div className=" pt-5 flex items-end">
+                        <div className="flex items-end">
+                            <div onClick={back} className=" cursor-pointer hover:scale-95 transition-all">
+                                <IoIosArrowBack size={"40"} />
+                            </div>
+                        </div>
                         <div className=" text-5xl text-gray-800"> {data.roomName} </div>
                     </div>
                     <div className='w-full h-3/4 mt-10'>
@@ -153,9 +182,43 @@ export const DetailRoom = () => {
                                     showDateDisplay={false}
                                     minDate={new Date()}
                                 />
-                                <div className="w-full px-10 flex justify-center items-center">
-                                    <div className="w-full py-2 font-semibold flex justify-center items-center bg-bgPrimary rounded-xl text-white cursor-pointer hover:bg-bgPrimaryActive transition-all">
+                                <div className="w-full px-5 flex justify-center items-center">
+                                    <button
+                                        onClick={() => {
+                                            toBooking()
+                                        }}
+                                        disabled={endDate === startDate ? true : false}
+                                        className="w-full py-2 font-semibold flex disabled:cursor-not-allowed disabled:bg-teal-100 justify-center items-center bg-bgPrimary rounded-md text-white cursor-pointer hover:bg-bgPrimaryActive transition-all">
                                         Book now
+                                    </button>
+                                </div>
+                                <div className="w-full flex justify-between px-5 text-lg mt-5  text-gray-600">
+                                    <div className=" underline">
+                                        {formatToRupiah(parseInt(data.price))} X {rangeDate} Night
+                                    </div>
+                                    <div>
+                                        {formatToRupiah(parseInt(data.price * rangeDate))}
+                                    </div>
+                                </div>
+                                <div className="w-full px-5 text-gray-600 text-lg flex justify-between">
+                                    <div className="underline">
+                                        Promo price
+                                    </div>
+                                    <div>
+                                        {formatToRupiah(0)}
+                                    </div>
+                                </div>
+                                <div className="px-5">
+                                    <hr className="mt-5" />
+                                </div>
+                                <div className="w-full px-5 mt-5">
+                                    <div className="w-full flex justify-between font-semibold">
+                                        <div>
+                                            total payment
+                                        </div>
+                                        <div>
+                                            {formatToRupiah(data.price * rangeDate)}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

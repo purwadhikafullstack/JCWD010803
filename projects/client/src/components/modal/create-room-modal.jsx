@@ -3,6 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup'
+import Swal from "sweetalert2"
 
 export const CreateRoomModal = ({openModal, setOpenModal, setReload, reload}) => {
     const params = useParams()
@@ -33,9 +34,18 @@ export const CreateRoomModal = ({openModal, setOpenModal, setReload, reload}) =>
             formData.append("roomImg", file3)
             formData.append("roomImg", file4)
             const response = await axios.post(`http://localhost:8000/api/room/${params.propertyId}`, formData)
+            Swal.fire({
+                icon:"success",
+                title:"Add new room success",
+            })
             setOpenModal(false)
             setReload(!reload)
         } catch (error) {
+            Swal.fire({
+                icon:"warning",
+                title:"Add new room failed",
+                text:error.response.data.message
+            })
             console.log(error);
         }
     }
