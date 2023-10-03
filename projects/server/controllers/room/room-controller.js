@@ -1,26 +1,30 @@
+const { Op } = require("sequelize");
+const { Sequelize } = require("sequelize");
 const db = require("../../models");
 const room = db.rooms;
 const roomImg = db.roomImg;
+const specialPrice = db.specialPrice;
 
 module.exports = {
   addRoom: async (req, res) => {
     try {
-      const { roomName, QTY,price, roomDesc } = req.body;
+      const { roomName, QTY, price, roomDesc } = req.body;
       const propertyId = req.params.id;
       const data = req.files;
       const checkRoom = await room.findOne({
-        where : {roomName : roomName, propertyId: propertyId}
-      })
-      if (checkRoom) throw{
-        message:"Room name already exists"
-      }
+        where: { roomName: roomName, propertyId: propertyId },
+      });
+      if (checkRoom)
+        throw {
+          message: "Room name already exists",
+        };
 
       const result = await room.create({
         roomName,
         roomDesc,
         price,
         propertyId,
-        QTY
+        QTY,
       });
       const pathImg = data.map((item) => {
         return {
@@ -80,11 +84,11 @@ module.exports = {
   getRoomByProperties: async (req, res) => {
     try {
       const { propertyId } = req.params;
-      const page = req.query.page || 1
+      const page = req.query.page || 1;
       const limit = 10;
       const offset = (page - 1) * limit;
-      const sort = req.query.sort || "DESC"
-      const sortBy = req.query.sortBy || "createdAt"
+      const sort = req.query.sort || "DESC";
+      const sortBy = req.query.sortBy || "createdAt";
 
       const result = await room.findAll({
         where: { propertyId: propertyId, isDelete: false },
@@ -125,15 +129,95 @@ module.exports = {
       console.log(error);
     }
   },
-  roomById : async (req, res) => {
+  roomById: async (req, res) => {
     try {
-      const {id} = req.params
-      const result = await room.findOne({
-        where : {id : id}
-      })
-      res.status(200).send(result)
+      const { id } = req.params;
+      const { checkIn, checkOut } = req.body;
+      const checkPromo = await specialPrice.findOne({
+        where: {
+          roomId: id,
+          [Op.or]: [
+            {
+              [Op.and]: [
+                {
+                  startDate: {
+                    [Op.lte]: new Date(checkIn),
+                  },
+                  endDate: {
+                    [Op.gte]: new Date(checkOut),
+                  },
+                },
+              ],
+            },
+            {
+              [Op.or]: [
+                {
+                  startDate: {
+                    [Op.between]: [new Date(checkIn), new Date(checkOut)],
+                  },
+                },
+                {
+                  endDate: {
+                    [Op.between]: [new Date(checkIn), new Date(checkOut)],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+      if (checkPromo) {
+        const result = await room.findOne({
+          where: { id },
+          include: [
+            {
+              model: specialPrice,
+              where: {
+                roomId: id,
+                [Op.or]: [
+                  {
+                    [Op.and]: [
+                      {
+                        startDate: {
+                          [Op.lte]: new Date(checkIn),
+                        },
+                        endDate: {
+                          [Op.gte]: new Date(checkOut),
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    [Op.or]: [
+                      {
+                        startDate: {
+                          [Op.between]: [new Date(checkIn), new Date(checkOut)],
+                        },
+                      },
+                      {
+                        endDate: {
+                          [Op.between]: [new Date(checkIn), new Date(checkOut)],
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+          attributes: ["id", "roomName", "price", "roomDesc", "propertyId"],
+        });
+        res.status(200).send(result);
+      } else {
+        const result = await room.findOne({
+          where: { id },
+        });
+        res.status(200).send(result);
+      }
     } catch (error) {
-      res.status(400).send(error)
+      console.log(error);
+      res.status(400).send(error);
     }
-  }
+  },
 };

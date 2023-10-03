@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       rooms.belongsTo(models.properties);
       rooms.hasOne(models.onBooking);
+      rooms.hasMany(models.specialPrice)
     }
   }
   rooms.init(
