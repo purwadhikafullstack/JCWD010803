@@ -23,6 +23,7 @@ export const Transaction = () => {
     const [methode, setMethode] = useState([])
     const [methodeValue, setMethodeValue] = useState(1)
     const [room, setRoom] = useState()
+    console.log(totalPayment);
     const [image, setImage] = useState([])
 
     const getMethode = async () => {
@@ -45,12 +46,12 @@ export const Transaction = () => {
 
     const booking = async () => {
         try {
-            const response = await axios.post(`http://localhost:8000/api/transaction/bookingRoom`,{"roomId": roomId, "checkIn": checkInDate, "checkOut": checkOutDate, "paymentMethode": methodeValue },{
-                headers: {Authorization : `Bearer ${token}`}
-            })            
+            const response = await axios.post(`http://localhost:8000/api/transaction/bookingRoom`, { "roomId": roomId, "checkIn": checkInDate, "checkOut": checkOutDate, "paymentMethode": methodeValue, "totalPayment": totalPayment }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
             Swal.fire({
-                icon:"success",
-                title:"Success",
+                icon: "success",
+                title: "Success",
                 text: "Booking success",
                 timer: 1000
             })
@@ -77,18 +78,20 @@ export const Transaction = () => {
 
     const getRoom = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/${roomId}`)
+            const response = await axios.post(`http://localhost:8000/api/room/${roomId}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
             setRoom(response.data)
+
         } catch (error) {
             console.log(error);
         }
     }
+    console.log(room);
 
     useEffect(() => {
         getMethode()
         getRoom()
         getRoomImg()
-    }, [])
+    }, [totalPayment])
     return (
         <div>
             <div> <Navbar /> </div>
@@ -153,7 +156,7 @@ export const Transaction = () => {
                 <div className=" pt-10 w-1/3">
                     <div className=" top-40 sticky w-full shadow-lg rounded-lg p-5">
                         <div className="flex mb-5 w-full gap-5">
-                            <img src={`http://localhost:8000/room/${image[0]? image[0].image : "undefined"}`} className="w-2/4 rounded-l-lg h-full "/>
+                            <img src={`http://localhost:8000/room/${image[0] ? image[0].image : "undefined"}`} className="w-2/4 rounded-l-lg h-full " />
                             <div className=" my-auto">
                                 <div>
                                     <div className=" text-gray-800 font-semibold"> {room ? room.roomName : "undefined"} </div>
@@ -169,8 +172,46 @@ export const Transaction = () => {
                             <div className=" text-2xl mt-5 font-semibold">Price breakdown</div>
                             <div className=" text-lg text-gray-500 mt-2">
                                 <div className="flex justify-between w-full">
-                                    <div> {room ? formatToRupiah(room.price) : "undefined"} X {rangeDate} <span className="text-md">Night</span> </div>
-                                    <div> {formatToRupiah(totalPayment)} </div>
+                                    <>
+                                        {room ?
+                                            <>
+                                                {room.specialPrices ?
+                                                    <>
+                                                        {room.specialPrices[0].isPersent === false ?
+                                                            <div className=" text-gray-800 flex justify-between w-full">
+                                                                <div className=" flex underline">
+                                                                    {formatToRupiah(parseInt(room.specialPrices[0].specialPrice))} X {rangeDate}
+                                                                </div>
+                                                                <div>
+                                                                    {formatToRupiah(parseInt(room.specialPrices[0].specialPrice * rangeDate))}
+                                                                </div>
+                                                            </div>
+                                                            :
+                                                            <div className=" text-gray-800 flex justify-between w-full">
+                                                                <div className=" flex underline">
+                                                                    {formatToRupiah(room.price + (room.price * (room.specialPrices[0].specialPrice / 100)))} X {rangeDate}
+                                                                </div>
+                                                                <div>
+                                                                    {formatToRupiah(parseInt(room.price + (room.price * (room.specialPrices[0].specialPrice / 100))) * rangeDate)}
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </>
+                                                    :
+                                                    <div className=" text-gray-800 flex w-full justify-between">
+                                                        <div className=" flex underline">
+                                                            {formatToRupiah(parseInt(room.price))} X {rangeDate}
+                                                        </div>
+                                                        <div>
+                                                            {formatToRupiah(parseInt(room.price * rangeDate))}
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </>
+                                            :
+                                            "undefined"
+                                        }
+                                    </>
                                 </div>
                             </div>
                         </div>

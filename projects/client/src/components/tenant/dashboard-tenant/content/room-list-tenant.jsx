@@ -4,11 +4,12 @@ import { RiImageEditFill } from "react-icons/ri";
 import { SortingRoomList } from '../../../navbar/sorting-room-list';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { GiPriceTag } from 'react-icons/gi'
 import axios from 'axios'
 
 
 
-export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId, setEditModal, setRoomName, setRoomDesc, setPrice, setOpenModalAdd }) => {
+export const RoomListTenant = ({ setOpenUpdateImage, setOpenSpecialPrice,reload, setOpenModal, setId, setEditModal, setRoomName, setRoomDesc, setPrice, setOpenModalAdd }) => {
     const [room, setRoom] = useState([])
     const [roomImages, setRoomImages] = useState([]);
     const [page, setPage] = useState(1)
@@ -93,9 +94,9 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
                 {room.length !== 0 ?
                     <div>
                         {room?.map((item, index) => (
-                            <div className='w-full h-fit flex gap-1 mb-5 border' key={item.id}>
+                            <div className='w-full  h-fit flex gap-1 mb-5 border' key={item.id}>
                                 {roomImages[index]?.map((image) => (
-                                    <div className='w-2/5 md:block hidden h-full'>
+                                    <div className='w-2/5 h-44 md:block hidden'>
                                         <img
                                             className='w-full h-full'
                                             key={image.id}
@@ -118,6 +119,16 @@ export const RoomListTenant = ({ setOpenUpdateImage, reload, setOpenModal, setId
                                     </div>
                                     <div className=' flex p-2 items-end'>
                                         <div className='flex items-end gap-5'>
+                                            
+                                            <div
+                                                className='text-gray-800 cursor-pointer hover:scale-95'
+                                                onClick={() => {
+                                                }}
+                                            ><GiPriceTag
+                                                    onClick={() => {
+                                                        getId(item.id)
+                                                        setOpenSpecialPrice(true)
+                                                    }} size={"25"} /></div>
                                             <div
                                                 className='text-gray-800 cursor-pointer hover:scale-95'
                                                 onClick={() => {
