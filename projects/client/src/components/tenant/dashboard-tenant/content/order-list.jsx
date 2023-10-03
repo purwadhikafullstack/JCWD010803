@@ -62,7 +62,7 @@ export const OrderListComponent = ({ setOpen, reload, setDetail, setOrderId }) =
 
   useEffect(() => {
     getOrder()
-  }, [status, sort, page,reload])
+  }, [status, sort, page, reload])
 
   return (
     <div className="p-14">
@@ -114,6 +114,14 @@ export const OrderListComponent = ({ setOpen, reload, setDetail, setOrderId }) =
                         : "null"
                       } ${item.status.id === 5
                         ? "bg-red-600"
+                        : "null"
+                      }
+                      ${item.status.id === 6
+                        ? "bg-red-600"
+                        : "null"
+                      }
+                      ${item.status.id === 7
+                        ? "bg-blue-400"
                         : "null"
                       } text-white rounded-md font-thin`}
                   >

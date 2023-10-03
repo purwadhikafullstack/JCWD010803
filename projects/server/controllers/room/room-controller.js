@@ -8,6 +8,12 @@ module.exports = {
       const { roomName, QTY,price, roomDesc } = req.body;
       const propertyId = req.params.id;
       const data = req.files;
+      const checkRoom = await room.findOne({
+        where : {roomName : roomName, propertyId: propertyId}
+      })
+      if (checkRoom) throw{
+        message:"Room name already exists"
+      }
 
       const result = await room.create({
         roomName,

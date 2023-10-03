@@ -451,6 +451,7 @@ const userController = {
   },
   postReview : async (req, res) => {
     try {
+      console.log(req.body.review);
       const transactionIsExist = await userTransaction.findOne({
         where: {
           [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }],

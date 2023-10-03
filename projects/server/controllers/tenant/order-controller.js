@@ -255,6 +255,13 @@ const property = db.properties;
     } catch (error) {
       res.status(400).send(error)
     }
-  }
-
+  },
+  allPaymentMethode : async (req, res) => {
+    try {
+        const result = await paymentMethode.findAll()    
+        res.status(200).send(result)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+}
 };

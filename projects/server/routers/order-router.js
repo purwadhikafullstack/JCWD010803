@@ -4,6 +4,7 @@ const { verifyToken } = require('../midlewares/token')
 
 const router = express.Router()
 
+router.get('/paymentMethode', orderController.allPaymentMethode)
 router.patch('/reject',orderController.rejectTransaction)
 router.patch('/cancel',orderController.cancelOrder)
 router.patch('/confirm',orderController.confirmTransaction)

@@ -1,14 +1,17 @@
 import axios from "axios";
 import Navbar from "../../components/navbar/navbar"
 import Footer from '../../components/footer';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { RoomList } from "../../components/room/room-list";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { IoIosArrowBack } from "react-icons/io";
+
 
 export const DetailProperty = () => {
     const { id } = useParams()
     const [data, setData] = useState({})
+    const navigate = useNavigate()
     const property = async (id) => {
         try {
             const response = await axios.get(`http://localhost:8000/api/properties/${id}`)
@@ -16,6 +19,10 @@ export const DetailProperty = () => {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const back = () => {
+        navigate(`/`)
     }
     useEffect(() => {
         property(id)
@@ -26,7 +33,14 @@ export const DetailProperty = () => {
             <div className="pt-40 pl-44 w-full flex justify-center">
                 <div className=" w-full h-full px-10">
                     <div className=" pt-5 ">
-                        <div className=" text-5xl text-gray-800"> {data.propertyName} </div>
+                        <div className="flex items-end gap-5">
+                            <div className="flex items-end">
+                                <div onClick={back} className=" cursor-pointer hover:scale-95 transition-all">
+                                    <IoIosArrowBack size={"40"} />
+                                </div>
+                            </div>
+                            <div className=" text-5xl text-gray-800"> {data.propertyName} </div>
+                        </div>
                         <div className="flex gap-2 text-2xl mt-2 font-semibold text-gray-800">
                             <div>Tenant:</div>
                             <div> {data.user ? data.user.firstName : "undefined"} {data.user ? data.user.lastName : "undefined"} </div>
