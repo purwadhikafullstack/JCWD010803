@@ -1,14 +1,15 @@
 const db = require("../../models");
 const transaction = db.userTransactions;
 const room = db.rooms;
-const properties = db.properties;
-const user = db.user;
-const status = db.status;
-const booking = db.onBooking;
-const category = db.categories
-const paymentMethode = db.paymentMethode
-
-module.exports = {
+const property = db.properties;
+  const properties = db.properties;
+  const user = db.user;
+  const status = db.status;
+  const booking = db.onBooking;
+  const category = db.categories
+  const paymentMethode = db.paymentMethode
+  
+  module.exports = {
   orderMyProperty: async (req, res) => {
     try {
       const { id } = req.user;
@@ -38,8 +39,31 @@ module.exports = {
               ],
             },
           ],
+          offset: offset,
+          limit: limit,
         });
-        const length = result.length;
+        const getLength = await transaction.findAll({
+          where: { statusId: statusId },
+          include: [
+            { model: status },
+            { model: user },
+            {
+              model: room,
+              include: [
+                {
+                  model: properties,
+                  where: { userId: id },
+                  include: [
+                    {
+                      model: user,
+                    }
+                  ],
+                },
+              ],
+            },
+          ],
+        });
+        const length = getLength.length;
         const filteredOrder = result.filter((order) => {
           if (order.room) {
             const myOrder = order.room !== null;
@@ -75,7 +99,27 @@ module.exports = {
           offset: offset,
           order: [["createdAt", sort]],
         });
-        const length = result.length;
+        const getLength = await transaction.findAll({
+          include: [
+            { model: status },
+            { model: user },
+            {
+              model: room,
+              include: [
+                {
+                  model: properties,
+                  where: { userId: id },
+                  include: [
+                    {
+                      model: user,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        });
+        const length = getLength.length;
         const filteredOrder = result.filter((order) => {
           if (order.room) {
             const myOrder = order.room !== null;
@@ -91,6 +135,20 @@ module.exports = {
     } catch (error) {
       console.log(error);
       res.status(400).send(error);
+    }
+  },
+  confirmTransaction: async (req, res) => {
+    try {
+      const { transactionId } = req.body;
+      const changeStatus = transaction.update(
+        { statusId: 3 },
+        { where: { id: transactionId } }
+      );
+      res.status(200).send({
+        message: "confirm success",
+      });
+    } catch (error) {
+      console.log(error);
     }
   },
   getAllStatus: async (req, res) => {
@@ -131,4 +189,64 @@ module.exports = {
       res.status(400).send(error);
     }
   },
+  rejectTransaction: async (req, res) => {
+    try {
+      const { transactionId, roomId } = req.body;
+      const changeStatus = transaction.update(
+        { statusId: 4 },
+        { where: { id: transactionId } }
+      );
+      const cancelBooking = await booking.update(
+        { isCanceled: true },
+        { where: { userTransactionId: transactionId} }
+      );
+      const checkRoom = await room.findOne({
+        where : {id : roomId}
+      })
+      const quantityAdjustment = await room.update(
+        {QTY : checkRoom.QTY + 1},
+        {where : {id : roomId}}
+      )
+      res.status(200).send({
+        message: "reject success",
+      });
+    }
+    catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  cancelOrder : async (req, res) => {
+    try {
+      const { transactionId, roomId } = req.body;
+      const changeStatus = transaction.update(
+        { statusId: 5 },
+        { where: { id: transactionId } }
+      );
+      const cancelBooking = await booking.update(
+        { isCanceled: true },
+        { where: { userTransactionId: transactionId} }
+      );
+      const checkRoom = await room.findOne({
+        where : {id : roomId}
+      })
+      const quantityAdjustment = await room.update(
+        {QTY : checkRoom.QTY + 1},
+        {where : {id : roomId}}
+      )
+      res.status(200).send({
+        message: "Cancel success",
+      });
+    }
+    catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  allPaymentMethode : async (req, res) => {
+    try {
+        const result = await paymentMethode.findAll()    
+        res.status(200).send(result)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+}
 };

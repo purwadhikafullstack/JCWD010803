@@ -3,9 +3,9 @@ import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-ico
 import { IoIosArrowUp } from "react-icons/io";
 
 import axios from 'axios'
-import { SortStatus } from "../navbar/sort-status";
+import { SortStatus } from "../../../navbar/sort-status";
 
-export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
+export const OrderListComponent = ({ setOpen, reload, setDetail, setOrderId }) => {
 
 
   const token = localStorage.getItem('token')
@@ -62,17 +62,17 @@ export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
 
   useEffect(() => {
     getOrder()
-  }, [status, sort])
+  }, [status, sort, page, reload])
 
   return (
     <div className="p-14">
       <div className=" text-4xl text-bgPrimary">My order list</div>
-      <div className="mb-10 mt-20 w-full items-center gap-5 flex justify-end">
+      <div className="mb-10 mt-20 w-full items-center gap-5 md:flex block justify-end">
         <div>Sort by status :</div>
         <div> <SortStatus setStatusName={setStatusName} statusName={statusName} status={status} setStatus={setStatus} /> </div>
       </div>
-      <div className=" text-gray-600 w-full p-5 rounded-lg shadow-md">
-        <table className=" text-gray-600 w-full">
+      <div className=" text-gray-600 w-full overflow-x-auto p-5 rounded-lg shadow-md">
+        <table className=" min-w-max sm:w-full text-gray-600 w-full">
           <tr className=" text-gray-600 border-b ">
             <th onClick={sorting} className=" gap-2 justify-center flex cursor-pointer text-gray-500 py-5">
               <div>TRANSACTION DATE</div>
@@ -101,8 +101,8 @@ export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
                 <th className=" text-gray-600 border-b-2 p-2 w-56">
                   <div
                     className={`${item.status.id === 1
-                        ? "bg-orange-400"
-                        : "null"
+                      ? "bg-orange-400"
+                      : "null"
                       } ${item.status.id === 2
                         ? "bg-blue-400"
                         : "null"
@@ -115,6 +115,14 @@ export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
                       } ${item.status.id === 5
                         ? "bg-red-600"
                         : "null"
+                      }
+                      ${item.status.id === 6
+                        ? "bg-red-600"
+                        : "null"
+                      }
+                      ${item.status.id === 7
+                        ? "bg-blue-400"
+                        : "null"
                       } text-white rounded-md font-thin`}
                   >
                     {item.status.status}
@@ -126,13 +134,13 @@ export const OrderListComponent = ({ setOpen, setDetail, setOrderId }) => {
         </table>
       </div>
       <div className=" flex justify-center items-center h-14 gap-5">
-        {length < limit && page > 1 ?
+        {page > 1 ?
           <div onClick={prevPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowLeftCircleFill size={"30"} /> </div>
           :
           null
         }
-        {maxPage < 2 ? null : <div className=" text-xl font-thin"> page {page} </div>}
-        {length > limit || page < maxPage ?
+        <div className=" text-xl font-thin"> page {page} </div>
+        {page < maxPage ?
           <div onClick={nextPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowRightCircleFill size={"30"} /> </div>
           :
           null

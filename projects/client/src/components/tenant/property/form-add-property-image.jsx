@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export const FormAddPropertyImage = ({ file, setFile, setPage, page }) => {
 
     const [data, setData] = useState(file)
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const next = () => {
         setPage(page + 1)
     }

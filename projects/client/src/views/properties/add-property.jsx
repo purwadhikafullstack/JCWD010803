@@ -18,6 +18,7 @@ export const AddProperty = () => {
     const [propertyName, setPropertyName] = useState("")
     const [propertyDesc, setPropertyDesc] = useState("")
     const [propertyCategory, setPropertyCategory] = useState("")
+    const [detailLocation, setDetailLocation] = useState("")
 
 
     const [ref, inView] = useInView({
@@ -42,6 +43,8 @@ export const AddProperty = () => {
         formData.append("propertyDesc", propertyDesc)
         formData.append("file", file)
         formData.append("categoryId", propertyCategory)
+        formData.append("detailLocation", detailLocation)
+
         try {
             const response = await axios.post('http://localhost:8000/api/properties', formData, {
                 headers: { Authorization: `Bearer: ${token}` }
@@ -127,7 +130,7 @@ export const AddProperty = () => {
             </div>
             <div>
                 {page === 5 ?
-                    <FormAddPropertyCat onClick={createProperty} categoryName={categoryName} setCategoryName={setCategoryName} propertyCategory={propertyCategory} setPropertyCategory={setPropertyCategory} page={page} setPage={setPage} /> :
+                    <FormAddPropertyCat onClick={createProperty} setDetailLocation={setDetailLocation} categoryName={categoryName} setCategoryName={setCategoryName} propertyCategory={propertyCategory} setPropertyCategory={setPropertyCategory} page={page} setPage={setPage} /> :
                     null
                 }
             </div>

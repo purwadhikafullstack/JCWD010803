@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class onBooking extends Model {
     /**
@@ -15,22 +13,26 @@ module.exports = (sequelize, DataTypes) => {
       onBooking.belongsTo(models.userTransactions)
     }
   }
-  onBooking.init({
-    checkIn: {
-      type: DataTypes.DATE,
-      allowNull: false
+  onBooking.init(
+    {
+      checkIn: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      checkOut: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      isCanceled: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
-    checkOut: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    isCanceled: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    {
+      sequelize,
+      modelName: "onBooking",
+      freezeTableName : true
     }
-  }, {
-    sequelize,
-    modelName: 'onBooking',
-  });
+  );
   return onBooking;
 };

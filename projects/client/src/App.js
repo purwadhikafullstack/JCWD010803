@@ -31,9 +31,15 @@ function App() {
           dispatch(setData(userData))
         })
       }
+      if (!token) {
+        localStorage.removeItem('token')
+      }
     };
     keepLogin()
   },[dispatch, token, firebaseToken]);
+
+  
+
 }
 
 export default App;

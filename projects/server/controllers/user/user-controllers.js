@@ -1,9 +1,16 @@
 const db = require("../..//models");
 const user = db.user;
 const dbOtp = db.codeOtp;
+const userTransaction = db.userTransactions;
+const booking = db.onBooking;
+const rooms = db.rooms;
+const property = db.properties;
+const statusPay = db.status;
+const category = db.categories;
+const review = db.review;
 const jwt = require("jsonwebtoken");
 const enc = require("bcrypt");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const handlebars = require("handlebars");
 const fs = require("fs");
 const transporter = require("../../midlewares/transporter");
@@ -34,7 +41,6 @@ const userController = {
       if (!isExist) {
         const salt = await enc.genSalt(10);
         const hashPassword = await enc.hash(password, salt);
-        
         const result = await user.create({
           username,
           email,
@@ -42,6 +48,7 @@ const userController = {
           phoneNumber,
           roleId,
         });
+        console.log(result);
         const payloads = {
           id: result.id,
           username: result.username,
@@ -63,7 +70,6 @@ const userController = {
           throw { message: "Nomor telpon sudah terdaftar" };
         }
       }
-      
     } catch (error) {
       res.status(400).send(error);
     }
@@ -341,76 +347,143 @@ const userController = {
 
       const result = await user.update(
         {
-          firstName : firstName,
-          lastName : lastName,
-          gender : gender,
-          birthdate : birthdate,
-          email : email
+          firstName: firstName,
+          lastName: lastName,
+          gender: gender,
+          birthdate: birthdate,
+          email: email,
         },
         {
-          where: {id:id}
+          where: { id: id },
         }
       );
 
       res.status(200).send({
-        message: "Success"
+        message: "Success",
       });
     } catch (error) {
       res.status(400).send(error);
     }
   },
-  updateAvatar : async (req, res) => {
+  updateAvatar: async (req, res) => {
     try {
       if (req.file == undefined) {
-        throw({message : 'Avatar Cannot be empty'});
+        throw { message: "Avatar Cannot be empty" };
       }
-      const {destination, filename} = req.file;
+      const { destination, filename } = req.file;
       const isExist = await user.findOne({
-        where : {id : req.user.id}
+        where: { id: req.user.id },
       });
 
       if (isExist.profileImg !== null) {
         fs.unlinkSync(`${destination}/${isExist.profileImg}`);
       }
       const setData = await user.update(
-        {profileImg : filename},
-        {where :{
-          id : req.user.id
-      }});
-      res.status(200).send({
-        message : 'Photo Upload Successfully'
-      });
-    } catch (error) {
-      res.status(400).send(error);
-
-    }
-  },
-  updateProfile: async (req, res) => {
-    try {
-      const { id } = req.user;
-      const { firstName, lastName, username, email, gender, birthdate } =
-        req.body;
-
-      const result = await user.update(
+        { profileImg: filename },
         {
-          firstName : firstName,
-          lastName : lastName,
-          gender : gender,
-          birthdate : birthdate,
-          email : email
-        },
-        {
-          where: {id:id}
+          where: {
+            id: req.user.id,
+          },
         }
       );
-
       res.status(200).send({
-        message: "Success"
+        message: "Photo Upload Successfully",
       });
     } catch (error) {
       res.status(400).send(error);
     }
   },
+  getOrderList: async (req, res) => {
+    try {
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 10;
+      const offset = (page - 1) * limit;
+      const result = await userTransaction.findAll({
+        where: { userId: req.user.id },
+        include: [
+          { model: booking },
+          { model: statusPay },
+          {
+            model: rooms,
+            include: [
+              {
+                model: property,
+                include: [{ model: category }],
+              },
+            ],
+          },
+        ],
+      });
+
+      res.status(200).send({
+        result,
+        message: "oke",
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  uploadPayment : async (req, res) => {
+    try {
+      const {fileName, id, userId} = req.body;
+      if (req.file == undefined) {
+        throw { message: "Receipt Cannot be empty" };
+      }
+      const result = await userTransaction.update(
+        {
+          paymentImg : fileName,
+          statusId : 2
+        },
+        {
+          where :{
+            [Op.and] : [{id : id}, {userId : userId}]
+          }
+        }
+      );
+      
+      res.status(200).send({
+        message : "sukses",
+        result
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  postReview : async (req, res) => {
+    try {
+      console.log(req.body.review);
+      const transactionIsExist = await userTransaction.findOne({
+        where: {
+          [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }],
+        }
+      });
+      if (transactionIsExist) {
+        const result = await userTransaction.update(
+          {
+            isReview : true
+          },
+          {
+            where :{
+              [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }]
+            }
+          }
+          );
+          const setReview = await review.create({
+            userReview : req.body.review,
+            userTransactionId : req.body.id
+          });
+          res.status(200).send({
+            message : "Give a review success"
+          })
+      }else{
+        throw {
+          message : "Transaction not exist"
+        }
+      }
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  }
 };
 
 module.exports = userController;

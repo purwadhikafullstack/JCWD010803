@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const FormAddPropertyName = ({ setPage, propertyName, page, setPropertyName }) => {
     const [data, setData] = useState(propertyName)
     const navigate = useNavigate()
+
     const next = () => {
         setPage(page + 1)
     }

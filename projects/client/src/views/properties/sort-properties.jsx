@@ -25,6 +25,7 @@ export const SortProperties = () => {
   
 
   const maxPage = Math.ceil(length / limit)
+  console.log(length);
   
 
   const sortProperties = async () => {
@@ -116,13 +117,13 @@ export const SortProperties = () => {
         </div>
       </div>
       <div className=" flex justify-center items-center h-14 gap-5">
-        {length < limit && page > 1 ?
+        { page > 1 ?
           <div onClick={prevPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowLeftCircleFill size={"30"} /> </div>
           :
           null
         }
         {maxPage < 2 ? null : <div className=" text-xl font-thin"> page {page} </div>}
-        {length > limit || page < maxPage ?
+        {page < maxPage ?
           <div onClick={nextPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowRightCircleFill size={"30"} /> </div>
           :
           null

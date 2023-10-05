@@ -1,23 +1,57 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RxAvatar } from "react-icons/rx";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
+import swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const ProfileAvatar = () => {
   const dataFireBase = useSelector((state) => state.firebase.value);
   const data = useSelector((state) => state.user.value);
+  const token = localStorage.getItem("token");
+  const [file, setFile] = useState(null); 
+  const navigate = useNavigate();
+  const handleChange = (event) => {
+    setFile(event.target.files[0]);
+  };
 
-  const ChangeAvaSchema = Yup.object().shape({
-    file: Yup.mixed().required("File is required"),
-  });
+  const handleSubmit = async (event) => {
+    event.preventDefault(); 
 
-  const handleUpdate = async (data) => {
     try {
-      console.log(data);
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("fileName", file.name);
+        const response = await axios.post(
+          `http://localhost:8000/api/user/avatar`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        swal.fire({
+          icon: "success",
+          title: "Save change Success",
+          text: " ",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } else {
+        swal.fire({
+          icon: "warning",
+          iconColor: "red",
+          title: "File cannot be empty",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error); 
     }
   };
 
@@ -26,66 +60,47 @@ const ProfileAvatar = () => {
       <div className="text-bgPrimary xs:text-xl md:text-3xl font-semibold">
         <p>Change Your Avatar Here</p>{" "}
       </div>
-      <Formik
-        initialValues={{
-          file: null,
-        }}
-        validationSchema={ChangeAvaSchema}
-        onSubmit={handleUpdate}
-      >
-        {({ setFieldValue, dirty }) => (
-          <Form>
-            <div className="p-2">
-              <div className="my-auto p-4">
-                {data.profileImg || dataFireBase.profileImg ? (
-                  (
-                    <div className="">
-                      <img
-                        className="h-32 w-32 border rounded-full object-fill"
-                        src={`http://localhost:8000/avatars/${data.profileImg}`}
-                      />
-                    </div>
-                  ) || (
-                    <img
-                      className="h-32 w-32 border rounded-full object-fill"
-                      src={`http://localhost:8000/avatars/${dataFireBase.imgUrl}`}
-                    />
-                  )
-                ) : (
-                  <RxAvatar size={"50"} color="#2CA4A5" />
-                )}{" "}
-              </div>
-              <label
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                for="file_input"
-              >
-                Choose your file
-              </label>
-
-              <Field
-                className="block w-full border border-gray-300 rounded-sm cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
-                type="file"
-                name="file"
-                onChange={(e) => setFieldValue("file", e.target.files[0])}
-              ></Field>
-              <ErrorMessage
-                name="file"
-                component={"div"}
-                className="text-red-500 text-base"
+      <form onSubmit={handleSubmit} action="#">
+        <div className="p-2">
+          <div className="my-auto p-4">
+            {data.profileImg || dataFireBase.profileImg ? (
+              <img
+                className="h-32 w-32 border rounded-full object-fill"
+                src={`http://localhost:8000/avatars/${
+                  data.profileImg || dataFireBase.imgUrl
+                }`}
+                alt="Avatar"
               />
-            </div>
-            <div className="p-2">
-              <button
-                type="submit"
-                className="w-1/2 bg-bgPrimary hover:btnHverify text-white font-semibold py-2 px-4 rounded"
-                action="#"
-              >
-                Save Change
-              </button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+            ) : (
+              <RxAvatar size={"50"} color="#2CA4A5" />
+            )}
+          </div>
+
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="file_input"
+          >
+            Choose your file
+          </label>
+
+          <input
+            className="block w-full border border-gray-300 rounded-sm cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
+            type="file"
+            id="file_input"
+            name="file"
+            onChange={handleChange}
+          ></input>
+        </div>
+
+        <div className="p-2">
+          <button
+            type="submit"
+            className="w-1/2 bg-bgPrimary hover:btnHverify text-white font-semibold py-2 px-4 rounded"
+          >
+            Save Change
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

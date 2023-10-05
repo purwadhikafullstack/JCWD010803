@@ -4,6 +4,7 @@ const properties = db.properties;
 const rooms = db.rooms;
 const booking = db.onBooking;
 const category = db.categories;
+const user = db.user;
 
 const propertiesController = {
   sortProperty: async (req, res) => {
@@ -29,6 +30,9 @@ const propertiesController = {
           {
             model: rooms,
             attributes: ["price"],
+            where: {
+              QTY: { [Op.ne]: 0 },
+            },
             include: [
               {
                 model: booking,
@@ -64,6 +68,9 @@ const propertiesController = {
         include: [
           {
             model: rooms,
+            where: {
+              QTY: { [Op.ne]: 0 },
+            },
             include: [
               {
                 model: booking,
@@ -148,7 +155,7 @@ const propertiesController = {
   },
   addProperty: async (req, res) => {
     try {
-      const { propertyName, propertyDesc, categoryId } = req.body;
+      const { propertyName, propertyDesc, categoryId, detailLocation } = req.body;
       const userId = req.user.id;
       const propertyImg = req.file.filename;
       const result = await properties.create({
@@ -157,12 +164,14 @@ const propertiesController = {
         propertyDesc,
         propertyImg,
         userId,
+        detailLocation
       });
       res.status(200).send({
         message: "add properties success",
         result,
       });
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -212,7 +221,8 @@ const propertiesController = {
     try {
       const sort = req.query.sort || "DESC";
       const sortBy = "createdAt";
-      const limit = 4;
+      const limit = 10;
+
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const { id } = req.user;
@@ -255,6 +265,21 @@ const propertiesController = {
       res.status(400).send(error);
     }
   },
+  detailProperty: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await properties.findOne({
+        where: { id: id },
+        include: 
+        [
+          { model: category }, 
+          { model: user }
+        ],
+      });
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(400).send(error)
+    }
 };
 
 module.exports = propertiesController;
