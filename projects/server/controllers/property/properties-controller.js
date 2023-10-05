@@ -239,10 +239,18 @@ const propertiesController = {
   },
   allProperties: async (req, res) => {
     try {
+      const limit = 16
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
       const result = await properties.findAll({
-        include: {model : category}
+        include: [{model : category}, {model: rooms}],
+        limit: limit,
+        offset: offset,
       });
-      res.status(200).send(result)
+      const get = await properties.findAll()
+      const length = get.length
+      
+      res.status(200).send({result, length, limit })
     } catch (error) {
       res.status(400).send(error);
     }
