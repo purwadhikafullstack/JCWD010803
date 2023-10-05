@@ -16,6 +16,7 @@ import { AddPropertyPage } from "../pages/add-property-page";
 import { DetailPropertyPage } from "../pages/detail-property-page";
 import { DetailRoomPage } from "../pages/detail-room-page";
 import { TransactionPage } from "../pages/transaction-page";
+import SalesReportPage from "../pages/sales-report-page";
 
 
 const Routes = (
@@ -26,6 +27,7 @@ const Routes = (
     <Route path="/login-tenant" element={<LoginTenant />} />
     <Route path="/dashboard" element={<DashboardTenants />} />
     <Route path="/dashboard/order-list" element={<OrderListPage />} />
+    <Route path="/dashboard/sales-report" element={<SalesReportPage />} />
     <Route path="/dashboard/rooms/:propertyId" element={<RoomListTenant />} />
     <Route path="/profile-setting" element={<ProfileSettingPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />

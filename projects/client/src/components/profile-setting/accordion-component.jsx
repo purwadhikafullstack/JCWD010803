@@ -38,6 +38,7 @@ const AccordionSection = ({
     const nextIndex = isActiveSection ? null : sectionIndex;
     setActiveIndex(nextIndex);
   };
+  
   return (
     <div className="p-2 border ">
       <div className="cursor-pointer" onClick={toggleSection}>
@@ -47,9 +48,9 @@ const AccordionSection = ({
         </div>
         <div>
           <p className="text-slate-600">
-            {formatDate(section.onBooking.checkIn)} -{" "}
-            {stayLong(section.onBooking.checkIn, section.onBooking.checkOut)}{" "}
-            Night - {section.room.property.category.category}
+            {formatDate(section.onBooking.checkIn)} {" "}
+            {stayLong(section.onBooking.checkIn, section.onBooking.checkOut)} {"  Night - "}
+            {section.room.property.category.category}
           </p>
         </div>
         {section.statusId == 1 ? (
@@ -61,14 +62,13 @@ const AccordionSection = ({
           </div>
         ) : (
           <div className="py-1 flex flex-wrap justify-end ">
-            <span className="text-[#f59e0b]">{section.status.status} {section.statusId == 7 && section.isReview == false ? (" - Give A Review") : (null)} </span>
+            <span className="text-[#f59e0b]">{section.status.status} {section.statusId == 3 && section.isReview == false ? (" - Give A Review") : (null)} </span>
           </div>
         )}
       </div>
 
       {isActiveSection && (
         <div>
-          {/* <div>Ini adalah konten</div> */}
           <div className="text-right">
             {section.statusId == 1 ? (
               <>
@@ -84,7 +84,7 @@ const AccordionSection = ({
               </>
             ) : null}
           </div>
-          {section.statusId == 7 && section.isReview == false ? (
+          {section.statusId == 3 && section.isReview == false ? (
             <ReviewModal toggleSection={toggleSection} setReload={setReload} reload={reload} data={section}/>
           ) : (null)}
         </div>
