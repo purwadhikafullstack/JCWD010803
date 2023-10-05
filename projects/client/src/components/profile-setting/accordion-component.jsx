@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import UploadPay from "../modal/upload-payment";
 import ReviewModal from "../modal/review-modal";
-
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -14,7 +15,6 @@ function formatDate(inputDate) {
 }
 
 function stayLong(checkInDate, checkOutDate) {
-
   const i = new Date(checkInDate);
   const o = new Date(checkOutDate);
   const long =
@@ -29,10 +29,30 @@ const AccordionSection = ({
   setActiveIndex,
   sectionIndex,
   setReload,
-  reload
+  reload,
 }) => {
+  console.log(section);
 
   const [openModal, setOpenModal] = useState(false);
+
+  const cancelOrder = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to cancel this order?",
+      confirmButtonText: "Yes",
+      showCancelButton: true,
+      confirmButtonColor: "#2CA4A5",
+      cancelButtonColor: "#e3e3e3",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await axios.patch(
+          "http://localhost:8000/api/order/cancel",
+          { transactionId: section.id, roomId: section.roomId }
+        );
+        setReload(!reload);
+      }
+    });
+  };
 
   const toggleSection = () => {
     const nextIndex = isActiveSection ? null : sectionIndex;
@@ -61,7 +81,12 @@ const AccordionSection = ({
           </div>
         ) : (
           <div className="py-1 flex flex-wrap justify-end ">
-            <span className="text-[#f59e0b]">{section.status.status} {section.statusId == 7 && section.isReview == false ? (" - Give A Review") : (null)} </span>
+            <span className="text-[#f59e0b]">
+              {section.status.status}{" "}
+              {section.statusId == 7 && section.isReview == false
+                ? " - Give A Review"
+                : null}{" "}
+            </span>
           </div>
         )}
       </div>
@@ -69,7 +94,15 @@ const AccordionSection = ({
       {isActiveSection && (
         <div>
           {/* <div>Ini adalah konten</div> */}
-          <div className="text-right">
+          <div className="text-right w-full justify-end gap-5 flex">
+            {section.statusId === 1 || section.statusId === 2 ? (
+              <button
+                onClick={cancelOrder}
+                className="p-2 bg-red-700 text-white rounded-sm hover:bg-red-600 transition-all"
+              >
+                Cancelled Order
+              </button>
+            ) : null}
             {section.statusId == 1 ? (
               <>
                 <button
@@ -80,13 +113,25 @@ const AccordionSection = ({
                 >
                   Upload Payment
                 </button>
-                {openModal && <UploadPay setReload={setReload} reload={reload} closeModal={setOpenModal} data={section} />}
+                {openModal && (
+                  <UploadPay
+                    setReload={setReload}
+                    reload={reload}
+                    closeModal={setOpenModal}
+                    data={section}
+                  />
+                )}
               </>
             ) : null}
           </div>
           {section.statusId == 7 && section.isReview == false ? (
-            <ReviewModal toggleSection={toggleSection} setReload={setReload} reload={reload} data={section}/>
-          ) : (null)}
+            <ReviewModal
+              toggleSection={toggleSection}
+              setReload={setReload}
+              reload={reload}
+              data={section}
+            />
+          ) : null}
         </div>
       )}
     </div>

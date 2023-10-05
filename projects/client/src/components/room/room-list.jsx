@@ -48,13 +48,12 @@ export const RoomList = () => {
     }
 
     const toDetail = (id, QTY) => {
-        if (QTY === 0) {
-            null
-        }
-        else {
+        if (QTY !== 0) {
             navigate(`/room/${id}`)
             window.scrollTo(0, 0);
+            
         }
+
     }
 
 
