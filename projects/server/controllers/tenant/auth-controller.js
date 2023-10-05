@@ -2,7 +2,6 @@ const { Op } = require("sequelize");
 const db = require("../../models");
 const user = db.user;
 const enc = require("bcrypt");
-const jwt = require('jsonwebtoken')
 
 const AuthController = {
   regisTenant: async (req, res) => {
