@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   codeOtp.init({
     otp: {
       type: DataTypes.STRING,
-      unique: true
+      // unique: true
     },
     expiredDate: {
       type: DataTypes.DATE
@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'codeOtp',
+    freezeTableName : true
   });
   return codeOtp;
 };

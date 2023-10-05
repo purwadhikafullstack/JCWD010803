@@ -4,6 +4,8 @@
 .pnp.js
 .env
 
+# folder
+/public
 
 # testing
 /coverage

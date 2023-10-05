@@ -40,6 +40,7 @@ const roomController = {
 
       res.status(200).send(filteredProperties);
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   },

@@ -5,9 +5,11 @@ import { BiKey } from "react-icons/bi";
 import { FormChangePassword } from "../../components/profile-setting/form-change-password";
 import { ProfileSettingSelect } from "../../components/profile-setting/profile-setting-select";
 import { ProfileSettingSelectTop } from "../../components/profile-setting/profile-setting-select-top";
+import FormChangeProfile from "../../components/profile-setting/form-change-profile";
+import UserOrderList from "../../components/profile-setting/user-order-component";
 
 export const ProfileSetting = () => {
-	const [click, setClick] = useState("")
+	const [click, setClick] = useState("changePassword")
 
 	const handleClick = (value) => {
 		setClick(value)
@@ -22,11 +24,13 @@ export const ProfileSetting = () => {
 				</div>
 			</div>
 			<div className="block sm:flex sm:px-0 w-full h-screen pt-2 sm:pt-24 sm:pb-10 gap-5 justify-center">
-				<div>
+				<div className="w-1/5">
 					<ProfileSettingSelect choose={handleClick} value={click} />
 				</div>
-				<div className=" w-full sm:w-1/2 h-fit rounded border-gray-300 border flex ">
-					{click === "changePassword" ? (<FormChangePassword />) : (null)}
+				<div className=" w-full sm:w-3/5 h-fit rounded border-gray-300 border flex ">
+					{click === "changePassword" ? (<FormChangePassword />) 
+					: click ==="changeProfile" ? (<FormChangeProfile />) 
+					: click ==="orderList" ? (<UserOrderList />) : (null) }
 				</div>
 			</div>
 		</div>
