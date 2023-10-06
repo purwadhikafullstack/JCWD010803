@@ -7,7 +7,7 @@ const paymentMethode = db.paymentMethode;
 const transactionController = {
   addBooking: async (req, res) => {
     try {
-      const { checkIn, checkOut, roomId, paymentMethode, totalPayment } = req.body;
+      const { checkIn, checkOut, roomId, paymentMethode, totalPayment, propertyId } = req.body;
       const { id } = req.user;
       const roomData = await room.findOne({
         where: { id: roomId },
@@ -24,6 +24,7 @@ const transactionController = {
         paymentMethodeId: paymentMethode,
         statusId: 1,
         totalPayment,
+        propertyId
       });
       const addBooking = await onBooking.create({
         checkIn: checkInDate,

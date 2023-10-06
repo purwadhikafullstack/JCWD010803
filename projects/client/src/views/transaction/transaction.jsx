@@ -45,7 +45,7 @@ export const Transaction = () => {
 
     const booking = async () => {
         try {
-            const response = await axios.post(`http://localhost:8000/api/transaction/bookingRoom`, { "roomId": roomId, "checkIn": checkInDate, "checkOut": checkOutDate, "paymentMethode": methodeValue, "totalPayment": totalPayment }, {
+            const response = await axios.post(`http://localhost:8000/api/transaction/bookingRoom`, { "roomId": roomId, "checkIn": checkInDate, "checkOut": checkOutDate, "paymentMethode": methodeValue,"propertyId" : room.propertyId, "totalPayment": totalPayment }, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             Swal.fire({
