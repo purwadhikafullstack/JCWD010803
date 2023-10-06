@@ -49,7 +49,8 @@ export const RoomList = () => {
 
     const toDetail = (id, QTY) => {
         if (QTY === 0) {
-            null
+            // (null)
+            <></>
         }
         else {
             navigate(`/room/${id}`)

@@ -32,7 +32,7 @@ const propertiesController = {
             attributes: ["price"],
             where: {
               QTY: { [Op.ne]: 0 },
-              isDelete : false
+              isDelete: false,
             },
             include: [
               {
@@ -156,7 +156,8 @@ const propertiesController = {
   },
   addProperty: async (req, res) => {
     try {
-      const { propertyName, propertyDesc, categoryId, detailLocation } = req.body;
+      const { propertyName, propertyDesc, categoryId, detailLocation } =
+        req.body;
       const userId = req.user.id;
       const propertyImg = req.file.filename;
       const result = await properties.create({
@@ -165,7 +166,7 @@ const propertiesController = {
         propertyDesc,
         propertyImg,
         userId,
-        detailLocation
+        detailLocation,
       });
       res.status(200).send({
         message: "add properties success",
@@ -222,7 +223,8 @@ const propertiesController = {
     try {
       const sort = req.query.sort || "DESC";
       const sortBy = "createdAt";
-      const limit = 8;
+      const limit = 10;
+
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const { id } = req.user;
@@ -247,16 +249,30 @@ const propertiesController = {
       res.status(400).send(error);
     }
   },
+  allProperties: async (req, res) => {
+    try {
+      const limit = 16;
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
+      const result = await properties.findAll({
+        include: [{ model: category }, { model: rooms }],
+        limit: limit,
+        offset: offset,
+      });
+      const get = await properties.findAll();
+      const length = get.length;
+
+      res.status(200).send({ result, length, limit });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
   detailProperty: async (req, res) => {
     try {
       const { id } = req.params;
       const result = await properties.findOne({
         where: { id: id },
-        include: 
-        [
-          { model: category }, 
-          { model: user }
-        ],
+        include: [{ model: category }, { model: user }],
       });
       res.status(200).send(result);
     } catch (error) {
