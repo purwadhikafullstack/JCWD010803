@@ -222,6 +222,7 @@ const propertiesController = {
       const sort = req.query.sort || "DESC";
       const sortBy = "createdAt";
       const limit = 10;
+
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const { id } = req.user;
@@ -246,6 +247,24 @@ const propertiesController = {
       res.status(400).send(error);
     }
   },
+  allProperties: async (req, res) => {
+    try {
+      const limit = 16
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
+      const result = await properties.findAll({
+        include: [{model : category}, {model: rooms}],
+        limit: limit,
+        offset: offset,
+      });
+      const get = await properties.findAll()
+      const length = get.length
+      
+      res.status(200).send({result, length, limit })
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
   detailProperty: async (req, res) => {
     try {
       const { id } = req.params;
@@ -259,9 +278,8 @@ const propertiesController = {
       });
       res.status(200).send(result);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error)
     }
-  },
 };
 
 module.exports = propertiesController;
