@@ -14,7 +14,6 @@ const transactionController = {
       });
       const checkInDate = new Date(new Date(checkIn));
       const checkOutDate = new Date(new Date(checkOut).setHours(17, 0, 0, 0));
-      console.log(checkOutDate);
       const rangeDate = Math.ceil(
         (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
       );

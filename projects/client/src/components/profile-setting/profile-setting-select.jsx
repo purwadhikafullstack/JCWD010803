@@ -7,7 +7,6 @@ export const ProfileSettingSelect = ({ choose, values }) => {
   const [click, setClick] = useState("");
   const dataFireBase = useSelector((state) => state.firebase.value);
   const data = useSelector((state) => state.user.value);
-  console.log(dataFireBase);
 
   const clickChangeProfile = () => {
     setClick("changeProfile");

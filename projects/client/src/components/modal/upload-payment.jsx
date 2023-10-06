@@ -7,7 +7,6 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
   const handleClick = async (file) => {
     try {
       if (file) {
-        // console.log(data.userId);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileName", file.name);

@@ -19,7 +19,6 @@ export const AddUnavailablity = ({ roomId, openAvailable, setOpenAvailable }) =>
     ]);
     const [startDate, setStartDate] = useState(state[0].startDate)
     const [endDate, setendDate] = useState(state[0].endDate)
-    console.log(startDate);
 
     const addDate = async () => {
         Swal.fire({

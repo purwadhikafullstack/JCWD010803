@@ -134,7 +134,6 @@ module.exports = {
     try {
       const { id } = req.params;
       const { checkIn, checkOut } = req.body;
-      console.log(new Date(new Date(checkIn).setHours(7,0,0,0)));
 
       const checkAvailable = await availableRoom.findOne({
         where: {
