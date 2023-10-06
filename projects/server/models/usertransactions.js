@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       userTransactions.belongsTo(models.status);
       userTransactions.hasOne(models.onBooking);
       userTransactions.hasOne(models.review)
+      userTransactions.belongsTo(models.properties);
     }
   }
   userTransactions.init(

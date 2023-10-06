@@ -454,17 +454,18 @@ const userController = {
       console.log(req.body.review);
       const transactionIsExist = await userTransaction.findOne({
         where: {
-          [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }],
+          [Op.and]: [{id: req.body.id}, { statusId : 3 }, { isReview: false }],
         }
       });
       if (transactionIsExist) {
         const result = await userTransaction.update(
           {
-            isReview : true
+            isReview : true,
+            statusId: 7
           },
           {
             where :{
-              [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }]
+              [Op.and]: [{id: req.body.id}, { statusId : 3 }, { isReview: false }]
             }
           }
           );

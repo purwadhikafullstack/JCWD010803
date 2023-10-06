@@ -99,7 +99,6 @@ const UserOrderList = () => {
         </div>
       </form>
       <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 border">
-        {/* <Accordion sections={accordionData} /> */}
         {orderList.length > 0 ? (
           <Accordion reload={reload} setReload={setReload} sections={orderList} />
         ) : (null)}

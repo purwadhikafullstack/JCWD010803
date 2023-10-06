@@ -115,7 +115,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           <div>
             <div
               className={`${
-                pathname !== "/dashboard/order-list"
+                pathname !== "/dashboard/order-list" || pathname !== "/dashboard/sales-report"
                   ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
                   : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
               } `}
@@ -123,6 +123,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             >
               Properties
             </div>
+
             <div
               className={`${
                 pathname === "/dashboard/order-list"
@@ -133,6 +134,18 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             >
               Order list
             </div>
+
+            <div
+              className={`${
+                pathname === "/dashboard/sales-report"
+                  ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
+                  : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
+              } `}
+              onClick={() => click("dashboard/sales-report")}
+            >
+              Sales Report
+            </div>
+
             <ul className="mt-3">{/* Dashboard */}</ul>
           </div>
         </div>
