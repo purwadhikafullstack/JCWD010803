@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 
 
 export const AddUnavailablity = ({ roomId, openAvailable, setOpenAvailable }) => {
-console.log(roomId);
     const today = new Date();
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
@@ -20,6 +19,7 @@ console.log(roomId);
     ]);
     const [startDate, setStartDate] = useState(state[0].startDate)
     const [endDate, setendDate] = useState(state[0].endDate)
+    console.log(startDate);
 
     const addDate = async () => {
         Swal.fire({
@@ -30,7 +30,7 @@ console.log(roomId);
             cancelButtonColor: '#e3e3e3',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const response = await axios.post('http://localhost:8000/api/room/unAvailablity', { "startDate": startDate, "endDate": endDate, "roomId": roomId })
+                const response = await axios.post('http://localhost:8000/api/room/unAvailablity', { "startDate": new Date(new Date(startDate).setHours(7,0,0,0) ), "endDate": new Date(new Date(endDate).setHours(7,0,0,0) ), "roomId": roomId })
                 setOpenAvailable(false)
             }
         })
@@ -50,7 +50,7 @@ console.log(roomId);
                         </div>
                     </div>
                     <div className=" text-2xl font-semibold text-gray-800">
-                        Set unavailablity room
+                        Set unavailability room
                     </div>
                     <hr className="my-5" />
                     <div>

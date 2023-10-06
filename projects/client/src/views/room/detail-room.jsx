@@ -32,7 +32,7 @@ export const DetailRoom = () => {
     const checkInDate = new Date(new Date(startDate));
     const checkOutDate = new Date(new Date(endDate));
     const rangeDate = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
-    console.log(endDate);
+    console.log(data);
 
     const room = async (id) => {
         try {
