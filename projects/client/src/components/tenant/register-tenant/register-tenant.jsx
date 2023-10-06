@@ -11,7 +11,6 @@ const RegisterTenant = () => {
   const handleKtpUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validasi ukuran file (maksimal 1MB)
       if (file.size <= 1024 * 1024) {
         setKtpFile(file);
       } else {

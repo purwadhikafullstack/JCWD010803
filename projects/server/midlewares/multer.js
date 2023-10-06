@@ -67,5 +67,5 @@ module.exports = {
 
         return multer({ storage: storage, fileFilter: fileFilter, limits: limits });
     }
-}
+};
 
