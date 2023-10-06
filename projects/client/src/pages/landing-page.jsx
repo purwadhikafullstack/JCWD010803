@@ -7,8 +7,10 @@ const LandingPage = () => {
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <Banner />
+      <div className='p-20'>
+      </div>
       <Footer />
     </>
   );

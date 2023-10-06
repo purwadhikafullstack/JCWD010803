@@ -7,6 +7,7 @@ import { CreateRoomModal } from '../../components/modal/create-room-modal';
 import { EditImageModal } from '../../components/modal/edit-image-modal';
 import { useNavigate } from 'react-router-dom';
 import { AddSpecialPriceModal } from '../../components/modal/add-special-price';
+import { AddUnavailablity } from '../../components/modal/set-unavailablity-modal';
 
 const RoomList = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,6 +23,7 @@ const RoomList = () => {
   const [openUpdateImage, setOpenUpdateImage] = useState(false)
   const [propertyId, setPropertyId] = useState("")
   const [openSpecialPrice, setOpenSpecialPrice] = useState(false)
+  const [openAvailable, setOpenAvailable] = useState(false)
   const token = localStorage.getItem('token')
   const navigate = useNavigate()
 
@@ -34,6 +36,7 @@ const RoomList = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
+      <AddUnavailablity  setOpenAvailable={setOpenAvailable} openAvailable={openAvailable} roomId={id} />
       <DeleteRoomModal reload={reload} setReload={setReload} setopenModal={setOpenModal} openModal={openModal} id={id} />
       <EditRoomModal setReload={setReload} reload={reload} editModal={editModal} id={id} setEditModal={setEditModal} price={price} roomName={roomName} roomDesc={roomDesc} />
       <CreateRoomModal propertyId={propertyId} setReload={setReload} reload={reload} openModal={openModalAdd} setOpenModal={setOpenModalAdd} />
@@ -65,7 +68,7 @@ const RoomList = () => {
             </button>
             <div>
             </div>
-          <RoomListTenant setOpenSpecialPrice={setOpenSpecialPrice} propertyId={propertyId} setPropertyId={setPropertyId} setOpenUpdateImage={setOpenUpdateImage} setRoomId={setRoomId} setOpenModalAdd={setOpenModalAdd} reload={reload} setId={setId} setRoomName={setRoomName} setRoomDesc={setRoomDesc} setPrice={setPrice} setOpenModal={setOpenModal} setEditModal={setEditModal} />
+          <RoomListTenant setOpenAvailable={setOpenAvailable} openAvailable={openAvailable} setOpenSpecialPrice={setOpenSpecialPrice} propertyId={propertyId} setPropertyId={setPropertyId} setOpenUpdateImage={setOpenUpdateImage} setRoomId={setRoomId} setOpenModalAdd={setOpenModalAdd} reload={reload} setId={setId} setRoomName={setRoomName} setRoomDesc={setRoomDesc} setPrice={setPrice} setOpenModal={setOpenModal} setEditModal={setEditModal} />
         </div>
       </div>
     </div>

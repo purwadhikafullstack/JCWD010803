@@ -32,7 +32,7 @@ export const AddSpecialPriceModal = ({ roomId, openSpecialPrice, setOpenSpecialP
             cancelButtonColor: '#e3e3e3',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const response = await axios.post('http://localhost:8000/api/specialPrice', { "newPrice": price, "percent": percent, "startDate": startDate, "endDate": endDate, "roomId": roomId })
+                const response = await axios.post('http://localhost:8000/api/specialPrice', { "newPrice": price, "percent": percent, "startDate": new Date(new Date(startDate).setHours(7,0,0,0)), "endDate": new Date(new Date(endDate).setHours(7,0,0,0)), "roomId": roomId })
                 setOpenSpecialPrice(false)
                 setPercent("")
                 setPrice("")

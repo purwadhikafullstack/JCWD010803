@@ -446,6 +446,7 @@ const userController = {
         result
       })
     } catch (error) {
+      console.log(error);
       res.status(400).send(error)
     }
   },

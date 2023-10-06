@@ -12,7 +12,7 @@ const propertiesController = {
       const categoryId = req.query.categoryId || null;
       const checkIn = req.query.checkIn || null;
       const checkOut = req.query.checkOut || null;
-      const limit = 10;
+      const limit = 8;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const sort = req.query.sort || "ASC";
@@ -32,6 +32,7 @@ const propertiesController = {
             attributes: ["price"],
             where: {
               QTY: { [Op.ne]: 0 },
+              isDelete : false
             },
             include: [
               {
@@ -55,7 +56,7 @@ const propertiesController = {
             },
           },
         ],
-        limit: 10,
+        limit: 8,
         offset: offset,
         order:
           sortBy === "price"
@@ -221,7 +222,7 @@ const propertiesController = {
     try {
       const sort = req.query.sort || "DESC";
       const sortBy = "createdAt";
-      const limit = 10;
+      const limit = 8;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const { id } = req.user;

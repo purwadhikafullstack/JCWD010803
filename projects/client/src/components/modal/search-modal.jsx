@@ -61,7 +61,7 @@ export const SearchModal = ({ open, setOpen }) => {
 	return (
 		<div>
 			<div className={`w-full justify-center z-40 ${open ? "flex" : "hidden"}`}>
-				<div className="w-full flex justify-center h-screen bg-black z-50 fixed bg-opacity-40">
+				<div className="w-full flex justify-center h-screen bg-black z-50 fixed bg-opacity-70">
 					<div className=" w-full h-screen p-5 z-50 md:w-1/3 md:rounded-xl shadow-md md:h-3/4 my-auto bg-white">
 						<div className="cursor-pointer w-fit" onClick={handleCloseModal}>X</div>
 						<div className="justify-center flex">

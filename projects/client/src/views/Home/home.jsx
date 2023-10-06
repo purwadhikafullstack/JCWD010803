@@ -6,9 +6,14 @@ import Banner from '../../components/banner';
 const LandingPage = () => {
   return (
     <>
-      <Navbar />
-      <Banner/>
-      <Footer/>
+      <div>
+        {/* <Navbar /> */}
+        {/* <Banner /> */}
+      </div>
+      <div>
+        asdasdadaaaaaaaaaaaaaaaaaaaa
+      </div>
+      <Footer />
     </>
   );
 };

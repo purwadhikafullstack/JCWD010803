@@ -23,7 +23,6 @@ export const Transaction = () => {
     const [methode, setMethode] = useState([])
     const [methodeValue, setMethodeValue] = useState(1)
     const [room, setRoom] = useState()
-    console.log(totalPayment);
     const [image, setImage] = useState([])
 
     const getMethode = async () => {
@@ -78,7 +77,7 @@ export const Transaction = () => {
 
     const getRoom = async () => {
         try {
-            const response = await axios.post(`http://localhost:8000/api/room/${roomId}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
+            const response = await axios.post(`http://localhost:8000/api/room/roomById/${roomId}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
             setRoom(response.data)
 
         } catch (error) {
@@ -88,6 +87,9 @@ export const Transaction = () => {
     console.log(room);
 
     useEffect(() => {
+        if (!token) {
+            navigate('/')
+        }
         getMethode()
         getRoom()
         getRoomImg()

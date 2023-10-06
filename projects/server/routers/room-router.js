@@ -5,12 +5,13 @@ const { multerUpload } = require('../midlewares/multer')
 
 const router = express.Router()
 
-router.patch('/delete/:id', roomController.deleteRoom)
+router.post('/unAvailablity', roomController.addUnavailableDate)
+router.get('/roomImg/:roomId', roomController.getRoomImage)
+router.post('/roomById/:id', roomController.roomById)
 router.get('/roomByProperty/:propertyId', roomController.getRoomByProperties)
 router.patch('/:id', roomController.updateRoom)
-router.post('/:id', roomController.roomById)
-router.post('/:id',multerUpload(`./public/room`, 'roomImg').array('roomImg'),checkRoom,roomController.addRoom)
-router.get('/roomImg/:roomId', roomController.getRoomImage)
 router.patch('/editImage/:id',multerUpload(`./public/room`, 'roomImg').single('roomImg') ,roomController.editImage)
+router.patch('/delete/:id', roomController.deleteRoom)
+router.post('/:id',multerUpload(`./public/room`, 'roomImg').array('roomImg'),checkRoom,roomController.addRoom)
 
 module.exports = router

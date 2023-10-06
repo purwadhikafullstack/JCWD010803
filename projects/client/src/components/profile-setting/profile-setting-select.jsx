@@ -7,6 +7,7 @@ export const ProfileSettingSelect = ({ choose, values }) => {
   const [click, setClick] = useState("");
   const dataFireBase = useSelector((state) => state.firebase.value);
   const data = useSelector((state) => state.user.value);
+  console.log(dataFireBase);
 
   const clickChangeProfile = () => {
     setClick("changeProfile");
@@ -43,7 +44,7 @@ export const ProfileSettingSelect = ({ choose, values }) => {
           <div className="my-auto">
             <div className="my-auto font-bold text-gray-700">
               {" "}
-              {data.username ? data.username : dataFireBase.username}{" "}
+              {data.username ? data.username : dataFireBase.userName}{" "}
             </div>
             <div className="my-auto font-thin">
               {" "}

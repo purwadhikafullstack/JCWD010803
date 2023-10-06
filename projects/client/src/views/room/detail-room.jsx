@@ -32,10 +32,11 @@ export const DetailRoom = () => {
     const checkInDate = new Date(new Date(startDate));
     const checkOutDate = new Date(new Date(endDate));
     const rangeDate = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
+    console.log(endDate);
 
     const room = async (id) => {
         try {
-            const response = await axios.post(`http://localhost:8000/api/room/${id}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
+            const response = await axios.post(`http://localhost:8000/api/room/roomById/${id}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
             setData(response.data)
             getTotalPayment()
         } catch (error) {
@@ -208,10 +209,13 @@ export const DetailRoom = () => {
                                         onClick={() => {
                                             toBooking()
                                         }}
-                                        disabled={endDate === startDate ? true : false}
+                                        disabled={endDate === startDate || data.availableRooms ? true : false}
                                         className="w-full py-2 font-semibold flex disabled:cursor-not-allowed disabled:bg-teal-100 justify-center items-center bg-bgPrimary rounded-md text-white cursor-pointer hover:bg-bgPrimaryActive transition-all">
                                         Book now
                                     </button>
+                                </div>
+                                <div className={`px-5 mt-2 text-sm  text-gray-400 ${data.availableRooms ? "flex" : "hidden"}`}>
+                                    {`Sorry, this room is not available from ${data.availableRooms ? new Date(data.availableRooms[0].startDate).getDate() : "undefined"} - ${data.availableRooms ? new Date(data.availableRooms[0].endDate).getDate() : "undefined"} ${data.availableRooms ? new Date(data.availableRooms[0].endDate).toLocaleDateString('default', { month: 'long' }).slice(0, 3) : "undefined"}`}
                                 </div>
                                 <div className="w-full flex justify-between px-5 text-lg mt-5  text-gray-600">
                                     <>

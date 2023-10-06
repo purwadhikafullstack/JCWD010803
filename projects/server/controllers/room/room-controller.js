@@ -4,6 +4,7 @@ const db = require("../../models");
 const room = db.rooms;
 const roomImg = db.roomImg;
 const specialPrice = db.specialPrice;
+const availableRoom = db.availableRoom;
 
 module.exports = {
   addRoom: async (req, res) => {
@@ -133,7 +134,9 @@ module.exports = {
     try {
       const { id } = req.params;
       const { checkIn, checkOut } = req.body;
-      const checkPromo = await specialPrice.findOne({
+      console.log(new Date(new Date(checkIn).setHours(7,0,0,0)));
+
+      const checkAvailable = await availableRoom.findOne({
         where: {
           roomId: id,
           [Op.or]: [
@@ -141,10 +144,10 @@ module.exports = {
               [Op.and]: [
                 {
                   startDate: {
-                    [Op.lte]: new Date(checkIn),
+                    [Op.lte]: new Date(new Date(checkIn).setHours(7,0,0,0)),
                   },
                   endDate: {
-                    [Op.gte]: new Date(checkOut),
+                    [Op.gte]: new Date(new Date(new Date(checkOut).setHours(7,0,0,0)).setHours(7,0,0,0)),
                   },
                 },
               ],
@@ -153,12 +156,46 @@ module.exports = {
               [Op.or]: [
                 {
                   startDate: {
-                    [Op.between]: [new Date(checkIn), new Date(checkOut)],
+                    [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(new Date(checkOut).setHours(7,0,0,0)).setHours(7,0,0,0))],
                   },
                 },
                 {
                   endDate: {
-                    [Op.between]: [new Date(checkIn), new Date(checkOut)],
+                    [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(new Date(checkOut).setHours(7,0,0,0)).setHours(7,0,0,0))],
+                  },
+                },
+              ],
+            },  
+          ],
+        },
+      });
+
+      const checkPromo = await specialPrice.findOne({
+        where: {
+          roomId: id,
+          [Op.or]: [
+            {
+              [Op.and]: [
+                {
+                  startDate: {
+                    [Op.lte]: new Date(new Date(checkIn).setHours(7,0,0,0)),
+                  },
+                  endDate: {
+                    [Op.gte]: new Date(new Date(new Date(checkOut).setHours(7,0,0,0)).setHours(7,0,0,0)),
+                  },
+                },
+              ],
+            },
+            {
+              [Op.or]: [
+                {
+                  startDate: {
+                    [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                  },
+                },
+                {
+                  endDate: {
+                    [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
                   },
                 },
               ],
@@ -180,10 +217,10 @@ module.exports = {
                     [Op.and]: [
                       {
                         startDate: {
-                          [Op.lte]: new Date(checkIn),
+                          [Op.lte]: new Date(new Date(checkIn).setHours(7,0,0,0)),
                         },
                         endDate: {
-                          [Op.gte]: new Date(checkOut),
+                          [Op.gte]: new Date(new Date(checkOut).setHours(7,0,0,0)),
                         },
                       },
                     ],
@@ -192,12 +229,55 @@ module.exports = {
                     [Op.or]: [
                       {
                         startDate: {
-                          [Op.between]: [new Date(checkIn), new Date(checkOut)],
+                          [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
                         },
                       },
                       {
                         endDate: {
-                          [Op.between]: [new Date(checkIn), new Date(checkOut)],
+                          [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+          attributes: ["id", "roomName", "price", "roomDesc", "propertyId"],
+        });
+        res.status(200).send(result);
+      }
+      else if (checkAvailable) {
+        const result = await room.findOne({
+          where: { id },
+          include: [
+            {
+              model: availableRoom,
+              where: {
+                roomId: id,
+                [Op.or]: [
+                  {
+                    [Op.and]: [
+                      {
+                        startDate: {
+                          [Op.lte]: new Date(new Date(checkIn).setHours(7,0,0,0)),
+                        },
+                        endDate: {
+                          [Op.gte]: new Date(new Date(checkOut).setHours(7,0,0,0)),
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    [Op.or]: [
+                      {
+                        startDate: {
+                          [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                        },
+                      },
+                      {
+                        endDate: {
+                          [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
                         },
                       },
                     ],
@@ -220,4 +300,19 @@ module.exports = {
       res.status(400).send(error);
     }
   },
+  addUnavailableDate : async (req, res) => {
+    try {
+      const {startDate, endDate, roomId} = req.body
+      const result = await availableRoom.create({
+        startDate,
+        endDate,
+        roomId
+      })
+      res.status(200).send({
+        message: "Add unavailablity success"
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  }
 };
