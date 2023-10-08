@@ -50,8 +50,8 @@ const ProfileInformation = () => {
         onUpdate(values);
       }}
     >
-      <Form className="w-full border p-4" action="#">
-        <div className=" text-bgPrimary xs:text-xl md:text-3xl font-semibold my-2 py-2">
+      <Form className="w-full border-t p-4" action="#">
+        <div className=" text-gray-700 xs:text-xl md:text-3xl font-semibold my-2 py-2">
           <p>Change User Information Here</p>
         </div>
 

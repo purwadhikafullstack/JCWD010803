@@ -40,7 +40,7 @@ const AccordionSection = ({
   };
   
   return (
-    <div className="p-2 border ">
+    <div className="p-2 border rounded-md ">
       <div className="cursor-pointer" onClick={toggleSection}>
         <div className="flex flex-wrap justify-between mb-2 w-full">
           <h3>{section.room.property.propertyName}</h3>

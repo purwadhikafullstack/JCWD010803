@@ -53,7 +53,7 @@ const UserOrderList = () => {
             >
               Status
             </label>
-            <div className="relative">
+            <div className="">
               <select
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-status"
@@ -98,7 +98,7 @@ const UserOrderList = () => {
           </div>
         </div>
       </form>
-      <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 border">
+      <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 md:px-3">
         {orderList.length > 0 ? (
           <Accordion reload={reload} setReload={setReload} sections={orderList} />
         ) : (null)}

@@ -115,7 +115,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           <div>
             <div
               className={`${
-                pathname !== "/dashboard/order-list" || pathname !== "/dashboard/sales-report"
+                pathname !== "/dashboard/order-list" && pathname !== "/dashboard/sales-report" 
                   ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
                   : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
               } `}

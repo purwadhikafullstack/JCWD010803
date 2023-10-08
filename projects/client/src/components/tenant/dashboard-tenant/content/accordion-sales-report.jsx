@@ -31,9 +31,14 @@ const AccordionSection = ({
     <div className="p-2 border rounded-md">
       <div className="cursor-pointer" onClick={toggleSection}>
         <div className="sm:flex text-md font-semibold leading-7 text-gray-700" id="header-content-sales-report">
-          <p className="sm:w-1/3">{section.property.propertyName}</p>
-          <p className="sm:w-1/3">{formatDate(section.createdAt)}</p>
-          <p className="sm:w-1/3">{section.user.username}</p>
+          <p className="sm:w-1/3" >{section.property.propertyName}</p>
+          
+          {isActiveSection == false && (
+            <>
+              <p className="sm:w-1/3">{formatDate(section.createdAt)}</p>
+              <p className="sm:w-1/3">{section.user.username}</p>
+            </>
+          )}
         </div>
       </div>
       {isActiveSection && (
