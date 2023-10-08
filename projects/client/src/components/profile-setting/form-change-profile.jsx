@@ -6,7 +6,7 @@ const FormChangeProfile = ({setReload, reload}) => {
   return (
     <div className="xs:w-full">
       <ProfileAvatar reload={reload} setReload={setReload} />
-      <ProfileInformation />
+      <ProfileInformation reload={reload} setReload={setReload}  />
     </div>
   );
 };

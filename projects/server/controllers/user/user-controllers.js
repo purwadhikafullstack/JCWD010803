@@ -345,7 +345,7 @@ const userController = {
       const { firstName, lastName, username, email, gender, birthdate } =
         req.body;
 
-      const result = await user.update(
+      const setData = await user.update(
         {
           firstName: firstName,
           lastName: lastName,
@@ -357,9 +357,13 @@ const userController = {
           where: { id: id },
         }
       );
-
+      
+      const result = await user.findOne({
+        where: { id: id }
+      });
       res.status(200).send({
         message: "Success",
+        result
       });
     } catch (error) {
       res.status(400).send(error);

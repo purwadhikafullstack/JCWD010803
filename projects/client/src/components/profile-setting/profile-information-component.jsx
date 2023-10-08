@@ -1,22 +1,25 @@
-import React from "react";
+import React, { useEffect} from "react";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
 import swal from "sweetalert2";
+import { setValue } from "../../redux/user-slice";
 
-const ProfileInformation = () => {
+const ProfileInformation = ({ reload, setReload }) => {
   const data = useSelector((state) => state.user.value);
   const token = localStorage.getItem("token");
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("Firstname is required"),
-    lastName: Yup.string().required("Lastname is required"),
+    // lastName: Yup.string().required("Lastname is required"),
     gender: Yup.string().required("Gender is required"),
-    email: Yup.string().required("email is required"),
+    // email: Yup.string().required("email is required"),
     birthdate: Yup.string().required("Birthdate is required"),
   });
+  const dispatch = useDispatch();
 
   const onUpdate = async (data) => {
+    
     try {
       const response = await axios.post(
         `http://localhost:8000/api/user/information-update`,
@@ -31,10 +34,13 @@ const ProfileInformation = () => {
         timer: 1500,
         showConfirmButton: false,
       });
+      dispatch(setValue(response.data.result));
+      setReload(!reload);
     } catch (error) {
       console.log(error);
     }
   };
+  useEffect(() => {}, [reload]);
   return (
     <Formik
       initialValues={{

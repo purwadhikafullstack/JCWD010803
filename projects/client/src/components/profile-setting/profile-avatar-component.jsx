@@ -15,10 +15,6 @@ const ProfileAvatar = ({ reload, setReload }) => {
   const token = localStorage.getItem("token");
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
-  // const handleChange = (event) => {
-  //   setFile(event.target.files[0]);
-  // };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -108,7 +104,7 @@ const ProfileAvatar = ({ reload, setReload }) => {
                 <p className="pl-1">or drag and drop</p>
               </div>
               <p className="text-xs leading-5 text-gray-600">
-                PNG, JPG, GIF up to 10MB
+                PNG, JPG up to 1 MB
               </p>
             </div>
           </div>
