@@ -16,8 +16,6 @@ const SalesReport = () => {
         }
       );
       setsalesList(response.data.result);
-
-      console.log(salesList.length);
     } catch (error) {
       console.log(error);
     }

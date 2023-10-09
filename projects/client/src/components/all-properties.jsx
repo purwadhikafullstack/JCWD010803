@@ -10,10 +10,6 @@ export const AllProperties = () => {
   const [limit, setLimit] = useState("");
   const [length, setLength] = useState("");
   const maxPage = Math.ceil(length / limit)
-  console.log(page);
-  console.log(maxPage);
-  console.log(length);
-  console.log(limit);
   const allProperties = async () => {
     try {
       const response = await axios.get(`http://localhost:8000/api/properties?page=${page}`);

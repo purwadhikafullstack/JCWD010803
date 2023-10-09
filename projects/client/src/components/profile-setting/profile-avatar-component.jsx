@@ -5,22 +5,20 @@ import { RxAvatar } from "react-icons/rx";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
-import swal from "sweetalert2";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const ProfileAvatar = () => {
   const dataFireBase = useSelector((state) => state.firebase.value);
   const data = useSelector((state) => state.user.value);
   const token = localStorage.getItem("token");
-  const [file, setFile] = useState(null); 
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
   const handleChange = (event) => {
     setFile(event.target.files[0]);
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); 
-
     try {
       if (file) {
         const formData = new FormData();
@@ -36,7 +34,7 @@ const ProfileAvatar = () => {
             },
           }
         );
-        swal.fire({
+        Swal.fire({
           icon: "success",
           title: "Save change Success",
           text: " ",
@@ -44,14 +42,15 @@ const ProfileAvatar = () => {
           showConfirmButton: false,
         });
       } else {
-        swal.fire({
+        Swal.fire({
           icon: "warning",
           iconColor: "red",
           title: "File cannot be empty",
         });
       }
+      event.preventDefault();
     } catch (error) {
-      console.error(error); 
+      console.error(error);
     }
   };
 
@@ -66,9 +65,8 @@ const ProfileAvatar = () => {
             {data.profileImg || dataFireBase.profileImg ? (
               <img
                 className="h-32 w-32 border rounded-full object-fill"
-                src={`http://localhost:8000/avatars/${
-                  data.profileImg || dataFireBase.imgUrl
-                }`}
+                src={`http://localhost:8000/avatars/${data.profileImg || dataFireBase.imgUrl
+                  }`}
                 alt="Avatar"
               />
             ) : (

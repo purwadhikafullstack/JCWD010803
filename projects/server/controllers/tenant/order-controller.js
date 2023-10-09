@@ -243,7 +243,6 @@ const room = db.rooms;
   },
   salesReport : async (req, res) => {
     try {
-      // console.log(req.user.id);
       const result = await transaction.findAll({
         where : {
           [Op.or] : [

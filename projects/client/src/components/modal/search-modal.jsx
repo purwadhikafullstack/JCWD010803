@@ -1,14 +1,14 @@
 import Select from "react-select";
+import axios from "axios";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from 'react-date-range';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 
 export const SearchModal = ({ open, setOpen }) => {
-	
+
 	const navigate = useNavigate()
 	const [page, setPage] = useState(1)
 	const [category, setCategory] = useState([])
@@ -29,15 +29,15 @@ export const SearchModal = ({ open, setOpen }) => {
 	const prevPage = () => {
 		setPage((prevPage) => Math.max(+prevPage - 1));
 	};
-	
+
 	const handleCloseModal = () => {
 		setOpen(false)
 	};
-	
+
 	const today = new Date();
 	const tomorrow = new Date();
 	tomorrow.setDate(today.getDate() + 1);
-	
+
 	const [state, setState] = useState([
 		{
 			startDate: today,
@@ -45,15 +45,15 @@ export const SearchModal = ({ open, setOpen }) => {
 			key: 'selection'
 		}
 	]);
-	
+
 	const [startDate, setStartDate] = useState(state[0].startDate)
 	const [endDate, setendDate] = useState(state[0].endDate)
-	
+
 	const handleSearch = () => {
 		navigate(`/properties?categoryId=${idCategory}&checkIn=${startDate}&checkOut=${endDate}`)
 		setOpen(false)
 	}
-	
+
 	useEffect(() => {
 		getCategories()
 	}, [])
@@ -61,7 +61,7 @@ export const SearchModal = ({ open, setOpen }) => {
 	return (
 		<div>
 			<div className={`w-full justify-center z-40 ${open ? "flex" : "hidden"}`}>
-				<div className="w-full flex justify-center h-screen bg-black z-50 fixed bg-opacity-40">
+				<div className="w-full flex justify-center h-screen bg-black z-50 fixed bg-opacity-70">
 					<div className=" w-full h-screen p-5 z-50 md:w-1/3 md:rounded-xl shadow-md md:h-3/4 my-auto bg-white">
 						<div className="cursor-pointer w-fit" onClick={handleCloseModal}>X</div>
 						<div className="justify-center flex">
