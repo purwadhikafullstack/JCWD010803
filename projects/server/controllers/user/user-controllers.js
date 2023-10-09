@@ -437,68 +437,72 @@ const userController = {
       res.status(400).send(error);
     }
   },
-  uploadPayment : async (req, res) => {
+  uploadPayment: async (req, res) => {
     try {
-      const {fileName, id, userId} = req.body;
+      const { fileName, id, userId } = req.body;
       if (req.file == undefined) {
         throw { message: "Receipt Cannot be empty" };
       }
       const result = await userTransaction.update(
         {
-          paymentImg : fileName,
-          statusId : 2
+          paymentImg: fileName,
+          statusId: 2,
         },
         {
-          where :{
-            [Op.and] : [{id : id}, {userId : userId}]
-          }
+          where: {
+            [Op.and]: [{ id: id }, { userId: userId }],
+          },
         }
       );
-      
+
       res.status(200).send({
-        message : "sukses",
-        result
-      })
+        message: "sukses",
+        result,
+      });
     } catch (error) {
-      res.status(400).send(error)
+      console.log(error);
+      res.status(400).send(error);
     }
   },
-  postReview : async (req, res) => {
+  postReview: async (req, res) => {
     try {
-      console.log(req.body.review);
       const transactionIsExist = await userTransaction.findOne({
         where: {
-          [Op.and]: [{id: req.body.id}, { statusId : 3 }, { isReview: false }],
-        }
+          [Op.and]: [{ id: req.body.id }, { statusId: 3 }, { isReview: false }],
+        },
       });
       if (transactionIsExist) {
         const result = await userTransaction.update(
           {
-            isReview : true,
-            statusId: 7
+            isReview: true,
+            statusId: 7,
           },
           {
-            where :{
-              [Op.and]: [{id: req.body.id}, { statusId : 3 }, { isReview: false }]
-            }
+            where: {
+              [Op.and]: [
+                { id: req.body.id },
+                { statusId: 3 },
+                { isReview: false },
+              ],
+            },
           }
-          );
-          const setReview = await review.create({
-            userReview : req.body.review,
-            userTransactionId : req.body.id
-          });
-          res.status(200).send({
-            message : "Give a review success"
-          })
-      }else{
+        );
+        const setReview = await review.create({
+          userReview: req.body.review,
+          userTransactionId: req.body.id,
+        });
+        res.status(200).send({
+          message: "Give a review success",
+        });
+      } else {
         throw {
-          message : "Transaction not exist"
-        }
+          message: "Transaction not exist",
+        };
       }
     } catch (error) {
-      res.status(400).send(error)
+      res.status(400).send(error);
     }
-  }
+  },
 };
 
 module.exports = userController;

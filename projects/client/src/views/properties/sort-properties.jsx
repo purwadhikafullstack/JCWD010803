@@ -93,7 +93,7 @@ export const SortProperties = () => {
                       <div className="w-72 h-96 absolute z-10 hover:bg-white cursor-pointer opacity-20 " onClick={(() => handleClick(item.id))}></div>
                       <img
                         className="w-full h-2/3  rounded-xl relative"
-                        src={`http://localhost:8000/property/${item?.propertyImg}`}
+                        src={`http://localhost:8000/property/${item.propertyImg}`}
                         alt={`Property ${item.propertyName}`}
                       />
                       <div className=" z-0">

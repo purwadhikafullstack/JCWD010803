@@ -8,7 +8,7 @@ const LandingPage = () => {
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <Banner />
       <AllProperties />
       <Footer />

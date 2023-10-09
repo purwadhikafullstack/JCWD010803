@@ -66,7 +66,7 @@ export const ProfileSettingSelect = ({ reload, choose, values }) => {
           <div className="my-auto">
             <div className="my-auto font-bold text-gray-700">
               {" "}
-              {data.username ? data.username : dataFireBase.username}{" "}
+              {data.username ? data.username : dataFireBase.userName}{" "}
             </div>
             <div className="my-auto font-thin">
               {" "}

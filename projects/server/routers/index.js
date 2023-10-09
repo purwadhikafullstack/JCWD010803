@@ -4,6 +4,7 @@ const propertyRouter = require("./properties-routers");
 const transactionRouter = require("./transaction-router");
 const orderRouter = require("./order-router");
 const roomRouter = require("./room-router");
+const specialPriceRouter = require('./special-price-router')
 
 module.exports = {
   userRouter,
@@ -13,5 +14,6 @@ module.exports = {
   propertyRouter,
   orderRouter,
   roomRouter,
+  specialPriceRouter
 };
 
