@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RxAvatar } from "react-icons/rx";
 import { ErrorMessage, Field, Form, Formik } from "formik";
@@ -7,18 +6,18 @@ import axios from "axios";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
-const ProfileAvatar = () => {
+const ProfileAvatar = ({ reload, setReload }) => {
   const dataFireBase = useSelector((state) => state.firebase.value);
+  const [imageData, setImageData] = useState("");
   const data = useSelector((state) => state.user.value);
   const token = localStorage.getItem("token");
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
-  const handleChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
   const handleSubmit = async (event) => {
+    event.preventDefault(); 
+
     try {
       if (file) {
         const formData = new FormData();
@@ -36,11 +35,12 @@ const ProfileAvatar = () => {
         );
         Swal.fire({
           icon: "success",
-          title: "Save change Success",
+          title: "Change Picture Success",
           text: " ",
           timer: 1500,
           showConfirmButton: false,
         });
+        setReload(!reload);
       } else {
         Swal.fire({
           icon: "warning",
@@ -53,10 +53,11 @@ const ProfileAvatar = () => {
       console.error(error);
     }
   };
+  useEffect(() => {}, [reload]);
 
   return (
-    <div className="w-full border p-4">
-      <div className="text-bgPrimary xs:text-xl md:text-3xl font-semibold">
+    <div className="w-full p-4">
+      <div className="text-gray-700 xs:text-xl md:text-3xl font-semibold">
         <p>Change Your Avatar Here</p>{" "}
       </div>
       <form onSubmit={handleSubmit} action="#">
@@ -65,8 +66,9 @@ const ProfileAvatar = () => {
             {data.profileImg || dataFireBase.profileImg ? (
               <img
                 className="h-32 w-32 border rounded-full object-fill"
-                src={`http://localhost:8000/avatars/${data.profileImg || dataFireBase.imgUrl
-                  }`}
+                src={`http://localhost:8000/avatars/${
+                  data.profileImg || dataFireBase.imgUrl
+                }`}
                 alt="Avatar"
               />
             ) : (
@@ -93,7 +95,7 @@ const ProfileAvatar = () => {
         <div className="p-2">
           <button
             type="submit"
-            className="w-1/2 bg-bgPrimary hover:btnHverify text-white font-semibold py-2 px-4 rounded"
+            className="w-full bg-bgPrimary hover:btnHverify text-white font-semibold py-2 px-4 rounded"
           >
             Save Change
           </button>

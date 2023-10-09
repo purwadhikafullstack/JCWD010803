@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Accordion from "./accordion-component";
 import axios from "axios";
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 
 
 
@@ -8,21 +9,39 @@ const UserOrderList = () => {
   const [orderList, setOrderList] = useState([]);
   const [reload, setReload] = useState(false)
   const token = localStorage.getItem("token");
+  const [sort, setSort] = useState("DESC");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState("");
+  const [length, setLength] = useState("");
+  const maxPage = Math.ceil(length / limit);
 
   const getDataOrder = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/user/orders",
+        `http://localhost:8000/api/user/orders?sort=${sort}&page=${page}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      
       setOrderList(response.data.result);
+      setLength(response.data.length)
+      setLimit(response.data.limit)
     } catch (error) {
       console.log(error);
     }
   }
+
+  const nextPage = () => {
+    if (page < maxPage) {
+      setPage((prevPage) => Math.max(+prevPage + 1, 1));
+    };
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => Math.max(+prevPage - 1, 1));
+    };
+  };
 
   useEffect(()=>{
     getDataOrder();
@@ -53,7 +72,7 @@ const UserOrderList = () => {
             >
               Status
             </label>
-            <div className="relative">
+            <div className="">
               <select
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-status"
@@ -98,16 +117,24 @@ const UserOrderList = () => {
           </div>
         </div>
       </form>
-      <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 border">
+      <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 md:px-3">
+
         {orderList.length > 0 ? (
           <Accordion reload={reload} setReload={setReload} sections={orderList} />
         ) : (null)}
       </div>
-      <div className="flex justify-center space-x-1">
-        <div>Prev</div>
-        <div>1</div>
-        <div>2</div>
-        <div>Next</div>
+      <div className=" flex justify-center items-center h-14 gap-5">
+        {page > 1 ?
+          <div onClick={prevPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowLeftCircleFill size={"30"} /> </div>
+          :
+          null
+        }
+        {maxPage < 2 ? null : <div className=" text-xl font-thin"> page {page} </div>}
+        {page < maxPage ?
+          <div onClick={nextPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowRightCircleFill size={"30"} /> </div>
+          :
+          null
+        }
       </div>
     </div>
     

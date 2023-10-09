@@ -22,7 +22,13 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
           }
         );
         setReload(!reload)
-            
+        swal.fire({
+          icon: "success",
+          title : "Change Picture Success",
+          text : "",
+          timer : 1500,
+          showConfirmButton : false
+        })
       } else {
         swal.fire({
           icon: "warning",

@@ -345,7 +345,7 @@ const userController = {
       const { firstName, lastName, username, email, gender, birthdate } =
         req.body;
 
-      const result = await user.update(
+      const setData = await user.update(
         {
           firstName: firstName,
           lastName: lastName,
@@ -357,9 +357,13 @@ const userController = {
           where: { id: id },
         }
       );
-
+      
+      const result = await user.findOne({
+        where: { id: id }
+      });
       res.status(200).send({
         message: "Success",
+        result
       });
     } catch (error) {
       res.status(400).send(error);
@@ -395,11 +399,16 @@ const userController = {
   },
   getOrderList: async (req, res) => {
     try {
-      const page = +req.query.page || 1;
-      const limit = +req.query.limit || 10;
+      const sort = req.query.sort || "DESC";
+      const sortBy = "createdAt";
+      const limit = 10;
+      const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const result = await userTransaction.findAll({
         where: { userId: req.user.id },
+        order: [[sortBy, sort]],
+        offset : offset,
+        limit : limit,
         include: [
           { model: booking },
           { model: statusPay },
@@ -414,10 +423,15 @@ const userController = {
           },
         ],
       });
-
+      const checkLength = await userTransaction.findAll({
+        where: { userId: req.user.id },
+      });
+      const length = checkLength.length;
       res.status(200).send({
+        message: "OK",
         result,
-        message: "oke",
+        length,
+        limit
       });
     } catch (error) {
       res.status(400).send(error);
