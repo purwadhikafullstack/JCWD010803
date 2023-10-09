@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { setValue } from "../../redux/user-slice";
+import { FireBaseLogin } from "../../components/user/login-firebase";
 
 const Registration = () => {
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ const Registration = () => {
                   password: "",
                   phonenumber: "",
                   roleId: 2,
+                  flag : 2
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
@@ -179,6 +181,7 @@ const Registration = () => {
                     >
                       Register
                     </button>
+                    
                     <div className=" flex flex-wrap xs:mt-4 text-sm text-slate-400">
                       <div className="xs:w-1/2">
                         <p
@@ -200,6 +203,8 @@ const Registration = () => {
                   </div>
                 </Form>
               </Formik>
+              <div className="text-center text-sm">Or</div>
+              <div><FireBaseLogin buttonText={"Register With Google"}/></div>
             </div>
           </motion.div>
         </div>

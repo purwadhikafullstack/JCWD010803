@@ -26,50 +26,79 @@ const otpGenerate = () => {
 const userController = {
   register: async (req, res) => {
     try {
-      const {
-        username,
-        email,
-        password,
-        phonenumber: phoneNumber,
-        roleId,
-      } = req.body;
-      const isExist = await user.findOne({
-        where: {
-          [Op.or]: [{ email }, { phoneNumber }],
-        },
-      });
-      if (!isExist) {
-        const salt = await enc.genSalt(10);
-        const hashPassword = await enc.hash(password, salt);
-        const result = await user.create({
+      
+      if (req.body.flag == 2) {
+        const {
           username,
           email,
-          password: hashPassword,
-          phoneNumber,
+          password,
+          phonenumber: phoneNumber,
           roleId,
+          flag
+        } = req.body;
+        const isExist = await user.findOne({
+          where: {
+            [Op.or]: [{ email }, { phoneNumber }],
+          },
         });
-        console.log(result);
-        const payloads = {
-          id: result.id,
-          username: result.username,
-          email: result.email,
-          password: result.password,
-        };
-
-        const token = jwt.sign(payloads, process.env.TOKEN_KEY);
-
-        res.status(200).send({
-          result,
-          token,
-        });
-      } else {
-        if (isExist.email == email) {
-          throw { message: "Email sudah terdaftar" };
+        if (!isExist) {
+          const salt = await enc.genSalt(10);
+          const hashPassword = await enc.hash(password, salt);
+          const result = await user.create({
+            username,
+            email,
+            password: hashPassword,
+            phoneNumber,
+            roleId,
+            flag
+          });
+          console.log(result);
+          const payloads = {
+            id: result.id,
+            username: result.username,
+            email: result.email,
+            password: result.password,
+          };
+  
+          const token = jwt.sign(payloads, process.env.TOKEN_KEY);
+  
+          res.status(200).send({
+            result,
+            token,
+          });
+          
+        } else {
+          if (isExist.email == email) {
+            throw { message: "Email sudah terdaftar" };
+          }
+          if (isExist.phoneNumber == phoneNumber) {
+            throw { message: "Nomor telpon sudah terdaftar" };
+          }
         }
-        if (isExist.phoneNumber == phoneNumber) {
-          throw { message: "Nomor telpon sudah terdaftar" };
+      } else {
+        const {userName, email, fullName, flag} = req.body;
+        const isExist = await user.findOne({
+          where: { email: email },
+        });
+        if (!isExist) {
+          const result = await user.create({
+            username : userName,
+            email,
+            firstName : fullName,
+            roleId : 2,
+            flag,
+            isVerified : 1
+          });
+          res.status(200).send({
+            result
+          });
+        } else {
+          if (isExist.email == email) {
+            throw { message: "Email is alrady registered" };
+          }
         }
       }
+      
     } catch (error) {
       res.status(400).send(error);
     }

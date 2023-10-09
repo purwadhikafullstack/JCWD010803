@@ -32,11 +32,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type : DataTypes.STRING,
-      allowNull : false
     },
     phoneNumber : {
       type : DataTypes.STRING,
-      allowNull : false,
     },
     gender : {
       type: DataTypes.STRING,
@@ -59,6 +57,12 @@ module.exports = (sequelize, DataTypes) => {
     isVerified : {
       type : DataTypes.BOOLEAN,
       defaultValue : false
+    },
+    flag : {
+      type : DataTypes.INTEGER,
+    },
+    verifiedCount : {
+      type : DataTypes.INTEGER
     }
   }, {
     sequelize,
