@@ -69,7 +69,8 @@ const AccordionSection = ({
 
       {isActiveSection && (
         <div>
-          <div className="text-right">
+          <div className="">
+          <p>konten</p>
             {section.statusId == 1 ? (
               <>
                 <button
@@ -82,7 +83,7 @@ const AccordionSection = ({
                 </button>
                 {openModal && <UploadPay setReload={setReload} reload={reload} closeModal={setOpenModal} data={section} />}
               </>
-            ) : null}
+            ) : (null)}
           </div>
           {section.statusId == 3 && section.isReview == false ? (
             <ReviewModal toggleSection={toggleSection} setReload={setReload} reload={reload} data={section}/>

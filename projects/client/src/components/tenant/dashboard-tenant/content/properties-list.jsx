@@ -81,8 +81,6 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
     navigate(`/dashboard/rooms/${id}`)
   }
 
-
-
   useEffect(() => {
     myProperties()
   }, [sort, reload, page])

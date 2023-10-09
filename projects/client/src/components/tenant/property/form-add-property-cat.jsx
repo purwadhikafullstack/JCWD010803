@@ -11,6 +11,7 @@ export const FormAddPropertyCat = ({ setPage, onClick, setDetailLocation, proper
   const [detail, setDetail] = useState("")
   const navigate = useNavigate();
   const [category, setCategory] = useState([])
+  const navigate = useNavigate()
   const next = () => {
     setPage(page + 1)
   }

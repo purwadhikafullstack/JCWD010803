@@ -7,6 +7,7 @@ import { ProfileSettingPage } from "../pages/profile-setting-page";
 import { ForgotPasswordPage } from "../pages/forgot-password";
 import { ResetPasswordPage } from "../pages/reset-password-page";
 import { LoginUserPage } from "../pages/login-page";
+
 import { SortPropertiesPage } from "../pages/sort-properties-page";
 import Verification from "../pages/verify-page";
 import DashboardTenants from "../pages/dashboard-tenants";
