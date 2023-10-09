@@ -7,11 +7,8 @@ import "react-date-range/dist/theme/default.css";
 import { DateRange } from 'react-date-range';
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaScroll } from "react-icons/fa6";
-import { FiWifi } from "react-icons/fi";
-import { GiForkKnifeSpoon } from "react-icons/gi";
 import { IoIosArrowBack } from "react-icons/io";
-import { TbSmokingNo } from "react-icons/tb";
+import { RoomFacilities } from "../../components/room/room-facilities";
 
 export const DetailRoom = () => {
     const { id } = useParams()
@@ -19,7 +16,6 @@ export const DetailRoom = () => {
     const [data, setData] = useState({})
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
-
     const today = new Date();
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
@@ -36,13 +32,13 @@ export const DetailRoom = () => {
 
     const room = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/${id}`)
+            const response = await axios.post(`http://localhost:8000/api/room/roomById/${id}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
             setData(response.data)
+            getTotalPayment()
         } catch (error) {
             console.log(error);
         }
     }
-
     const fetchRoomImages = async (roomId) => {
         try {
             const response = await axios.get(`http://localhost:8000/api/room/RoomImg/${roomId}`);
@@ -53,6 +49,30 @@ export const DetailRoom = () => {
             return [];
         }
     };
+    useEffect(() => {
+        room(id)
+        const fetchImagesForRooms = async () => {
+            const images = await Promise.all([fetchRoomImages(id)]);
+            setRoomImages(images);
+        };
+        fetchImagesForRooms();
+    }, [startDate, endDate, data.specialPrice]);
+
+    const [totalPayment, setTotalPayment] = useState("")
+    const getTotalPayment = () => {
+        if (data.specialPrices) {
+            if (data.specialPrices[0].isPersent === false) {
+                setTotalPayment(parseInt(data.specialPrices[0].specialPrice * rangeDate));
+            }
+            if (data.specialPrices[0].isPersent === true) {
+                setTotalPayment(parseInt(data.price + (data.price * (data.specialPrices[0].specialPrice / 100))) * rangeDate);
+            }
+        } else {
+            setTotalPayment(parseInt(data.price * rangeDate));
+        }
+
+    };
+
     const back = () => {
         navigate(`/property/${data.propertyId}`)
     }
@@ -84,13 +104,9 @@ export const DetailRoom = () => {
     }
 
     useEffect(() => {
-        room(id)
-        const fetchImagesForRooms = async () => {
-            const images = await Promise.all([fetchRoomImages(id)]);
-            setRoomImages(images);
-        };
-        fetchImagesForRooms();
-    }, []);
+        getTotalPayment()
+    }, [getTotalPayment])
+
     return (
         <div>
             <div> <Navbar /> </div>
@@ -135,41 +151,46 @@ export const DetailRoom = () => {
                             <div>
                                 <div className=" mt-10 text-3xl border-t border-gray-300 pt-10 font-semibold text-gray-800">Room Facilities</div>
                                 <div className="flex w-full">
-                                    <div className='w-full mt-5 flex gap-10 '>
-                                        <div className=' text-xl text-gray-500'>
-                                            <div className='flex gap-2 items-center'>
-                                                <div> <FiWifi /> </div>
-                                                <div>Free Wifi</div>
-                                            </div>
-                                            <div className='flex gap-2 items-center'>
-                                                <div> <GiForkKnifeSpoon /> </div>
-                                                <div>Free Breakfast</div>
-                                            </div>
-                                            <div className='flex gap-2 items-center'>
-                                                <div> <TbSmokingNo /> </div>
-                                                <div>No Smoking</div>
-                                            </div>
-                                        </div>
-                                        <div className=' text-xl text-gray-500'>
-                                            <div className='flex gap-2 items-center'>
-                                                <div> <FaScroll /> </div>
-                                                <div>Non Refundable</div>
-                                            </div>
-                                            <div className='flex gap-2 items-center'>
-                                                <div> <FaScroll /> </div>
-                                                <div>Cannot reschedule</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <RoomFacilities />
                                 </div>
                             </div>
                         </div>
                         <div className=" w-2/5 h-fit py-5 border rounded-xl shadow-md">
                             <div>
-                                <div className=" mt-5 flex px-5 items-end gap-1 text-gray-800">
-                                    <div className="text-2xl font-semibold"> {formatToRupiah(parseInt(data.price))}.00 /</div>
-                                    <div className=" text-lg flex items-end">night </div>
-                                </div>
+                                <>
+                                    {data.specialPrices ?
+                                        <>
+                                            {data.specialPrices[0].isPersent === false ?
+                                                <div className=" mt-5 px-5 text-gray-800">
+                                                    <div className=" line-through flex">
+                                                        <div className="text-lg font-semibold "> {formatToRupiah(parseInt(data.price))}.00 /</div>
+                                                        <div className=" text-lg flex items-end">night </div>
+                                                    </div>
+                                                    <div className="flex">
+                                                        <div className="text-2xl font-semibold"> {formatToRupiah(parseInt(data.specialPrices[0].specialPrice))}.00 /</div>
+                                                        <div className=" text-lg flex items-end">night </div>
+                                                    </div>
+                                                </div>
+                                                :
+                                                <div className=" mt-5 px-5 text-gray-800">
+                                                    <div className=" line-through flex">
+                                                        <div className="text-lg font-semibold "> {formatToRupiah(parseInt(data.price))}.00 /</div>
+                                                        <div className=" text-lg flex items-end">night </div>
+                                                    </div>
+                                                    <div className="flex">
+                                                        <div className="text-2xl font-semibold"> {formatToRupiah(parseInt(data.price + (data.price * (data.specialPrices[0].specialPrice / 100))))}.00 /</div>
+                                                        <div className=" text-lg flex items-end">night </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </>
+                                        :
+                                        <div className=" mt-5 px-5 flex text-gray-800">
+                                            <div className="text-2xl font-semibold"> {formatToRupiah(parseInt(data.price))}.00 /</div>
+                                            <div className=" text-lg flex items-end">night </div>
+                                        </div>
+                                    }
+                                </>
                                 <DateRange
                                     ranges={state}
                                     onChange={(item) => {
@@ -187,26 +208,49 @@ export const DetailRoom = () => {
                                         onClick={() => {
                                             toBooking()
                                         }}
-                                        disabled={endDate === startDate ? true : false}
+                                        disabled={endDate === startDate || data.availableRooms ? true : false}
                                         className="w-full py-2 font-semibold flex disabled:cursor-not-allowed disabled:bg-teal-100 justify-center items-center bg-bgPrimary rounded-md text-white cursor-pointer hover:bg-bgPrimaryActive transition-all">
                                         Book now
                                     </button>
                                 </div>
-                                <div className="w-full flex justify-between px-5 text-lg mt-5  text-gray-600">
-                                    <div className=" underline">
-                                        {formatToRupiah(parseInt(data.price))} X {rangeDate} Night
-                                    </div>
-                                    <div>
-                                        {formatToRupiah(parseInt(data.price * rangeDate))}
-                                    </div>
+                                <div className={`px-5 mt-2 text-sm  text-gray-400 ${data.availableRooms ? "flex" : "hidden"}`}>
+                                    {`Sorry, this room is not available from ${data.availableRooms ? new Date(data.availableRooms[0].startDate).getDate() : "undefined"} - ${data.availableRooms ? new Date(data.availableRooms[0].endDate).getDate() : "undefined"} ${data.availableRooms ? new Date(data.availableRooms[0].endDate).toLocaleDateString('default', { month: 'long' }).slice(0, 3) : "undefined"}`}
                                 </div>
-                                <div className="w-full px-5 text-gray-600 text-lg flex justify-between">
-                                    <div className="underline">
-                                        Promo price
-                                    </div>
-                                    <div>
-                                        {formatToRupiah(0)}
-                                    </div>
+                                <div className="w-full flex justify-between px-5 text-lg mt-5  text-gray-600">
+                                    <>
+                                        {data.specialPrices ?
+                                            <>
+                                                {data.specialPrices[0].isPersent === false ?
+                                                    <div className=" text-gray-800 flex justify-between w-full">
+                                                        <div className=" flex underline">
+                                                            {formatToRupiah(parseInt(data.specialPrices[0].specialPrice))} X {rangeDate}
+                                                        </div>
+                                                        <div>
+                                                            {formatToRupiah(parseInt(data.specialPrices[0].specialPrice * rangeDate))}
+                                                        </div>
+                                                    </div>
+                                                    :
+                                                    <div className=" text-gray-800 flex justify-between w-full">
+                                                        <div className=" flex underline">
+                                                            {formatToRupiah(data.price + (data.price * (data.specialPrices[0].specialPrice / 100)))} X {rangeDate}
+                                                        </div>
+                                                        <div>
+                                                            {formatToRupiah(parseInt(data.price + (data.price * (data.specialPrices[0].specialPrice / 100))) * rangeDate)}
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </>
+                                            :
+                                            <div className=" text-gray-800 flex w-full justify-between">
+                                                <div className=" flex underline">
+                                                    {formatToRupiah(parseInt(data.price))} X {rangeDate}
+                                                </div>
+                                                <div>
+                                                    {formatToRupiah(parseInt(data.price * rangeDate))}
+                                                </div>
+                                            </div>
+                                        }
+                                    </>
                                 </div>
                                 <div className="px-5">
                                     <hr className="mt-5" />
@@ -217,7 +261,7 @@ export const DetailRoom = () => {
                                             total payment
                                         </div>
                                         <div>
-                                            {formatToRupiah(data.price * rangeDate)}
+                                            {formatToRupiah(parseInt(totalPayment))}
                                         </div>
                                     </div>
                                 </div>

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export const FormAddPropertyDesc = ({ setPage, propertyDesc, page, setPropertyDesc }) => {
     const [data, setData] = useState(propertyDesc)
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const next = () => {
         setPage(page + 1)
     }

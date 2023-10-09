@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       rooms.belongsTo(models.properties);
       rooms.hasOne(models.onBooking);
+      rooms.hasMany(models.specialPrice)
+      rooms.hasMany(models.availableRoom)
     }
   }
   rooms.init(
@@ -24,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       roomDesc: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
       },
       isDelete: {

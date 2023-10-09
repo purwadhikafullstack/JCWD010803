@@ -7,6 +7,7 @@ const rooms = db.rooms;
 const property = db.properties;
 const statusPay = db.status;
 const category = db.categories;
+const review = db.review;
 const jwt = require("jsonwebtoken");
 const enc = require("bcrypt");
 const { Op, where } = require("sequelize");
@@ -344,7 +345,7 @@ const userController = {
       const { firstName, lastName, username, email, gender, birthdate } =
         req.body;
 
-      const result = await user.update(
+      const setData = await user.update(
         {
           firstName: firstName,
           lastName: lastName,
@@ -356,9 +357,13 @@ const userController = {
           where: { id: id },
         }
       );
-
+      
+      const result = await user.findOne({
+        where: { id: id }
+      });
       res.status(200).send({
         message: "Success",
+        result
       });
     } catch (error) {
       res.status(400).send(error);
@@ -394,11 +399,16 @@ const userController = {
   },
   getOrderList: async (req, res) => {
     try {
-      const page = +req.query.page || 1;
-      const limit = +req.query.limit || 10;
+      const sort = req.query.sort || "DESC";
+      const sortBy = "createdAt";
+      const limit = 10;
+      const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const result = await userTransaction.findAll({
         where: { userId: req.user.id },
+        order: [[sortBy, sort]],
+        offset : offset,
+        limit : limit,
         include: [
           { model: booking },
           { model: statusPay },
@@ -413,41 +423,86 @@ const userController = {
           },
         ],
       });
-
+      const checkLength = await userTransaction.findAll({
+        where: { userId: req.user.id },
+      });
+      const length = checkLength.length;
       res.status(200).send({
+        message: "OK",
         result,
-        message: "oke",
+        length,
+        limit
       });
     } catch (error) {
       res.status(400).send(error);
     }
   },
-  uploadPayment : async (req, res) => {
+  uploadPayment: async (req, res) => {
     try {
-      const {fileName, id, userId} = req.body;
+      const { fileName, id, userId } = req.body;
       if (req.file == undefined) {
         throw { message: "Receipt Cannot be empty" };
       }
       const result = await userTransaction.update(
         {
-          paymentImg : fileName,
-          statusId : 2
+          paymentImg: fileName,
+          statusId: 2,
         },
         {
-          where :{
-            [Op.and] : [{id : id}, {userId : userId}]
-          }
+          where: {
+            [Op.and]: [{ id: id }, { userId: userId }],
+          },
         }
       );
-      
+
       res.status(200).send({
-        message : "sukses",
-        result
-      })
+        message: "sukses",
+        result,
+      });
     } catch (error) {
-      res.status(400).send(error)
+      console.log(error);
+      res.status(400).send(error);
     }
-  }
+  },
+  postReview: async (req, res) => {
+    try {
+      const transactionIsExist = await userTransaction.findOne({
+        where: {
+          [Op.and]: [{ id: req.body.id }, { statusId: 3 }, { isReview: false }],
+        },
+      });
+      if (transactionIsExist) {
+        const result = await userTransaction.update(
+          {
+            isReview: true,
+            statusId: 7,
+          },
+          {
+            where: {
+              [Op.and]: [
+                { id: req.body.id },
+                { statusId: 3 },
+                { isReview: false },
+              ],
+            },
+          }
+        );
+        const setReview = await review.create({
+          userReview: req.body.review,
+          userTransactionId: req.body.id,
+        });
+        res.status(200).send({
+          message: "Give a review success",
+        });
+      } else {
+        throw {
+          message: "Transaction not exist",
+        };
+      }
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
 };
 
 module.exports = userController;

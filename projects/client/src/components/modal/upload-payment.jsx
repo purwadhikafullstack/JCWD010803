@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import swal from "sweetalert2";
 import axios from "axios";
 
-const UploadPay = ({ closeModal, data }) => {
+const UploadPay = ({ closeModal, data, reload, setReload }) => {
   const [imageInput, setImageInput] = useState(null);
   const handleClick = async (file) => {
     try {
       if (file) {
-        // console.log(data.userId);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileName", file.name);
@@ -22,8 +21,14 @@ const UploadPay = ({ closeModal, data }) => {
             },
           }
         );
-        console.log(response);
-            
+        setReload(!reload)
+        swal.fire({
+          icon: "success",
+          title : "Change Picture Success",
+          text : "",
+          timer : 1500,
+          showConfirmButton : false
+        })
       } else {
         swal.fire({
           icon: "warning",

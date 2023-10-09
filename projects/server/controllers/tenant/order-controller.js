@@ -1,7 +1,7 @@
+const { Op } = require("sequelize");
 const db = require("../../models");
 const transaction = db.userTransactions;
 const room = db.rooms;
-const property = db.properties;
   const properties = db.properties;
   const user = db.user;
   const status = db.status;
@@ -238,6 +238,31 @@ const property = db.properties;
       });
     }
     catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  salesReport : async (req, res) => {
+    try {
+      const result = await transaction.findAll({
+        where : {
+          [Op.or] : [
+            {statusId : 7},
+            {statusId : 3}
+          ]
+        },
+        include : [
+          { model : properties, where :{userId : req.user.id} },
+          { model : user},
+          { model : room},
+          { model : booking}
+        ]
+      });
+      res.status(200).send({
+        message : "Sukses",
+        result
+      })
+      
+    } catch (error) {
       res.status(400).send(error)
     }
   },
