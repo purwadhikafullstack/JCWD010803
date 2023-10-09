@@ -7,7 +7,6 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
   const handleClick = async (file) => {
     try {
       if (file) {
-        // console.log(data.userId);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileName", file.name);
@@ -23,7 +22,13 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
           }
         );
         setReload(!reload)
-            
+        swal.fire({
+          icon: "success",
+          title : "Change Picture Success",
+          text : "",
+          timer : 1500,
+          showConfirmButton : false
+        })
       } else {
         swal.fire({
           icon: "warning",
