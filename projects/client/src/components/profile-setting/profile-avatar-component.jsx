@@ -88,7 +88,7 @@ const ProfileAvatar = ({ reload, setReload }) => {
             type="file"
             id="file_input"
             name="file"
-            onChange={handleChange}
+            
           ></input>
         </div>
 
