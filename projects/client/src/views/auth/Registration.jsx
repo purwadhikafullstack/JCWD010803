@@ -203,8 +203,8 @@ const Registration = () => {
                   </div>
                 </Form>
               </Formik>
-              <div className="text-center text-sm">Or</div>
-              <div><FireBaseLogin buttonText={"Register With Google"}/></div>
+              <div className="text-center text-xs text-slate-400">Or</div>
+              <div className="xs:px-20"><FireBaseLogin buttonText={"Register with google"}/></div>
             </div>
           </motion.div>
         </div>

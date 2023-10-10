@@ -26,7 +26,7 @@ const otpGenerate = () => {
 const userController = {
   register: async (req, res) => {
     try {
-      
+      // login normal
       if (req.body.flag == 2) {
         const {
           username,
@@ -76,7 +76,7 @@ const userController = {
           }
         }
       } else {
-        const {userName, email, fullName, flag} = req.body;
+        const {userName, email, fullName, flag, profileImg, phoneNumber} = req.body;
         const isExist = await user.findOne({
           where: { email: email },
         });
@@ -87,7 +87,9 @@ const userController = {
             firstName : fullName,
             roleId : 2,
             flag,
-            isVerified : 1
+            isVerified : 1,
+            profileImg,
+            phoneNumber
           });
           res.status(200).send({
             result
@@ -98,9 +100,21 @@ const userController = {
           }
         }
       }
-      
     } catch (error) {
       res.status(400).send(error);
+    }
+  },
+  checkFirebase : async (req, res) => {
+    try {
+      const {email} = req.body;
+      const result = await user.findOne({
+        where: { email: email},
+      });
+      res.status(200).send({
+        result
+      });
+    } catch (error) {
+      res.status(200).send(error);
     }
   },
   login: async (req, res) => {

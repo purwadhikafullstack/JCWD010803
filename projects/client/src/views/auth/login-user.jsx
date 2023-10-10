@@ -37,7 +37,7 @@ export const LoginUser = () => {
             <div>
               <FormLoginUser />
             </div>
-            <div> <FireBaseLogin buttonText={"Sign In With Google"}/> </div>
+            <div> <FireBaseLogin buttonText={"Sign with google"}/> </div>
 
             <div className='flex mt-5 underline text-gray-500  w-full justify-between text-sm'>
               <div className='cursor-pointer' onClick={handleClick}>Forgot password?</div>

@@ -6,7 +6,7 @@ import swal from "sweetalert2";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 
-export const FireBaseLogin = ({ buttonText }) => {
+export const FireBaseLogin = ({buttonText}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,25 +17,43 @@ export const FireBaseLogin = ({ buttonText }) => {
         userName: auth.user.displayName,
         email: auth.user.email,
         fullName: auth.user.displayName,
+        phoneNumber: auth.user.providerData[0].phoneNumber,
+        profileImg: auth.user.providerData[0].photoURL,
         flag: 1,
       };
 
-      const response = await axios.post(
-        `http://localhost:8000/api/user/register`,
+      const check = await axios.post(
+        `http://localhost:8000/api/user/checkFirebase`,
         data
       );
-      
-      console.log(response);
-      const token = auth.user.accessToken;
-      dispatch(setData(data));
-      localStorage.setItem("firebase-token", token);
-      swal.fire({
-        icon: "success",
-        title: "Login Success",
-        text: "Welcome!",
-        timer: 1500,
-        showConfirmButton: false,
-      });
+
+      if (!check.data.result) {
+        const response = await axios.post(
+          `http://localhost:8000/api/user/register`,
+          data
+        );
+        const token = auth.user.accessToken;
+        dispatch(setData(data));
+        localStorage.setItem("firebase-token", token);
+        swal.fire({
+          icon: "success",
+          title: "Register Success",
+          text: "Welcome!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } else {
+        const token = auth.user.accessToken;
+        dispatch(setData(data));
+        localStorage.setItem("firebase-token", token);
+        swal.fire({
+          icon: "success",
+          title: "Login Success",
+          text: "Welcome!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
       setTimeout(() => {
         navigate("/");
       }, 2000);
