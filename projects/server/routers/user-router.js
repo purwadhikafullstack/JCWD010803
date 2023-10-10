@@ -8,6 +8,7 @@ const router = require('express').Router();
 
 
 router.post('/login', userController.login)
+router.post('/checkFirebase', userController.checkFirebase);
 router.post('/register', userController.register);
 router.post('/keepLogin',verifyToken , userController.keepLogin)
 router.patch('/resetPassword',verifyToken, checkResetPassword, userController.resetPassword)
