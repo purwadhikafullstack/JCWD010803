@@ -14,11 +14,14 @@ export const DetailRoom = () => {
     const { id } = useParams()
     const [roomImages, setRoomImages] = useState([]);
     const [data, setData] = useState({})
+    const [message, setMessage] = useState("")
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
     const today = new Date();
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
+
+    console.log(message);
 
     const [state, setState] = useState([
         {
@@ -33,8 +36,11 @@ export const DetailRoom = () => {
     const room = async (id) => {
         try {
             const response = await axios.post(`http://localhost:8000/api/room/roomById/${id}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
-            setData(response.data)
+            setData(response.data.result)
+            console.log(response.data);
+            setMessage(response.data.message)
             getTotalPayment()
+
         } catch (error) {
             console.log(error);
         }
@@ -208,13 +214,16 @@ export const DetailRoom = () => {
                                         onClick={() => {
                                             toBooking()
                                         }}
-                                        disabled={endDate === startDate || data.availableRooms ? true : false}
+                                        disabled={endDate === startDate || data.availableRooms || message ? true : false}
                                         className="w-full py-2 font-semibold flex disabled:cursor-not-allowed disabled:bg-teal-100 justify-center items-center bg-bgPrimary rounded-md text-white cursor-pointer hover:bg-bgPrimaryActive transition-all">
                                         Book now
                                     </button>
                                 </div>
                                 <div className={`px-5 mt-2 text-sm  text-gray-400 ${data.availableRooms ? "flex" : "hidden"}`}>
                                     {`Sorry, this room is not available from ${data.availableRooms ? new Date(data.availableRooms[0].startDate).getDate() : "undefined"} - ${data.availableRooms ? new Date(data.availableRooms[0].endDate).getDate() : "undefined"} ${data.availableRooms ? new Date(data.availableRooms[0].endDate).toLocaleDateString('default', { month: 'long' }).slice(0, 3) : "undefined"}`}
+                                </div>
+                                <div className={`px-5 mt-2 text-sm  text-gray-400 ${message ? "flex" : "hidden"}`}>
+                                    {`Sorry, this room is full`} 
                                 </div>
                                 <div className="w-full flex justify-between px-5 text-lg mt-5  text-gray-600">
                                     <>

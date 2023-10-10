@@ -5,6 +5,7 @@ const room = db.rooms;
 const roomImg = db.roomImg;
 const specialPrice = db.specialPrice;
 const availableRoom = db.availableRoom;
+const onBooking = db.onBooking;
 
 module.exports = {
   addRoom: async (req, res) => {
@@ -92,9 +93,9 @@ module.exports = {
       const sortBy = req.query.sortBy || "createdAt";
 
       const checkLength = await room.findAll({
-        where : {propertyId: propertyId, isDelete: false}
-      })
-      const length = checkLength.length
+        where: { propertyId: propertyId, isDelete: false },
+      });
+      const length = checkLength.length;
 
       const result = await room.findAll({
         where: { propertyId: propertyId, isDelete: false },
@@ -105,7 +106,7 @@ module.exports = {
       res.status(200).send({
         result,
         length,
-        limit
+        limit,
       });
     } catch (error) {
       console.log(error);
@@ -144,7 +145,44 @@ module.exports = {
     try {
       const { id } = req.params;
       const { checkIn, checkOut } = req.body;
-
+      const getRoom = await room.findOne({
+        where: { id: id },
+      });
+      const checkRoom = await onBooking.findAll({
+        where: {
+          [Op.and]: [
+            { roomId: id },
+            {
+              [Op.or]: [
+                {
+                  checkIn: {
+                    [Op.between]: [
+                      new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                      new Date(
+                        new Date(
+                          new Date(checkOut).setHours(7, 0, 0, 0)
+                        ).setHours(7, 0, 0, 0)
+                      ),
+                    ],
+                  },
+                },
+                {
+                  checkOut: {
+                    [Op.between]: [
+                      new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                      new Date(
+                        new Date(
+                          new Date(checkOut).setHours(7, 0, 0, 0)
+                        ).setHours(7, 0, 0, 0)
+                      ),
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      });
       const checkAvailable = await availableRoom.findOne({
         where: {
           roomId: id,
@@ -153,10 +191,14 @@ module.exports = {
               [Op.and]: [
                 {
                   startDate: {
-                    [Op.lte]: new Date(new Date(checkIn).setHours(7,0,0,0)),
+                    [Op.lte]: new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
                   },
                   endDate: {
-                    [Op.gte]: new Date(new Date(new Date(checkOut).setHours(7,0,0,0)).setHours(7,0,0,0)),
+                    [Op.gte]: new Date(
+                      new Date(
+                        new Date(checkOut).setHours(7, 0, 0, 0)
+                      ).setHours(7, 0, 0, 0)
+                    ),
                   },
                 },
               ],
@@ -165,16 +207,30 @@ module.exports = {
               [Op.or]: [
                 {
                   startDate: {
-                    [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(new Date(checkOut).setHours(7,0,0,0)).setHours(7,0,0,0))],
+                    [Op.between]: [
+                      new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                      new Date(
+                        new Date(
+                          new Date(checkOut).setHours(7, 0, 0, 0)
+                        ).setHours(7, 0, 0, 0)
+                      ),
+                    ],
                   },
                 },
                 {
                   endDate: {
-                    [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(new Date(checkOut).setHours(7,0,0,0)).setHours(7,0,0,0))],
+                    [Op.between]: [
+                      new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                      new Date(
+                        new Date(
+                          new Date(checkOut).setHours(7, 0, 0, 0)
+                        ).setHours(7, 0, 0, 0)
+                      ),
+                    ],
                   },
                 },
               ],
-            },  
+            },
           ],
         },
       });
@@ -187,10 +243,14 @@ module.exports = {
               [Op.and]: [
                 {
                   startDate: {
-                    [Op.lte]: new Date(new Date(checkIn).setHours(7,0,0,0)),
+                    [Op.lte]: new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
                   },
                   endDate: {
-                    [Op.gte]: new Date(new Date(new Date(checkOut).setHours(7,0,0,0)).setHours(7,0,0,0)),
+                    [Op.gte]: new Date(
+                      new Date(
+                        new Date(checkOut).setHours(7, 0, 0, 0)
+                      ).setHours(7, 0, 0, 0)
+                    ),
                   },
                 },
               ],
@@ -199,12 +259,18 @@ module.exports = {
               [Op.or]: [
                 {
                   startDate: {
-                    [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                    [Op.between]: [
+                      new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                      new Date(new Date(checkOut).setHours(7, 0, 0, 0)),
+                    ],
                   },
                 },
                 {
                   endDate: {
-                    [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                    [Op.between]: [
+                      new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                      new Date(new Date(checkOut).setHours(7, 0, 0, 0)),
+                    ],
                   },
                 },
               ],
@@ -213,7 +279,15 @@ module.exports = {
         },
       });
 
-      if (checkPromo) {
+      if (checkRoom.length === getRoom.QTY || checkRoom.length >= getRoom.QTY) {
+        const result = await room.findOne({
+          where: { id: id },
+        });
+        res.status(200).send({
+          result,
+          message: "full",
+        });
+      } else if (checkPromo) {
         const result = await room.findOne({
           where: { id },
           include: [
@@ -226,10 +300,14 @@ module.exports = {
                     [Op.and]: [
                       {
                         startDate: {
-                          [Op.lte]: new Date(new Date(checkIn).setHours(7,0,0,0)),
+                          [Op.lte]: new Date(
+                            new Date(checkIn).setHours(7, 0, 0, 0)
+                          ),
                         },
                         endDate: {
-                          [Op.gte]: new Date(new Date(checkOut).setHours(7,0,0,0)),
+                          [Op.gte]: new Date(
+                            new Date(checkOut).setHours(7, 0, 0, 0)
+                          ),
                         },
                       },
                     ],
@@ -238,12 +316,18 @@ module.exports = {
                     [Op.or]: [
                       {
                         startDate: {
-                          [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                          [Op.between]: [
+                            new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                            new Date(new Date(checkOut).setHours(7, 0, 0, 0)),
+                          ],
                         },
                       },
                       {
                         endDate: {
-                          [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                          [Op.between]: [
+                            new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                            new Date(new Date(checkOut).setHours(7, 0, 0, 0)),
+                          ],
                         },
                       },
                     ],
@@ -254,9 +338,10 @@ module.exports = {
           ],
           attributes: ["id", "roomName", "price", "roomDesc", "propertyId"],
         });
-        res.status(200).send(result);
-      }
-      else if (checkAvailable) {
+        res.status(200).send({
+          result,
+        });
+      } else if (checkAvailable) {
         const result = await room.findOne({
           where: { id },
           include: [
@@ -269,10 +354,14 @@ module.exports = {
                     [Op.and]: [
                       {
                         startDate: {
-                          [Op.lte]: new Date(new Date(checkIn).setHours(7,0,0,0)),
+                          [Op.lte]: new Date(
+                            new Date(checkIn).setHours(7, 0, 0, 0)
+                          ),
                         },
                         endDate: {
-                          [Op.gte]: new Date(new Date(checkOut).setHours(7,0,0,0)),
+                          [Op.gte]: new Date(
+                            new Date(checkOut).setHours(7, 0, 0, 0)
+                          ),
                         },
                       },
                     ],
@@ -281,12 +370,18 @@ module.exports = {
                     [Op.or]: [
                       {
                         startDate: {
-                          [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                          [Op.between]: [
+                            new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                            new Date(new Date(checkOut).setHours(7, 0, 0, 0)),
+                          ],
                         },
                       },
                       {
                         endDate: {
-                          [Op.between]: [new Date(new Date(checkIn).setHours(7,0,0,0)), new Date(new Date(checkOut).setHours(7,0,0,0))],
+                          [Op.between]: [
+                            new Date(new Date(checkIn).setHours(7, 0, 0, 0)),
+                            new Date(new Date(checkOut).setHours(7, 0, 0, 0)),
+                          ],
                         },
                       },
                     ],
@@ -297,31 +392,35 @@ module.exports = {
           ],
           attributes: ["id", "roomName", "price", "roomDesc", "propertyId"],
         });
-        res.status(200).send(result);
+        res.status(200).send({
+          result,
+        });
       } else {
         const result = await room.findOne({
           where: { id },
         });
-        res.status(200).send(result);
+        res.status(200).send({
+          result
+        });
       }
     } catch (error) {
       console.log(error);
       res.status(400).send(error);
     }
   },
-  addUnavailableDate : async (req, res) => {
+  addUnavailableDate: async (req, res) => {
     try {
-      const {startDate, endDate, roomId} = req.body
+      const { startDate, endDate, roomId } = req.body;
       const result = await availableRoom.create({
         startDate,
         endDate,
-        roomId
-      })
+        roomId,
+      });
       res.status(200).send({
-        message: "Add unavailablity success"
-      })
+        message: "Add unavailablity success",
+      });
     } catch (error) {
-      res.status(400).send(error)
+      res.status(400).send(error);
     }
-  }
+  },
 };
