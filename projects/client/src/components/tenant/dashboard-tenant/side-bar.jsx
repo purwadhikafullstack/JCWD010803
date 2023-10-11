@@ -149,21 +149,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             <ul className="mt-3">{/* Dashboard */}</ul>
           </div>
         </div>
-
-        {/* Expand / collapse button */}
-        <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
-          <div className="px-3 py-2">
-            <button onClick={() => setSidebarExpanded(!sidebarExpanded)}>
-              <span className="sr-only">Expand / collapse sidebar</span>
-              <FaChevronDown
-                size={24}
-                className={`w-6 h-6 fill-current sidebar-expanded:rotate-180 ${
-                  sidebarExpanded ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
-        </div>
         <div className="h-full pb-5 justify-center items-end flex">
           <div>
             <div>
