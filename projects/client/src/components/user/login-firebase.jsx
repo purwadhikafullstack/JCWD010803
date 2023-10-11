@@ -29,12 +29,15 @@ export const FireBaseLogin = ({buttonText}) => {
 
       if (!check.data.result) {
         const response = await axios.post(
-          `http://localhost:8000/api/user/register`,
+          `http://localhost:8000/api/user/register`,  
           data
         );
-        const token = auth.user.accessToken;
+        console.log(response);
+        const tokenFireBase = auth.user.accessToken;
+        const token = response.data.token;
         dispatch(setData(data));
-        localStorage.setItem("firebase-token", token);
+        localStorage.setItem("firebase-token", tokenFireBase);
+        localStorage.setItem("token", token);
         swal.fire({
           icon: "success",
           title: "Register Success",
@@ -43,9 +46,12 @@ export const FireBaseLogin = ({buttonText}) => {
           showConfirmButton: false,
         });
       } else {
-        const token = auth.user.accessToken;
+        const tokenFireBase = auth.user.accessToken;
+        const token = check.data.token;
+
         dispatch(setData(data));
-        localStorage.setItem("firebase-token", token);
+        localStorage.setItem("firebase-token", tokenFireBase);
+        localStorage.setItem("token", token);
         swal.fire({
           icon: "success",
           title: "Login Success",

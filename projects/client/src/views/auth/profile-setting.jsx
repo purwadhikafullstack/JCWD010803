@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RxAvatar } from "react-icons/rx";
 import { BiKey } from "react-icons/bi";
 import { FormChangePassword } from "../../components/profile-setting/form-change-password";
@@ -11,10 +11,16 @@ import Navbar from "../../components/navbar/navbar";
 export const ProfileSetting = () => {
 	const [click, setClick] = useState("changeProfile")
 	const [reload, setReload] = useState(false)
+	const tokenFireBase = localStorage.getItem('firebase-token')
 
 	const handleClick = (value) => {
 		setClick(value)
 	}
+	useEffect(() => {
+		if (tokenFireBase) {
+			setClick("orderList")
+		}
+	},[])
 
 	return (
 		<div>
@@ -26,7 +32,7 @@ export const ProfileSetting = () => {
 					<ProfileSettingSelectTop  choose={handleClick} value={click} />
 				</div>
 			</div>
-			<div className="block sm:flex sm:px-0 w-full gap-2 pt-2 sm:pt-44 sm:pb-10 bg-[#f3f4f6] justify-center">
+			<div className="block min-h-screen sm:flex sm:px-0 w-full gap-2 pt-2 sm:pt-44 sm:pb-10 bg-[#f3f4f6] justify-center">
 				
 				<div className="w-1/5">
 					<ProfileSettingSelect reload={reload} setReload={setReload} choose={handleClick} value={click} />

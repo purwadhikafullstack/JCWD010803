@@ -2,6 +2,7 @@ import { useState } from "react"
 
 export const ProfileSettingSelectTop = ({ choose, value }) => {
   const [click, setClick] = useState("")
+  const fireBaseToken = localStorage.getItem("firebase-token")
 
   const clickChangeProfile = () => {
     setClick("changeProfile")
@@ -18,6 +19,7 @@ export const ProfileSettingSelectTop = ({ choose, value }) => {
           pt-4
           p-2
           text-sm
+          ${fireBaseToken ? "hidden" : "block"}
 					${click || value === "changePassword" ? "bg-bgPrimaryActive" : "bg-bgPrimary"}
           ${click || value === "changePassword" ? "text-white" : "text-white"}
           cursor-pointer		
@@ -28,7 +30,7 @@ export const ProfileSettingSelectTop = ({ choose, value }) => {
         </div>
 
         <div className={
-        "my-auto"}
+        `my-auto ${fireBaseToken ? "hidden" : "block"}`}
         >
           Profile
         </div>

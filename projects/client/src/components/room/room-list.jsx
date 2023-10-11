@@ -12,7 +12,6 @@ import axios from 'axios'
 export const RoomList = () => {
     const [room, setRoom] = useState([])
     const [roomImages, setRoomImages] = useState([]);
-    console.log(roomImages[0]);
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState("ASC")
     const [sortBy, setSortBy] = useState("createdAt")

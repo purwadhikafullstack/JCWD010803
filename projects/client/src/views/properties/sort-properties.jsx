@@ -22,7 +22,6 @@ export const SortProperties = () => {
   const checkOut = queryParams.get('checkOut')
   const sorting = queryParams.get('sort')
   const sortingBy = queryParams.get('sortBy')
-  console.log(limit);
   
 
   const maxPage = Math.ceil(length / limit)
@@ -88,7 +87,6 @@ export const SortProperties = () => {
             {properties.length > 0 ? (
               <div className=" flex w-full flex-wrap justify-center gap-10 pt-10">
                 {properties?.map(item => {
-                  console.log(item.propertyImg);
                   return (
                     <div className=" w-72 h-96 border p-5 rounded-xl sm:border-none sm:p-0">
                       <div className="w-72 h-96 absolute z-10 hover:bg-white cursor-pointer opacity-20 " onClick={(() => handleClick(item.id))}></div>

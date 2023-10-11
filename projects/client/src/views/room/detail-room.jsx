@@ -21,8 +21,6 @@ export const DetailRoom = () => {
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
-    console.log(message);
-
     const [state, setState] = useState([
         {
             startDate: today,
@@ -37,7 +35,6 @@ export const DetailRoom = () => {
         try {
             const response = await axios.post(`http://localhost:8000/api/room/roomById/${id}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
             setData(response.data.result)
-            console.log(response.data);
             setMessage(response.data.message)
             getTotalPayment()
 
