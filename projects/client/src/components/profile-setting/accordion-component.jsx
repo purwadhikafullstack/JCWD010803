@@ -37,8 +37,8 @@ const AccordionSection = ({
 
   const cancelOrder = async () => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You want to cancel this order?",
+      title: "Are You Sure?",
+      text: "You Want to Cancel This Order?",
       confirmButtonText: "Yes",
       showCancelButton: true,
       confirmButtonColor: "#2CA4A5",
