@@ -78,13 +78,14 @@ export const Transaction = () => {
     const getRoom = async () => {
         try {
             const response = await axios.post(`http://localhost:8000/api/room/roomById/${roomId}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
-            setRoom(response.data.result)
+            setRoom(response.data)
+            console.log(response.data.result);
 
         } catch (error) {
             console.log(error);
         }
     }
-    console.log(room);
+    // console.log(room);
 
     useEffect(() => {
         if (!token) {
