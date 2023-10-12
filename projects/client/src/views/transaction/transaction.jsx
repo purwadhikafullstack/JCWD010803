@@ -78,7 +78,7 @@ export const Transaction = () => {
     const getRoom = async () => {
         try {
             const response = await axios.post(`http://localhost:8000/api/room/roomById/${roomId}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
-            setRoom(response.data)
+            setRoom(response.data.result)
 
         } catch (error) {
             console.log(error);

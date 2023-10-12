@@ -8,6 +8,7 @@ export const ProfileSettingSelect = ({ reload, choose, values }) => {
   const [click, setClick] = useState("");
   const dataFireBase = useSelector((state) => state.firebase.value);
   const data = useSelector((state) => state.user.value);
+  const tokenFireBase = localStorage.getItem("firebase-token")
   const token = localStorage.getItem("token")
   const [image, setImage] = useState("")
 
@@ -80,13 +81,13 @@ export const ProfileSettingSelect = ({ reload, choose, values }) => {
         <div className="">
           <div
             className={`
-						flex 
 						px-10
 						w-full 
 						h-16 
 						gap-3
 						${values === "changeProfile" ? "bg-bgPrimary" : "null"}
 						${values === "changeProfile" ? "text-white" : "text-gray-700"}
+            ${tokenFireBase ? "hidden" : "flex"}
 						border-b
 						cursor-pointer
 						`}
@@ -110,6 +111,7 @@ export const ProfileSettingSelect = ({ reload, choose, values }) => {
 							gap-3
 							${values === "changePassword" ? "bg-bgPrimary" : "null"}
 							${values === "changePassword" ? "text-white" : "text-gray-700"}
+              ${tokenFireBase ? "hidden" : "flex"}
 							border-b
 							cursor-pointer
 							`}

@@ -203,10 +203,6 @@ const room = db.rooms;
       const checkRoom = await room.findOne({
         where : {id : roomId}
       })
-      const quantityAdjustment = await room.update(
-        {QTY : checkRoom.QTY + 1},
-        {where : {id : roomId}}
-      )
       res.status(200).send({
         message: "reject success",
       });
@@ -229,10 +225,6 @@ const room = db.rooms;
       const checkRoom = await room.findOne({
         where : {id : roomId}
       })
-      const quantityAdjustment = await room.update(
-        {QTY : checkRoom.QTY + 1},
-        {where : {id : roomId}}
-      )
       res.status(200).send({
         message: "Cancel success",
       });

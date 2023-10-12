@@ -26,52 +26,109 @@ const otpGenerate = () => {
 const userController = {
   register: async (req, res) => {
     try {
-      const {
-        username,
-        email,
-        password,
-        phonenumber: phoneNumber,
-        roleId,
-      } = req.body;
-      const isExist = await user.findOne({
-        where: {
-          [Op.or]: [{ email }, { phoneNumber }],
-        },
-      });
-      if (!isExist) {
-        const salt = await enc.genSalt(10);
-        const hashPassword = await enc.hash(password, salt);
-        const result = await user.create({
+      // login normal
+      if (req.body.flag == 2) {
+        const {
           username,
           email,
-          password: hashPassword,
-          phoneNumber,
+          password,
+          phonenumber: phoneNumber,
           roleId,
+          flag
+        } = req.body;
+        const isExist = await user.findOne({
+          where: {
+            [Op.or]: [{ email }, { phoneNumber }],
+          },
         });
-        console.log(result);
-        const payloads = {
-          id: result.id,
-          username: result.username,
-          email: result.email,
-          password: result.password,
-        };
-
-        const token = jwt.sign(payloads, process.env.TOKEN_KEY);
-
-        res.status(200).send({
-          result,
-          token,
-        });
-      } else {
-        if (isExist.email == email) {
-          throw { message: "Email sudah terdaftar" };
+        if (!isExist) {
+          const salt = await enc.genSalt(10);
+          const hashPassword = await enc.hash(password, salt);
+          const result = await user.create({
+            username,
+            email,
+            password: hashPassword,
+            phoneNumber,
+            roleId,
+            flag
+          });
+          const payloads = {
+            id: result.id,
+            username: result.username,
+            email: result.email,
+            password: result.password,
+          };
+  
+          const token = jwt.sign(payloads, process.env.TOKEN_KEY);
+  
+          res.status(200).send({
+            result,
+            token,
+          });
+          
+        } else {
+          if (isExist.email == email) {
+            throw { message: "Email sudah terdaftar" };
+          }
+          if (isExist.phoneNumber == phoneNumber) {
+            throw { message: "Nomor telpon sudah terdaftar" };
+          }
         }
-        if (isExist.phoneNumber == phoneNumber) {
-          throw { message: "Nomor telpon sudah terdaftar" };
+      } else {
+        const {userName, email, fullName, flag, profileImg, phoneNumber} = req.body;
+        const isExist = await user.findOne({
+          where: { email: email },
+        });
+        if (!isExist) {
+          const result = await user.create({
+            username : userName,
+            email,
+            firstName : fullName,
+            roleId : 2,
+            flag,
+            isVerified : 1,
+            profileImg,
+            phoneNumber
+          });
+          const payloads = {
+            id: result.id,
+            username: result.username,
+            email: result.email,
+            password: result.password,
+          };
+  
+          const token = jwt.sign(payloads, process.env.TOKEN_KEY);
+  
+          res.status(200).send({
+            result,
+            token,
+          });
+        } else {
+          if (isExist.email == email) {
+            throw { message: "Email is alrady registered" };
+          }
         }
       }
     } catch (error) {
       res.status(400).send(error);
+    }
+  },
+  checkFirebase : async (req, res) => {
+    try {
+      const {email} = req.body;
+      const result = await user.findOne({
+        where: { email: email},
+      });
+      const payloads = {
+        id: result.id,
+      };
+      const token = jwt.sign(payloads, process.env.TOKEN_KEY);
+      res.status(200).send({
+        result,
+        token
+      });
+    } catch (error) {
+      res.status(200).send(error);
     }
   },
   login: async (req, res) => {
@@ -412,6 +469,7 @@ const userController = {
         include: [
           { model: booking },
           { model: statusPay },
+          { model: user},
           {
             model: rooms,
             include: [

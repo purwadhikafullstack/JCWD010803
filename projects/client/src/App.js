@@ -26,8 +26,12 @@ function App() {
           const userData = {
             uid: user.uid,
             userName: user.displayName,
-            email: user.email
+            email: user.email,
+            profileImg : user.providerData[0].photoURL,
+            phoneNumber : user.providerData[0].phoneNumber,
+            flag : 1
           };
+          
           dispatch(setData(userData))
         })
       }
@@ -36,7 +40,7 @@ function App() {
       }
     };
     keepLogin()
-  },[dispatch, token, firebaseToken]);
+  },[ token, firebaseToken, dispatch]);
 
   
 
