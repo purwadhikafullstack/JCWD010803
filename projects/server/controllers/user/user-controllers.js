@@ -52,7 +52,6 @@ const userController = {
             roleId,
             flag
           });
-          console.log(result);
           const payloads = {
             id: result.id,
             username: result.username,
@@ -91,8 +90,18 @@ const userController = {
             profileImg,
             phoneNumber
           });
+          const payloads = {
+            id: result.id,
+            username: result.username,
+            email: result.email,
+            password: result.password,
+          };
+  
+          const token = jwt.sign(payloads, process.env.TOKEN_KEY);
+  
           res.status(200).send({
-            result
+            result,
+            token,
           });
         } else {
           if (isExist.email == email) {
@@ -110,8 +119,13 @@ const userController = {
       const result = await user.findOne({
         where: { email: email},
       });
+      const payloads = {
+        id: result.id,
+      };
+      const token = jwt.sign(payloads, process.env.TOKEN_KEY);
       res.status(200).send({
-        result
+        result,
+        token
       });
     } catch (error) {
       res.status(200).send(error);

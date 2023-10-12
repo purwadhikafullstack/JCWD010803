@@ -4,37 +4,49 @@ import React, { useState, useCallback } from "react";
 import MenuItem from "./menu-item";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
+import { useDispatch, useSelector } from "react-redux";
+import { setValue } from "../../redux/user-slice";
+import { setData } from "../../redux/firebase-slice";
 
 const UserMenu = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false);
+  const data = useSelector((state) => state.user.value);
   const token = localStorage.getItem("token");
+  const tokenFireBase = localStorage.getItem("firebase-token")
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
-  }, []);
+  }, [token, tokenFireBase]);
 
   const toLogin = () => {
     navigate("/login");
   };
   const toLogout = () => {
-    localStorage.removeItem("token");
-    Swal.fire({
-      icon: "success",
-      title: "Log out success",
-      timer: 1000
-    })
+    if (token || tokenFireBase) {
+      localStorage.removeItem("firebase-token")
+      localStorage.removeItem("token");
+      dispatch(setValue(""));
+      dispatch(setData(""));
+      navigate('/login')
+      Swal.fire({
+        icon: "success",
+        title: "Log out success",
+        timer: 1000
+      })
+    }
     setIsOpen(false);
   };
   const toRegister = () => {
     navigate("/register");
   };
   const toDashboard = () => {
-    navigate("/login-tenant");
+    navigate("/dashboard");
   };
-  const toOrderList = () => {
-    navigate("/order-list");
-  };
+  const toLoginTenant = () => {
+    navigate("/login-tenant")
+  }
   const toProfileSetting = () => {
     navigate("/profile-setting");
   };
@@ -42,9 +54,10 @@ const UserMenu = () => {
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
-        <div
-          className="
-            hidden
+        {data.roleId === 1 ?
+          <div
+            className="
+        hidden
             md:block
             text-sm 
             font-semibold 
@@ -55,10 +68,29 @@ const UserMenu = () => {
             transition 
             cursor-pointer
           "
-          onClick={toDashboard}
-        >
-          Cribs That Feel Like Home
-        </div>
+            onClick={toDashboard}
+          >
+            Back To Dashboard
+          </div>
+          :
+          <div
+            className="
+            hidden
+            md:block
+            text-sm 
+            font-semibold 
+            py-3 
+            px-4 
+            rounded-full 
+            hover:bg-neutral-100 
+            transition 
+            cursor-pointer
+            "
+            onClick={toLoginTenant}
+          >
+            Cribs That Feel Like Home
+          </div>
+        }
         <div
           onClick={toggleOpen}
           className="
@@ -102,8 +134,7 @@ const UserMenu = () => {
           <div className="flex flex-col cursor-pointer bg-white">
             {token ? (
               <div>
-                <MenuItem onClick={toProfileSetting} label="Profile Setting" />
-                <MenuItem onClick={toOrderList} label="Order List" />
+                <MenuItem onClick={toProfileSetting} label="Profile" />
                 <MenuItem onClick={toLogout} label="Log out" />
               </div>
             ) : (

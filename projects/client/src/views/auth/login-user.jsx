@@ -17,6 +17,9 @@ export const LoginUser = () => {
   const toRegis = () => {
     navigate("/register")
   }
+  const back = () => {
+    navigate("/")
+  }
 
   return (
 
@@ -37,11 +40,16 @@ export const LoginUser = () => {
             <div>
               <FormLoginUser />
             </div>
-            <div> <FireBaseLogin buttonText={"Sign with google"}/> </div>
+            <div> <FireBaseLogin buttonText={"Sign with google"} /> </div>
 
             <div className='flex mt-5 underline text-gray-500  w-full justify-between text-sm'>
               <div className='cursor-pointer' onClick={handleClick}>Forgot password?</div>
               <div onClick={toRegis} className='cursor-pointer'>Don't have an account? Sign Up</div>
+            </div>
+            <div className=' text-gray-500 w-full flex justify-end mt-5 text-sm underline '>
+              <div onClick={back} className='cursor-pointer '>
+                Back to COMFYCRIBZ
+              </div>
             </div>
           </motion.div>
         </div>
