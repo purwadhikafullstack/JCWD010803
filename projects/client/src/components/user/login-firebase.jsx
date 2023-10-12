@@ -9,7 +9,6 @@ import axios from "axios";
 export const FireBaseLogin = ({buttonText}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const onButtonClick = async () => {
     try {
       const auth = await googleAuth();

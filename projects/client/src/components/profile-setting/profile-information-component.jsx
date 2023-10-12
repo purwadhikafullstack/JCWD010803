@@ -1,25 +1,24 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
 import swal from "sweetalert2";
 import { setValue } from "../../redux/user-slice";
+import { setData } from "../../redux/firebase-slice";
 
 const ProfileInformation = ({ reload, setReload }) => {
   const data = useSelector((state) => state.user.value);
+  const firebase = useSelector((state) => state.firebase.value);
   const token = localStorage.getItem("token");
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("Firstname is required"),
-    // lastName: Yup.string().required("Lastname is required"),
     gender: Yup.string().required("Gender is required"),
-    // email: Yup.string().required("email is required"),
     birthdate: Yup.string().required("Birthdate is required"),
   });
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const onUpdate = async (data) => {
-    
     try {
       const response = await axios.post(
         `http://localhost:8000/api/user/information-update`,
@@ -40,7 +39,7 @@ const ProfileInformation = ({ reload, setReload }) => {
       console.log(error);
     }
   };
-  useEffect(() => {}, [reload]);
+  useEffect(() => {}, []);
   return (
     <Formik
       initialValues={{
@@ -60,7 +59,6 @@ const ProfileInformation = ({ reload, setReload }) => {
         <div className=" text-gray-700 xs:text-xl md:text-3xl font-semibold my-2 py-2">
           <p>Change User Information Here</p>
         </div>
-
         <div className="flex flex-wrap md:justify-between">
           <div className="xs:w-full md:w-1/2 md:p-1 xs:p-1">
             <label
@@ -103,7 +101,6 @@ const ProfileInformation = ({ reload, setReload }) => {
             />
           </div>
         </div>
-
         <div className="flex flex-wrap md:justify-between">
           <div className="xs:w-full md:w-1/2 md:p-1 xs:p-1">
             <label
@@ -147,7 +144,6 @@ const ProfileInformation = ({ reload, setReload }) => {
             />
           </div>
         </div>
-
         <div className="flex flex-wrap md:justify-between">
           <div className="xs:w-full md:w-1/2 md:p-1 xs:p-1">
             <label className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2">
@@ -202,5 +198,4 @@ const ProfileInformation = ({ reload, setReload }) => {
     </Formik>
   );
 };
-
 export default ProfileInformation;
