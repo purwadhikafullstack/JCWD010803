@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Accordion from "./accordion-component";
 import axios from "axios";
-import {BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill} from "react-icons/bs";
+import {
+  BsFillArrowLeftCircleFill,
+  BsFillArrowRightCircleFill,
+} from "react-icons/bs";
 import { Field, Form, Formik } from "formik";
 import swal from "sweetalert2";
 
-function checkDate(start, end){
+function checkDate(start, end) {
   const startDate = new Date(start);
   const endDate = new Date(end);
-
   return startDate < endDate;
 }
-
-
 
 const UserOrderList = () => {
   const [orderList, setOrderList] = useState([]);
@@ -20,16 +20,23 @@ const UserOrderList = () => {
   const token = localStorage.getItem("token");
   const [sort, setSort] = useState("DESC");
   const [page, setPage] = useState(1);
+  const [sortby, setSortby] = useState("createdAt");
   const [limit, setLimit] = useState("");
   const [length, setLength] = useState("");
   const [allStatus, setAllStatus] = useState([]);
   const maxPage = Math.ceil(length / limit);
 
+  const handleSortChange = (e) => {
+    setSortby(e.target.value);
+    console.log(e.target.value);
+  }
+
   const getDataOrder = async (data) => {
+    
     try {
       if (!data) {
         const response = await axios.post(
-          `http://localhost:8000/api/user/orders?page=${page}`,
+          `http://localhost:8000/api/user/orders?sort=${sort}&page=${page}&by=${sortby}`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -41,7 +48,7 @@ const UserOrderList = () => {
       }
 
       if (data) {
-        if ((!data.startDate && data.endDate)){
+        if (!data.startDate && data.endDate) {
           swal.fire({
             icon: "warning",
             iconColor: "red",
@@ -49,7 +56,7 @@ const UserOrderList = () => {
             text: "Start Date must not be empty",
           });
         }
-        if ((data.startDate && !data.endDate)){
+        if (data.startDate && !data.endDate) {
           swal.fire({
             icon: "warning",
             iconColor: "red",
@@ -58,8 +65,8 @@ const UserOrderList = () => {
           });
         }
 
-        if(data.startDate && data.endDate){
-          if(!checkDate(data.startDate, data.endDate)){
+        if (data.startDate && data.endDate) {
+          if (!checkDate(data.startDate, data.endDate)) {
             swal.fire({
               icon: "warning",
               iconColor: "red",
@@ -68,9 +75,9 @@ const UserOrderList = () => {
             });
           }
         }
-        
+
         const response = await axios.post(
-          `http://localhost:8000/api/user/orders`,
+          `http://localhost:8000/api/user/orders?sort=${sort}&page=${page}&by=${sortby}`,
           data,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -111,8 +118,9 @@ const UserOrderList = () => {
   useEffect(() => {
     getDataOrder();
     getAllStatus();
-  }, [reload, page]);
+  }, [reload, page, sort, sortby]);
 
+  console.log(sortby);
   return (
     <div className="w-full p-1 flex flex-col space-y-2">
       <h1 className="p-2 xs:text-2xl md:text-5xl xs:mt-3  pb-4 text-slate-700 lg:mb-10 lg:mt-10 ">
@@ -225,7 +233,72 @@ const UserOrderList = () => {
           </div>
         </Form>
       </Formik>
-      <div className="max-h-96 overflow-y-auto flex flex-col space-y-2 md:px-3">
+      <div className="flex xs:px-1 pb-2 md:px-3 justify-between">
+        <div className="flex gap-x-3 ">
+          <div className="flex items-center gap-x-1">
+            <input
+              id="DESC"
+              name="name"
+              onChange={(e) => {
+                setSort("DESC");
+              }}
+              checked={sort == "DESC" ? true : false}
+              type="radio"
+              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+            />
+            <label
+              htmlFor="DESC"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Latest
+            </label>
+          </div>
+          <div className="flex items-center gap-x-1">
+            <input
+              id="ASC"
+              name="name"
+              onChange={(e) => {
+                setSort("ASC");
+              }}
+              checked={sort == "ASC" ? true : false}
+              type="radio"
+              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+            />
+            <label
+              htmlFor="ASC"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Oldest
+            </label>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-x-3 items-center">
+          <label
+            htmlFor="country"
+            className="text-sm font-medium leading-6 text-gray-900"
+          >
+            Sort by
+          </label>
+          <div className="">
+            <select
+              id="sortby"
+              name="sortby"
+              autoComplete="sortby"
+              className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              value={sortby}
+              onRateChange={handleSortChange}
+            >
+              <option key="1" value="createdAt">
+                Date
+              </option>
+              <option key="2" value="invoice">
+                Invoice
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div className="overflow-y-auto flex flex-col space-y-2 md:px-3">
         {orderList.length > 0 ? (
           <Accordion
             reload={reload}
