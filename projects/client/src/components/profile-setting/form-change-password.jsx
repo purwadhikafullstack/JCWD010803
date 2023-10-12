@@ -3,9 +3,13 @@ import * as Yup from 'yup'
 import swal from "sweetalert2";
 import axios from "axios"
 import { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 
 export const FormChangePassword = () => {
     const token = localStorage.getItem('token')
+    const [show1, setShow1] = useState(false)
+    const [show2, setShow2] = useState(false)
+    const [show3, setShow3] = useState(false)
 
     const validationSchema = Yup.object().shape({
         currentPassword: Yup.string().required('Current password is required'),
@@ -46,6 +50,15 @@ export const FormChangePassword = () => {
     const onCancel = () => {
         window.location.reload()
     }
+    const checkShow1 = () => {
+        setShow1(!show1)
+    }
+    const checkShow2 = () => {
+        setShow2(!show2)
+    }
+    const checkShow3 = () => {
+        setShow3(!show3)
+    }
 
     return (
         <div className="w-full">
@@ -57,7 +70,7 @@ export const FormChangePassword = () => {
                         confirmPassword: ""
                     }}
                     validationSchema={validationSchema}
-                    onSubmit={(values,action) => {
+                    onSubmit={(values, action) => {
                         onChangePassword(values)
                         action.resetForm()
                     }}
@@ -99,10 +112,17 @@ export const FormChangePassword = () => {
                             <div className="w-full">
                                 <div className="mb-3">
                                     <div>Current password</div>
-                                    <Field
-                                        className="border-2 w-full h-11 mt-2 px-5 rounded"
-                                        name="currentPassword"
-                                    />
+                                    <div className=" flex">
+                                        <Field
+                                            type={show1 ? "text" : "password"}
+                                            className=" border-2 w-full h-11 mt-2 px-5 rounded"
+                                            name="currentPassword"
+                                        />
+                                        <div>
+                                            <div className={`${show1 ? "block" : "hidden"}`}> <AiOutlineEye size={10} /> </div>
+                                            <div className={`${show1 ? "hidden" : "show"}`}> <AiOutlineEyeInvisible size={10} /> </div>
+                                        </div>
+                                    </div>
                                     <ErrorMessage
                                         name="currentPassword"
                                         component={'div'}
@@ -112,6 +132,7 @@ export const FormChangePassword = () => {
                                 <div className="mb-3">
                                     <div>New password</div>
                                     <Field
+                                        type={show3 ? "text" : "password"}
                                         className="border-2 w-full h-11 mt-2 px-5 rounded"
                                         name="newPassword"
                                     />
@@ -124,6 +145,7 @@ export const FormChangePassword = () => {
                                 <div>
                                     <div>Confirm password</div>
                                     <Field
+                                        type={show3 ? "text" : "password"}
                                         className="border-2 w-full h-11 mt-2 px-5 rounded"
                                         name="confirmPassword"
                                     />
