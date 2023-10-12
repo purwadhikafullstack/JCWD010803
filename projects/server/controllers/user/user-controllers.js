@@ -456,11 +456,10 @@ const userController = {
   },
   getOrderList: async (req, res) => {
     try {
-      // console.log(req.body);
+      console.log(req.query);
       const { invoice, status, startDate, endDate } = req.body;
-      console.log(req.body);
       const sort = req.query.sort || "DESC";
-      const sortBy = "createdAt";
+      const sortBy = req.query.sortBy || "createdAt";
       const limit = 10;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
@@ -549,20 +548,19 @@ const userController = {
     try {
       const transactionIsExist = await userTransaction.findOne({
         where: {
-          [Op.and]: [{ id: req.body.id }, { statusId: 3 }, { isReview: false }],
+          [Op.and]: [{ id: req.body.id }, { statusId: 7 }, { isReview: false }],
         },
       });
       if (transactionIsExist) {
         const result = await userTransaction.update(
           {
             isReview: true,
-            statusId: 7,
           },
           {
             where: {
               [Op.and]: [
                 { id: req.body.id },
-                { statusId: 3 },
+                { statusId: 7 },
                 { isReview: false },
               ],
             },

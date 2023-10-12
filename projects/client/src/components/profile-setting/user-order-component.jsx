@@ -28,7 +28,7 @@ const UserOrderList = () => {
 
   const handleSortChange = (e) => {
     setSortby(e.target.value);
-    console.log(e.target.value);
+    
   }
 
   const getDataOrder = async (data) => {
@@ -77,7 +77,7 @@ const UserOrderList = () => {
         }
 
         const response = await axios.post(
-          `http://localhost:8000/api/user/orders?sort=${sort}&page=${page}&by=${sortby}`,
+          `http://localhost:8000/api/user/orders?sort=${sort}&page=${page}&sortBy=${sortby}`,
           data,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -120,7 +120,6 @@ const UserOrderList = () => {
     getAllStatus();
   }, [reload, page, sort, sortby]);
 
-  console.log(sortby);
   return (
     <div className="w-full p-1 flex flex-col space-y-2">
       <h1 className="p-2 xs:text-2xl md:text-5xl xs:mt-3  pb-4 text-slate-700 lg:mb-10 lg:mt-10 ">
@@ -286,12 +285,12 @@ const UserOrderList = () => {
               autoComplete="sortby"
               className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
               value={sortby}
-              onRateChange={handleSortChange}
+              onChange={handleSortChange}
             >
               <option key="1" value="createdAt">
                 Date
               </option>
-              <option key="2" value="invoice">
+              <option key="2" value="id">
                 Invoice
               </option>
             </select>
