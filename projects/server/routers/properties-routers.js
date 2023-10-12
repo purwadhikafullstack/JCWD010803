@@ -15,7 +15,9 @@ router.patch('/delete/:id', propertiesController.deleteProperty)
 router.get('/myProperties', verifyToken,propertiesController.myProperties)
 router.get('/', propertiesController.allProperties)
 router.get('/:id', propertiesController.detailProperty)
-
+router.patch('/editCategory', verifyToken, propertiesController.editCategory);
+router.post('/addCategory', verifyToken, propertiesController.addCategory);
+router.delete('/deleteCategory', verifyToken, propertiesController.deleteCategory);
 
 
 

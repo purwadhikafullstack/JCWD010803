@@ -1,27 +1,17 @@
-modalCategories
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import { Field, Form, Formik, ErrorMessage } from "formik";
+import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 
-export const CategoriesModal = ({ openCategories, setOpenCategories }) => {
+export const AddCategory = ({ openCategories, setOpenCategories }) => {
   const token = localStorage.getItem("token");
   const [categories, setCategories] = useState([]);
   const [value, setValue] = useState("");
+  const [newName, setNewName] = useState("");
+  const [newCategory, setNewCategory] = useState("");
   const [reload, setReload] = useState(false);
-
-  const validationSchema = Yup.object().shape({
-    newCategory: Yup.string()
-      .min(3, "Category name must be at least 3 characters")
-      .required("Category name is required"),
-    categoryName: Yup.string()
-      .min(3, "Category name must be at least 3 characters")
-      .required("Category name is required"),
-  });
-
   const myCategories = async () => {
     try {
       const response = await axios.get(
@@ -53,25 +43,24 @@ export const CategoriesModal = ({ openCategories, setOpenCategories }) => {
       console.log(error);
     }
   };
+  console.log(value);
 
   const deleteCategory = async () => {
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: "You want to delete this location?",
-      confirmButtonText: "Yes",
+      confirmButtonText: 'Yes',
       showCancelButton: true,
-      confirmButtonColor: "#2CA4A5",
-      cancelButtonColor: "#e3e3e3",
+      confirmButtonColor: '#2CA4A5',
+      cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.delete(
-          `http://localhost:8000/api/properties/category/${value}`
-        );
-        setOpenCategories(false);
-        setValue("");
+        const response = await axios.delete(`http://localhost:8000/api/properties/category/${value}`)
+        setOpenCategories(false)
+        setValue("")
       }
-    });
-  };
+    })
+  }
 
   const addCategory = async (values) => {
     try {
@@ -85,11 +74,11 @@ export const CategoriesModal = ({ openCategories, setOpenCategories }) => {
       Swal.fire({
         icon: "success",
         title: "Location successfully added",
-        timer: 800,
+        timer: 800
       });
       setTimeout(() => {
         setOpenCategories(false);
-      }, 700);
+      },700);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -101,7 +90,6 @@ export const CategoriesModal = ({ openCategories, setOpenCategories }) => {
   useEffect(() => {
     myCategories();
   }, [reload]);
-
   return (
     <div
       className={`w-full h-screen ${
@@ -138,22 +126,16 @@ export const CategoriesModal = ({ openCategories, setOpenCategories }) => {
             />
           </div>
           <div className=" w-full">
-            <button
-              onClick={deleteCategory}
-              disabled={value ? false : true}
-              className=" disabled:bg-red-100 disabled:cursor-not-allowed p-2 bg-red-700 hover:bg-red-500 text-white w-full flex justify-center rounded-lg transition-all"
-            >
-              Delete
-            </button>
+            <button onClick={deleteCategory} disabled={value? false : true} className=" disabled:bg-red-100 disabled:cursor-not-allowed p-2 bg-red-700 hover:bg-red-500 text-white w-full flex justify-center rounded-lg transition-all">Delete</button>
           </div>
           <div>
             <Formik
               initialValues={{
                 newCategory: "",
               }}
-              validationSchema={validationSchema}
               onSubmit={(values, action) => {
                 editCategory(values);
+                console.log(values);
                 action.resetForm();
               }}
             >
@@ -167,17 +149,14 @@ export const CategoriesModal = ({ openCategories, setOpenCategories }) => {
                         type="text"
                         className="w-full p-2 border border-gray-600 mt-2 rounded-md"
                       />
-                      <ErrorMessage
-                        name="newCategory"
-                        component="div"
-                        className="text-red-600 mt-1"
-                      />
                     </div>
                   </div>
                 </div>
                 <div className="w-full flex justify-end">
                   <button
                     type="submit"
+                    onClick={editCategory}
+                    disabled={value ? false : true}
                     className="disabled:bg-teal-100 disabled:cursor-not-allowed bg-bgPrimary text-white rounded-md hover:bg-bgPrimaryActive transition-all mt-5 p-2"
                   >
                     Save
@@ -193,9 +172,8 @@ export const CategoriesModal = ({ openCategories, setOpenCategories }) => {
             initialValues={{
               categoryName: "",
             }}
-            validationSchema={validationSchema}
-            onSubmit={(values) => {
-              addCategory(values);
+            onSubmit={(value) => {
+              addCategory(value);
             }}
           >
             <Form>
@@ -206,16 +184,11 @@ export const CategoriesModal = ({ openCategories, setOpenCategories }) => {
                   type="text"
                   className="w-full p-2 border border-gray-600 mt-2 rounded-md"
                 />
-                <ErrorMessage
-                  name="categoryName"
-                  component="div"
-                  className="text-red-600 mt-1"
-                />
               </div>
               <div className="w-full justify-end flex">
                 <button
                   type="submit"
-                  className="bg-bgPrimary text-white rounded-md hover:bg-bgPrimaryActive transition-all mt-5 p-2"
+                  className=" bg-bgPrimary text-white rounded-md hover:bg-bgPrimaryActive transition-all mt-5 p-2"
                 >
                   Add
                 </button>

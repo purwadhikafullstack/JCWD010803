@@ -14,6 +14,7 @@ import DashboardTenants from "../pages/dashboard-tenants";
 import { OrderListPage } from "../pages/order-list-page";
 import { RoomListTenant } from "../pages/room-list-tenant";
 import { AddPropertyPage } from "../pages/add-property-page";
+import { AddCategoryPage } from "../pages/add-category-page";
 import { DetailPropertyPage } from "../pages/detail-property-page";
 import { DetailRoomPage } from "../pages/detail-room-page";
 import { TransactionPage } from "../pages/transaction-page";
@@ -37,6 +38,7 @@ const Routes = (
     <Route path="/properties" element={<SortPropertiesPage />} />
     <Route path="/verify" element={<Verification />} />
     <Route path="/dashboard/add-property" element={<AddPropertyPage />} />
+    <Route path="/dashboard/add-category" element={<AddCategoryPage />} />
     <Route path="/property/:id" element={ <DetailPropertyPage /> } />
     <Route path="/room/:id" element={ <DetailRoomPage /> } />
     <Route path="/book" element={ <TransactionPage /> } />
