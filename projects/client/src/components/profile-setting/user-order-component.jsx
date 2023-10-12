@@ -51,6 +51,7 @@ const UserOrderList = () => {
   
   return (
     <div className="w-full p-1 flex flex-col space-y-2">
+      <h1 className="p-2 xs:text-2xl md:text-5xl xs:mt-3  pb-4 text-slate-700 lg:mb-10 lg:mt-10 ">My Order List</h1>
       <form className="md:flex flex-wrap xs:p-2 md:p-2">
         <div className="flex flex-wrap justify-between -mx-3 mb-2 w-full ">
           <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
