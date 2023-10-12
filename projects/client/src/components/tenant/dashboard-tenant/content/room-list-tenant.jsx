@@ -4,6 +4,7 @@ import { RiImageEditFill } from "react-icons/ri";
 import { SortingRoomList } from '../../../navbar/sorting-room-list';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import { GiPriceTag } from 'react-icons/gi'
 import { TbCalendarX } from "react-icons/tb";
 import axios from 'axios'
@@ -16,15 +17,20 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState("ASC")
     const [sortBy, setSortBy] = useState("roomName")
+    const [length, setLength] = useState("")
+    const [limit, setLimit] = useState("")
     const { propertyId } = useParams()
+    const maxPage = Math.ceil(length / limit)
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
 
 
     const getRoomByProperty = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${1}&sort=${sort}&sortBy=${sortBy}`);
-            setRoom(response.data);
+            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${page}&sort=${sort}&sortBy=${sortBy}`);
+            setRoom(response.data.result);
+            setLength(response.data.length)
+            setLimit(response.data.limit)
         } catch (error) {
             console.error('Error fetching room by property:', error);
         }
@@ -60,13 +66,25 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
         navigate('/dashboard')
     }
 
+    const nextPage = () => {
+        if (page < maxPage) {
+            setPage((prevPage) => Math.max(+prevPage + 1, 1));
+        };
+    };
+
+    const prevPage = () => {
+        if (page > 1) {
+            setPage((prevPage) => Math.max(+prevPage - 1, 1));
+        };
+    };
+
 
     useEffect(() => {
         getRoomByProperty();
         if (!token) {
             navigate('/login-tenant')
         }
-    }, [reload, sort, sortBy, propertyId]);
+    }, [reload, page, sort, sortBy, propertyId]);
 
     useEffect(() => {
         const fetchImagesForRooms = async () => {
@@ -75,7 +93,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
         };
 
         fetchImagesForRooms();
-    }, [room, page]);
+    }, [room]);
 
     return (
         <div>
@@ -176,6 +194,19 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
                                 </div>
                             </div>
                         ))}
+                        <div className=" flex justify-center items-center h-14 gap-5">
+                            {page > 1 ?
+                                <div onClick={prevPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowLeftCircleFill size={"30"} /> </div>
+                                :
+                                null
+                            }
+                            {maxPage < 2 ? null : <div className=" text-xl font-thin"> page {page} </div>}
+                            {page < maxPage ?
+                                <div onClick={nextPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowRightCircleFill size={"30"} /> </div>
+                                :
+                                null
+                            }
+                        </div>
 
                     </div>
                     :

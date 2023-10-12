@@ -14,6 +14,7 @@ export const DetailRoom = () => {
     const { id } = useParams()
     const [roomImages, setRoomImages] = useState([]);
     const [data, setData] = useState({})
+    const [message, setMessage] = useState("")
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
     const today = new Date();
@@ -29,16 +30,14 @@ export const DetailRoom = () => {
     ]);
     const [startDate, setStartDate] = useState(state[0].startDate)
     const [endDate, setendDate] = useState(state[0].endDate)
-    const checkInDate = new Date(new Date(startDate));
-    const checkOutDate = new Date(new Date(endDate));
-    const rangeDate = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
-    console.log(data);
 
     const room = async (id) => {
         try {
             const response = await axios.post(`http://localhost:8000/api/room/roomById/${id}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
-            setData(response.data)
+            setData(response.data.result)
+            setMessage(response.data.message)
             getTotalPayment()
+
         } catch (error) {
             console.log(error);
         }
@@ -89,6 +88,9 @@ export const DetailRoom = () => {
         });
         return formatter.format(angka);
     }
+    const checkInDate = new Date(new Date(startDate));
+    const checkOutDate = new Date(new Date(endDate));
+    const rangeDate = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
 
     const toBooking = () => {
         if (!token) {
@@ -99,7 +101,7 @@ export const DetailRoom = () => {
             })
         }
         else {
-            navigate(`/book?checkIn=${checkInDate}&checkOut=${checkOutDate}&totalPayment=${totalPayment}&roomId=${id}`)
+            navigate(`/book?checkIn=${checkInDate}&checkOut=${checkOutDate}&totalPayment=${rangeDate * data.price}&roomId=${id}`)
             window.scrollTo(0, 0);
         }
     }
@@ -209,13 +211,16 @@ export const DetailRoom = () => {
                                         onClick={() => {
                                             toBooking()
                                         }}
-                                        disabled={endDate === startDate || data.availableRooms ? true : false}
+                                        disabled={endDate === startDate || data.availableRooms || message ? true : false}
                                         className="w-full py-2 font-semibold flex disabled:cursor-not-allowed disabled:bg-teal-100 justify-center items-center bg-bgPrimary rounded-md text-white cursor-pointer hover:bg-bgPrimaryActive transition-all">
                                         Book now
                                     </button>
                                 </div>
                                 <div className={`px-5 mt-2 text-sm  text-gray-400 ${data.availableRooms ? "flex" : "hidden"}`}>
                                     {`Sorry, this room is not available from ${data.availableRooms ? new Date(data.availableRooms[0].startDate).getDate() : "undefined"} - ${data.availableRooms ? new Date(data.availableRooms[0].endDate).getDate() : "undefined"} ${data.availableRooms ? new Date(data.availableRooms[0].endDate).toLocaleDateString('default', { month: 'long' }).slice(0, 3) : "undefined"}`}
+                                </div>
+                                <div className={`px-5 mt-2 text-sm  text-gray-400 ${message ? "flex" : "hidden"}`}>
+                                    {`Sorry, this room is full`} 
                                 </div>
                                 <div className="w-full flex justify-between px-5 text-lg mt-5  text-gray-600">
                                     <>

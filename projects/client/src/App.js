@@ -40,7 +40,7 @@ function App() {
       }
     };
     keepLogin()
-  },[dispatch, token, firebaseToken]);
+  },[ token, firebaseToken, dispatch]);
 
   
 

@@ -12,7 +12,7 @@ const propertiesController = {
       const categoryId = req.query.categoryId || null;
       const checkIn = req.query.checkIn || null;
       const checkOut = req.query.checkOut || null;
-      const limit = 8;
+      const limit = 15;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const sort = req.query.sort || "ASC";
@@ -25,7 +25,7 @@ const propertiesController = {
         new Date(checkOut).getTime() + 7 * 60 * 60 * 1000
       );
       const findProperty = await properties.findAll({
-        where: { categoryId: categoryId },
+        where: { categoryId: categoryId, isDelete : false },
         include: [
           {
             model: rooms,
@@ -56,7 +56,7 @@ const propertiesController = {
             },
           },
         ],
-        limit: 8,
+        limit: limit,
         offset: offset,
         order:
           sortBy === "price"
@@ -65,12 +65,13 @@ const propertiesController = {
       });
 
       const data = await properties.findAll({
-        where: { categoryId: categoryId },
+        where: { categoryId: categoryId, isDelete: false },
         include: [
           {
             model: rooms,
             where: {
               QTY: { [Op.ne]: 0 },
+              isDelete : false
             },
             include: [
               {

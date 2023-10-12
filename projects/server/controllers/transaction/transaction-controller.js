@@ -33,10 +33,6 @@ const transactionController = {
         userId: id,
         userTransactionId: addTransaction.id,
       });
-      const minusQTY = await room.update(
-        { QTY: roomData.QTY - 1 },
-        { where: { id: roomId } }
-      );
       res.status(200).send({
         message: "booking success",
       });
