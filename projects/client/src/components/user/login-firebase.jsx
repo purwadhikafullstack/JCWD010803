@@ -9,7 +9,6 @@ import axios from "axios";
 export const FireBaseLogin = ({buttonText}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const onButtonClick = async () => {
     try {
       const auth = await googleAuth();
@@ -33,6 +32,7 @@ export const FireBaseLogin = ({buttonText}) => {
           data
         );
         const token = auth.user.accessToken;
+        
         dispatch(setData(data));
         localStorage.setItem("firebase-token", token);
         swal.fire({

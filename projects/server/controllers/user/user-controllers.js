@@ -455,6 +455,7 @@ const userController = {
         include: [
           { model: booking },
           { model: statusPay },
+          { model: user},
           {
             model: rooms,
             include: [

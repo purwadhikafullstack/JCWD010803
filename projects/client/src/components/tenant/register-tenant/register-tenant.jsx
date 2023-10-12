@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const RegisterTenant = () => {
