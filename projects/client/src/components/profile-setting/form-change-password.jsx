@@ -50,6 +50,7 @@ export const FormChangePassword = () => {
     const onCancel = () => {
         window.location.reload()
     }
+
     const checkShow1 = () => {
         setShow1(!show1)
     }
@@ -112,15 +113,17 @@ export const FormChangePassword = () => {
                             <div className="w-full">
                                 <div className="mb-3">
                                     <div>Current password</div>
-                                    <div className=" flex">
+                                    <div className="flex w-full justify-end items-center">
                                         <Field
-                                            type={show1 ? "text" : "password"}
-                                            className=" border-2 w-full h-11 mt-2 px-5 rounded"
+                                            className=" relative border-2 w-full h-11 mt-2 px-5 rounded"
                                             name="currentPassword"
+                                            type={`${show1 ? "text" : "password"}`}
                                         />
-                                        <div>
-                                            <div className={`${show1 ? "block" : "hidden"}`}> <AiOutlineEye size={10} /> </div>
-                                            <div className={`${show1 ? "hidden" : "show"}`}> <AiOutlineEyeInvisible size={10} /> </div>
+                                        <div onClick={checkShow1} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show1 ? "flex" : "hidden"}`}>
+                                            <AiOutlineEye />
+                                        </div>
+                                        <div onClick={checkShow1} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show1 ? "hidden" : "flex"}`}>
+                                            <AiOutlineEyeInvisible />
                                         </div>
                                     </div>
                                     <ErrorMessage
@@ -131,11 +134,20 @@ export const FormChangePassword = () => {
                                 </div>
                                 <div className="mb-3">
                                     <div>New password</div>
-                                    <Field
-                                        type={show3 ? "text" : "password"}
-                                        className="border-2 w-full h-11 mt-2 px-5 rounded"
-                                        name="newPassword"
-                                    />
+                                    <div className="flex w-full justify-end items-center">
+                                        <Field
+                                            className="border-2 w-full h-11 mt-2 px-5 rounded"
+                                            name="newPassword"
+                                            type={`${show2 ? "text" : "password"}`}
+                                        />
+                                        <div onClick={checkShow2} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show2 ? "flex" : "hidden"}`}>
+                                            <AiOutlineEye />
+                                        </div>
+                                        <div onClick={checkShow2} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show2 ? "hidden" : "flex"}`}>
+                                            <AiOutlineEyeInvisible />
+                                        </div>
+                                    </div>
+
                                     <ErrorMessage
                                         name="newPassword"
                                         component={'div'}
@@ -144,11 +156,21 @@ export const FormChangePassword = () => {
                                 </div>
                                 <div>
                                     <div>Confirm password</div>
-                                    <Field
-                                        type={show3 ? "text" : "password"}
-                                        className="border-2 w-full h-11 mt-2 px-5 rounded"
-                                        name="confirmPassword"
-                                    />
+                                    <div className="flex w-full justify-end items-center">
+                                        <Field
+                                            className="border-2 w-full h-11 mt-2 px-5 rounded"
+                                            name="confirmPassword"
+                                            type={`${show3 ? "text" : "password"}`}
+                                        />
+                                        <div onClick={checkShow3} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show3 ? "flex" : "hidden"}`}>
+                                            <AiOutlineEye />
+                                        </div>
+                                        <div onClick={checkShow3} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show3 ? "hidden" : "flex"}`}>
+                                            <AiOutlineEyeInvisible />
+                                        </div>
+                                    </div>
+
+
                                     <ErrorMessage
                                         name="confirmPassword"
                                         component={'div'}
