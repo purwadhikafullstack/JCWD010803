@@ -38,13 +38,10 @@ const ReviewModal = ({ toggleSection, setReload, reload, data }) => {
       console.log(error);
     }
 
-    // Di sini Anda dapat menggunakan reviewText untuk mengirim data ke server
-    // axios.post('URL_API', { review: reviewText })
-    // Setelah berhasil mengirim, Anda dapat menangani logika seperti menutup modal dan memuat ulang jika diperlukan
   };
 
   return (
-    <form>
+    <form className="mt-3">
       <hr></hr>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
