@@ -22,9 +22,9 @@ export const SortProperties = () => {
   const checkOut = queryParams.get('checkOut')
   const sorting = queryParams.get('sort')
   const sortingBy = queryParams.get('sortBy')
+  
 
   const maxPage = Math.ceil(length / limit)
-  console.log(length);
   
 
   const sortProperties = async () => {
@@ -92,7 +92,7 @@ export const SortProperties = () => {
                       <div className="w-72 h-96 absolute z-10 hover:bg-white cursor-pointer opacity-20 " onClick={(() => handleClick(item.id))}></div>
                       <img
                         className="w-full h-2/3  rounded-xl relative"
-                        src={`http://localhost:8000/api/properties/image/${item.propertyImg}`}
+                        src={`http://localhost:8000/property/${item.propertyImg}`}
                         alt={`Property ${item.propertyName}`}
                       />
                       <div className=" z-0">
@@ -115,6 +115,7 @@ export const SortProperties = () => {
           </div>
         </div>
       </div>
+      {/* copy */}
       <div className=" flex justify-center items-center h-14 gap-5">
         { page > 1 ?
           <div onClick={prevPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowLeftCircleFill size={"30"} /> </div>

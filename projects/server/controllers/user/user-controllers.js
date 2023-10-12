@@ -26,52 +26,109 @@ const otpGenerate = () => {
 const userController = {
   register: async (req, res) => {
     try {
-      const {
-        username,
-        email,
-        password,
-        phonenumber: phoneNumber,
-        roleId,
-      } = req.body;
-      const isExist = await user.findOne({
-        where: {
-          [Op.or]: [{ email }, { phoneNumber }],
-        },
-      });
-      if (!isExist) {
-        const salt = await enc.genSalt(10);
-        const hashPassword = await enc.hash(password, salt);
-        const result = await user.create({
+      // login normal
+      if (req.body.flag == 2) {
+        const {
           username,
           email,
-          password: hashPassword,
-          phoneNumber,
+          password,
+          phonenumber: phoneNumber,
           roleId,
+          flag
+        } = req.body;
+        const isExist = await user.findOne({
+          where: {
+            [Op.or]: [{ email }, { phoneNumber }],
+          },
         });
-        console.log(result);
-        const payloads = {
-          id: result.id,
-          username: result.username,
-          email: result.email,
-          password: result.password,
-        };
-
-        const token = jwt.sign(payloads, process.env.TOKEN_KEY);
-
-        res.status(200).send({
-          result,
-          token,
-        });
-      } else {
-        if (isExist.email == email) {
-          throw { message: "Email sudah terdaftar" };
+        if (!isExist) {
+          const salt = await enc.genSalt(10);
+          const hashPassword = await enc.hash(password, salt);
+          const result = await user.create({
+            username,
+            email,
+            password: hashPassword,
+            phoneNumber,
+            roleId,
+            flag
+          });
+          const payloads = {
+            id: result.id,
+            username: result.username,
+            email: result.email,
+            password: result.password,
+          };
+  
+          const token = jwt.sign(payloads, process.env.TOKEN_KEY);
+  
+          res.status(200).send({
+            result,
+            token,
+          });
+          
+        } else {
+          if (isExist.email == email) {
+            throw { message: "Email sudah terdaftar" };
+          }
+          if (isExist.phoneNumber == phoneNumber) {
+            throw { message: "Nomor telpon sudah terdaftar" };
+          }
         }
-        if (isExist.phoneNumber == phoneNumber) {
-          throw { message: "Nomor telpon sudah terdaftar" };
+      } else {
+        const {userName, email, fullName, flag, profileImg, phoneNumber} = req.body;
+        const isExist = await user.findOne({
+          where: { email: email },
+        });
+        if (!isExist) {
+          const result = await user.create({
+            username : userName,
+            email,
+            firstName : fullName,
+            roleId : 2,
+            flag,
+            isVerified : 1,
+            profileImg,
+            phoneNumber
+          });
+          const payloads = {
+            id: result.id,
+            username: result.username,
+            email: result.email,
+            password: result.password,
+          };
+  
+          const token = jwt.sign(payloads, process.env.TOKEN_KEY);
+  
+          res.status(200).send({
+            result,
+            token,
+          });
+        } else {
+          if (isExist.email == email) {
+            throw { message: "Email is alrady registered" };
+          }
         }
       }
     } catch (error) {
       res.status(400).send(error);
+    }
+  },
+  checkFirebase : async (req, res) => {
+    try {
+      const {email} = req.body;
+      const result = await user.findOne({
+        where: { email: email},
+      });
+      const payloads = {
+        id: result.id,
+      };
+      const token = jwt.sign(payloads, process.env.TOKEN_KEY);
+      res.status(200).send({
+        result,
+        token
+      });
+    } catch (error) {
+      res.status(200).send(error);
     }
   },
   login: async (req, res) => {
@@ -345,7 +402,7 @@ const userController = {
       const { firstName, lastName, username, email, gender, birthdate } =
         req.body;
 
-      const result = await user.update(
+      const setData = await user.update(
         {
           firstName: firstName,
           lastName: lastName,
@@ -357,9 +414,13 @@ const userController = {
           where: { id: id },
         }
       );
-
+      
+      const result = await user.findOne({
+        where: { id: id }
+      });
       res.status(200).send({
         message: "Success",
+        result
       });
     } catch (error) {
       res.status(400).send(error);
@@ -395,14 +456,20 @@ const userController = {
   },
   getOrderList: async (req, res) => {
     try {
-      const page = +req.query.page || 1;
-      const limit = +req.query.limit || 10;
+      const sort = req.query.sort || "DESC";
+      const sortBy = "createdAt";
+      const limit = 10;
+      const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const result = await userTransaction.findAll({
         where: { userId: req.user.id },
+        order: [[sortBy, sort]],
+        offset : offset,
+        limit : limit,
         include: [
           { model: booking },
           { model: statusPay },
+          { model: user},
           {
             model: rooms,
             include: [
@@ -414,76 +481,86 @@ const userController = {
           },
         ],
       });
-
+      const checkLength = await userTransaction.findAll({
+        where: { userId: req.user.id },
+      });
+      const length = checkLength.length;
       res.status(200).send({
+        message: "OK",
         result,
-        message: "oke",
+        length,
+        limit
       });
     } catch (error) {
       res.status(400).send(error);
     }
   },
-  uploadPayment : async (req, res) => {
+  uploadPayment: async (req, res) => {
     try {
-      const {fileName, id, userId} = req.body;
+      const { fileName, id, userId } = req.body;
       if (req.file == undefined) {
         throw { message: "Receipt Cannot be empty" };
       }
       const result = await userTransaction.update(
         {
-          paymentImg : fileName,
-          statusId : 2
+          paymentImg: fileName,
+          statusId: 2,
         },
         {
-          where :{
-            [Op.and] : [{id : id}, {userId : userId}]
-          }
+          where: {
+            [Op.and]: [{ id: id }, { userId: userId }],
+          },
         }
       );
-      
+
       res.status(200).send({
-        message : "sukses",
-        result
-      })
+        message: "sukses",
+        result,
+      });
     } catch (error) {
-      res.status(400).send(error)
+      console.log(error);
+      res.status(400).send(error);
     }
   },
-  postReview : async (req, res) => {
+  postReview: async (req, res) => {
     try {
-      console.log(req.body.review);
       const transactionIsExist = await userTransaction.findOne({
         where: {
-          [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }],
-        }
+          [Op.and]: [{ id: req.body.id }, { statusId: 3 }, { isReview: false }],
+        },
       });
       if (transactionIsExist) {
         const result = await userTransaction.update(
           {
-            isReview : true
+            isReview: true,
+            statusId: 7,
           },
           {
-            where :{
-              [Op.and]: [{id: req.body.id}, { statusId : 7 }, { isReview: false }]
-            }
+            where: {
+              [Op.and]: [
+                { id: req.body.id },
+                { statusId: 3 },
+                { isReview: false },
+              ],
+            },
           }
-          );
-          const setReview = await review.create({
-            userReview : req.body.review,
-            userTransactionId : req.body.id
-          });
-          res.status(200).send({
-            message : "Give a review success"
-          })
-      }else{
+        );
+        const setReview = await review.create({
+          userReview: req.body.review,
+          userTransactionId: req.body.id,
+        });
+        res.status(200).send({
+          message: "Give a review success",
+        });
+      } else {
         throw {
-          message : "Transaction not exist"
-        }
+          message: "Transaction not exist",
+        };
       }
     } catch (error) {
-      res.status(400).send(error)
+      res.status(400).send(error);
     }
-  }
+  },
 };
 
 module.exports = userController;

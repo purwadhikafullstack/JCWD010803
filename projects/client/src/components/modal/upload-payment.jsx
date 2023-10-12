@@ -7,11 +7,10 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
   const handleClick = async (file) => {
     try {
       if (file) {
-        // console.log(data.userId);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileName", file.name);
-        formData.append("id", data.id)
+        formData.append("id", data.id);
         formData.append("userId", data.userId);
         const response = await axios.post(
           `http://localhost:8000/api/user/upload-payment`,
@@ -22,8 +21,14 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
             },
           }
         );
-        setReload(!reload)
-            
+        setReload(!reload);
+        swal.fire({
+          icon: "success",
+          title: "Upload payment success",
+          text: "",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       } else {
         swal.fire({
           icon: "warning",
@@ -36,29 +41,22 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
     }
   };
   return (
-    <div className="modalBackground">
-      <div className="modalContainer">
-        <button
-          onClick={() => {
-            closeModal(false);
-          }}
-        >
-          {" "}
-          X{" "}
-        </button>
-        <div className="title">
-          <h1>Upload Payment Receipt</h1>
-        </div>
+    <div className="">
+      <div className="modalContainer p-2">
         <div className="body">
+          <label className="block mb-2 text-md font-medium text-gray-900 dark:text-white" for="file_input">Choose File</label>
           <input
             type="file"
             id="fileInput"
             onChange={(e) => setImageInput(e.target.files[0])}
+            className="block w-full border border-gray-300 rounded-md bg-gray-100 
+              file:bg-[#1e293b] file:border-none file:text-gray-300 file:p-2
+            "
           />
         </div>
-        <div className="footer">
+        <div className="footer xs:mt-3 xs:grid xs:grid-cols-4 xs:gap-3  md:gap-4 text-white">
           <button
-            className="bg-[#dc2626]"
+            className="bg-[#dc2626] p-1 rounded-md"
             onClick={() => {
               closeModal(false);
             }}
@@ -66,7 +64,7 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
             Cancel
           </button>
           <button
-            className="bg-[#16a34a]"
+            className="bg-[#16a34a] p-1 rounded-md" 
             onClick={() => {
               handleClick(imageInput);
             }}

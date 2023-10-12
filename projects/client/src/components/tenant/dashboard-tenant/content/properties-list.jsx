@@ -25,7 +25,6 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
       const response = await axios.get(`http://localhost:8000/api/properties/myProperties?sort=${sort}&page=${page}`, {
         headers: { Authorization: `Bearer: ${token}` }
       })
-      console.log(response);
       setProperties(response.data.result)
       setLength(response.data.length)
       setLimit(response.data.limit)
@@ -80,8 +79,6 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
   const toDetailProperty = (id) => {
     navigate(`/dashboard/rooms/${id}`)
   }
-
-
 
   useEffect(() => {
     myProperties()

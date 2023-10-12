@@ -26,7 +26,7 @@ export default function FormLoginUser() {
   const onLogin = async (data) => {
     try {
       const response = await axios.post('http://localhost:8000/api/user/login', data);
-      dispatch(setValue(response.data));
+      dispatch(setValue(response.data.result));
       localStorage.setItem('token', response.data.token);
       swal.fire({
         icon: 'success',
@@ -39,6 +39,7 @@ export default function FormLoginUser() {
         navigate('/')
       }, 2000)
     } catch (error) {
+      console.log(error);
       swal.fire({
         icon: 'warning',
         iconColor: 'red',

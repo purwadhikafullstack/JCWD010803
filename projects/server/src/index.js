@@ -1,5 +1,5 @@
 require("dotenv/config");
-const {userRouter, propertyRouter, roomRouter, orderRouter, transactionRouter,tenantRouter} = require('../routers')
+const {userRouter, propertyRouter, roomRouter, orderRouter, transactionRouter,tenantRouter, specialPriceRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
@@ -24,6 +24,7 @@ app.use("/api/tenant", tenantRouter)
 app.use("/api/properties", propertyRouter)
 app.use("/api/transaction", transactionRouter)
 app.use("/api/order", orderRouter)
+app.use("/api/specialPrice", specialPriceRouter)
 
   schedule.scheduleJob('1 1 10 * * *', autoComplete);
 

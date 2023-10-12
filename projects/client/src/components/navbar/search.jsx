@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { BiSearch } from 'react-icons/bi';
+import React from "react";
+import { BiSearch } from "react-icons/bi";
 
-const Search = ({setOpen}) => {
-
+const Search = ({ setOpen }) => {
   const handleOpenModal = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   return (
     <div
-    onClick={handleOpenModal}
+      onClick={handleOpenModal}
       className="
     border-[1px] 
         w-full 
@@ -70,6 +69,6 @@ const Search = ({setOpen}) => {
       </div>
     </div>
   );
-}
+};
 
 export default Search;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const RegisterTenant = () => {
@@ -11,7 +11,6 @@ const RegisterTenant = () => {
   const handleKtpUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validasi ukuran file (maksimal 1MB)
       if (file.size <= 1024 * 1024) {
         setKtpFile(file);
       } else {
