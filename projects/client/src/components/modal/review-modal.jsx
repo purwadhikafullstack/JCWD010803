@@ -4,7 +4,7 @@ import swal from "sweetalert2";
 
 const ReviewModal = ({ toggleSection, setReload, reload, data }) => {
   // Membuat state untuk nilai textarea
-  const [reviewText, setReviewText] = useState(null);
+  const [reviewText, setReviewText] = useState("");
 
   // Fungsi untuk menangani perubahan pada textarea
   const handleReviewChange = (event) => {
