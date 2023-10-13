@@ -37,7 +37,13 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
         });
       }
     } catch (error) {
-      console.log(error);
+      swal.fire({
+        icon: "warning",
+        iconColor: "red",
+        title: "Upload Failed",
+        text: "Max file size is 1MB ",
+      });
+
     }
   };
   return (
@@ -52,6 +58,7 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
             className="block w-full border border-gray-300 rounded-md bg-gray-100 
               file:bg-[#1e293b] file:border-none file:text-gray-300 file:p-2
             "
+            accept=".png, .jpg"
           />
         </div>
         <div className="footer xs:mt-3 xs:grid xs:grid-cols-4 xs:gap-3  md:gap-4 text-white">

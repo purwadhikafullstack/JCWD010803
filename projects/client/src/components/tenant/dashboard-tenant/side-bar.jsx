@@ -19,8 +19,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const [sidebarExpanded, setSidebarExpanded] = useState()
   const [orderActive, setOrderActive] = useState(false);
   const { pathname } = location;
-  storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
-
 
   const click = (value) => {
     navigate(`/${value}`);
@@ -41,7 +39,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     }, 700);
   };
 
+  const toLandingPage = (value) => {
+    navigate('/');
+  }
+
   useEffect(() => {
+    // {storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"}
     const clickHandler = ({ target }) => {
       if (!sidebar.current || !trigger.current) return;
       if (
@@ -108,7 +111,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </button>
         </div>
         <div className="flex justify-center p-4 items-center mb-10">
-          <img src={LogoImage} alt="ComfyCribz" className="w-20 h-20" />
+          <img onClick={toLandingPage} src={LogoImage} alt="ComfyCribz" className="w-20 h-20" />
         </div>
 
         {/* Sidebar header */}

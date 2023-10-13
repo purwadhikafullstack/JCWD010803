@@ -34,7 +34,7 @@ const userController = {
           password,
           phonenumber: phoneNumber,
           roleId,
-          flag
+          flag,
         } = req.body;
         const isExist = await user.findOne({
           where: {
@@ -50,7 +50,7 @@ const userController = {
             password: hashPassword,
             phoneNumber,
             roleId,
-            flag
+            flag,
           });
           const payloads = {
             id: result.id,
@@ -58,14 +58,13 @@ const userController = {
             email: result.email,
             password: result.password,
           };
-  
+
           const token = jwt.sign(payloads, process.env.TOKEN_KEY);
-  
+
           res.status(200).send({
             result,
             token,
           });
-          
         } else {
           if (isExist.email == email) {
             throw { message: "Email sudah terdaftar" };
@@ -75,20 +74,21 @@ const userController = {
           }
         }
       } else {
-        const {userName, email, fullName, flag, profileImg, phoneNumber} = req.body;
+        const { userName, email, fullName, flag, profileImg, phoneNumber } =
+          req.body;
         const isExist = await user.findOne({
           where: { email: email },
         });
         if (!isExist) {
           const result = await user.create({
-            username : userName,
+            username: userName,
             email,
-            firstName : fullName,
-            roleId : 2,
+            firstName: fullName,
+            roleId: 2,
             flag,
-            isVerified : 1,
+            isVerified: 1,
             profileImg,
-            phoneNumber
+            phoneNumber,
           });
           const payloads = {
             id: result.id,
@@ -96,9 +96,9 @@ const userController = {
             email: result.email,
             password: result.password,
           };
-  
+
           const token = jwt.sign(payloads, process.env.TOKEN_KEY);
-  
+
           res.status(200).send({
             result,
             token,
@@ -113,11 +113,11 @@ const userController = {
       res.status(400).send(error);
     }
   },
-  checkFirebase : async (req, res) => {
+  checkFirebase: async (req, res) => {
     try {
-      const {email} = req.body;
+      const { email } = req.body;
       const result = await user.findOne({
-        where: { email: email},
+        where: { email: email },
       });
       const payloads = {
         id: result.id,
@@ -125,7 +125,7 @@ const userController = {
       const token = jwt.sign(payloads, process.env.TOKEN_KEY);
       res.status(200).send({
         result,
-        token
+        token,
       });
     } catch (error) {
       res.status(200).send(error);
@@ -414,13 +414,13 @@ const userController = {
           where: { id: id },
         }
       );
-      
+
       const result = await user.findOne({
-        where: { id: id }
+        where: { id: id },
       });
       res.status(200).send({
         message: "Success",
-        result
+        result,
       });
     } catch (error) {
       res.status(400).send(error);
@@ -456,20 +456,41 @@ const userController = {
   },
   getOrderList: async (req, res) => {
     try {
+      console.log(req.query);
+      const { invoice, status, startDate, endDate } = req.body;
       const sort = req.query.sort || "DESC";
-      const sortBy = "createdAt";
+      const sortBy = req.query.sortBy || "createdAt";
       const limit = 10;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
+      const clause = [{ userId: req.user.id }];
+
+      if (invoice) {
+        clause.push({ id: invoice });
+      }
+      if (status) {
+        clause.push({ statusId: status });
+      }
+      if (startDate && endDate) {
+        clause.push({
+          createdAt: {
+            [Op.and]: {
+              [Op.gte]: startDate, 
+              [Op.lte]: endDate, 
+            },
+          },
+        });
+      }
+
       const result = await userTransaction.findAll({
-        where: { userId: req.user.id },
+        where: { [Op.and]: clause },
         order: [[sortBy, sort]],
-        offset : offset,
-        limit : limit,
+        offset: offset,
+        limit: limit,
         include: [
           { model: booking },
           { model: statusPay },
-          { model: user},
+          { model: user },
           {
             model: rooms,
             include: [
@@ -489,8 +510,9 @@ const userController = {
         message: "OK",
         result,
         length,
-        limit
+        limit,
       });
+
     } catch (error) {
       res.status(400).send(error);
     }
@@ -526,20 +548,19 @@ const userController = {
     try {
       const transactionIsExist = await userTransaction.findOne({
         where: {
-          [Op.and]: [{ id: req.body.id }, { statusId: 3 }, { isReview: false }],
+          [Op.and]: [{ id: req.body.id }, { statusId: 7 }, { isReview: false }],
         },
       });
       if (transactionIsExist) {
         const result = await userTransaction.update(
           {
             isReview: true,
-            statusId: 7,
           },
           {
             where: {
               [Op.and]: [
                 { id: req.body.id },
-                { statusId: 3 },
+                { statusId: 7 },
                 { isReview: false },
               ],
             },

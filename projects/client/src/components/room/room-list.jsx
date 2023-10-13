@@ -68,18 +68,19 @@ export const RoomList = () => {
 
     const toDetail = (id, QTY) => {
 
-        if (QTY !== 0) {
-
-        if (QTY === 0) {
-            // (null)
-            <></>
-        }
-        else {
+        
+        // if (QTY === 0) {
+            
+        //     <>
+        //         "undefined"
+        //     </>
+        // }
+        // else {
 
             navigate(`/room/${id}`)
             window.scrollTo(0, 0);
             
-        }
+        // }
 
     }
     
@@ -88,7 +89,7 @@ export const RoomList = () => {
 
     useEffect(() => {
         getRoomByProperty();
-    }, [sort, page,sortBy]);
+    }, [sort, page, sortBy]);
 
     useEffect(() => {
         const fetchImagesForRooms = async () => {
@@ -202,3 +203,4 @@ export const RoomList = () => {
         </div>
     )
 }
+
