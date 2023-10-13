@@ -332,7 +332,7 @@ const userController = {
       });
 
       const currentTime = new Date();
-      const futureTime = new Date(currentTime.getTime() + 40 * 60 * 1000);
+      const futureTime = new Date(currentTime.getTime() + 5 * 60 * 1000);
       const otpNumber = otpGenerate();
       const tempVerifiedCount = checkUser.verifiedCount + 1;
 

@@ -70,10 +70,10 @@ const VerifyAccount = () => {
         timer: 1500,
         showConfirmButton: false,
       });
-      // setTimeout(() => {
-      //   localStorage.removeItem("token");
-      //   navigate("/login");
-      // }, 2000)
+      setTimeout(() => {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }, 2000)
       
     } catch (error) {
       console.log(error);
