@@ -235,6 +235,11 @@ const room = db.rooms;
   },
   salesReport : async (req, res) => {
     try {
+      const sort = req.query.sort || "DESC";
+      const sortBy = req.query.sortBy || "createdAt";
+      const limit = 10;
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
       const result = await transaction.findAll({
         where : {
           [Op.or] : [
@@ -242,6 +247,9 @@ const room = db.rooms;
             {statusId : 3}
           ]
         },
+        order: [[sortBy, sort]],
+        offset: offset,
+        limit: limit,
         include : [
           { model : properties, where :{userId : req.user.id} },
           { model : user},
@@ -249,9 +257,24 @@ const room = db.rooms;
           { model : booking}
         ]
       });
+      const checkLength = await transaction.findAll({
+        where : {
+          [Op.or] : [
+            {statusId : 7},
+            {statusId : 3}
+          ]
+        },
+        include : [
+          { model : properties, where :{userId : req.user.id} }
+        ]
+      });
+      const length = checkLength.length;
+      
       res.status(200).send({
         message : "Sukses",
-        result
+        result,
+        length,
+        limit,
       })
       
     } catch (error) {

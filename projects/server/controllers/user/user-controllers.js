@@ -304,11 +304,6 @@ const userController = {
   },
   getOtp: async (req, res) => {
     try {
-      // flow
-      // 1. cek dulu apakah user sudah terverifikasi ? jika sudah throw error
-      // 2. cek apakah verifiedCount sudah mencapai 5 per hari ? jika sudah throw error
-      // 3. cek ke tabel OTP, apakah sudah ada OTP yang dibuat untuk ID ini? jika belum buat data di tabel OTP, dan update verifiedCount di tabel user
-      // 4.
       const { id } = req.user;
       const checkUser = await user.findOne({
         where: { id: id },
@@ -336,7 +331,6 @@ const userController = {
       const otpNumber = otpGenerate();
       const tempVerifiedCount = checkUser.verifiedCount + 1;
 
-      //kalau OTP belum dibuat
       if (!checkOtp) {
         await dbOtp.create({
           userId: id,
@@ -347,7 +341,7 @@ const userController = {
         if (checkOtp.expiredDate > currentTime) {
           throw {
             message:
-              "The previous OTP code is still active, please check your email. or wait 5 minutes to request a new OTP",
+              "The previous OTP code is still active, please check your email or wait 5 minutes to request a new OTP",
           };
         } else {
           await dbOtp.update(
@@ -391,7 +385,7 @@ const userController = {
       const { id } = req.user;
 
       const result = await dbOtp.findOne({ where: { otp: otp } });
-      
+
       if (!result)
         throw {
           message: "Wrong OTP code",
@@ -403,7 +397,7 @@ const userController = {
           gender: gender,
           birthdate: birthdate,
           isVerified: true,
-          verifiedCount : 5
+          verifiedCount: 5,
         },
         {
           where: { id: id },
