@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import axios from "axios";
 import swal from "sweetalert2";
+import { setValue } from "../../redux/user-slice";
+import { setData } from "../../redux/firebase-slice";
 
-const ProfileInformation = () => {
+const ProfileInformation = ({ reload, setReload }) => {
   const data = useSelector((state) => state.user.value);
+  const firebase = useSelector((state) => state.firebase.value);
   const token = localStorage.getItem("token");
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("Firstname is required"),
-    lastName: Yup.string().required("Lastname is required"),
     gender: Yup.string().required("Gender is required"),
-    email: Yup.string().required("email is required"),
     birthdate: Yup.string().required("Birthdate is required"),
   });
 
+  const dispatch = useDispatch();
   const onUpdate = async (data) => {
     try {
       const response = await axios.post(
@@ -31,10 +33,13 @@ const ProfileInformation = () => {
         timer: 1500,
         showConfirmButton: false,
       });
+      dispatch(setValue(response.data.result));
+      setReload(!reload);
     } catch (error) {
       console.log(error);
     }
   };
+  useEffect(() => {}, []);
   return (
     <Formik
       initialValues={{
@@ -50,11 +55,10 @@ const ProfileInformation = () => {
         onUpdate(values);
       }}
     >
-      <Form className="w-full border p-4" action="#">
-        <div className=" text-bgPrimary xs:text-xl md:text-3xl font-semibold my-2 py-2">
+      <Form className="w-full border-t p-4" action="#">
+        <div className=" text-gray-700 xs:text-xl md:text-3xl font-semibold my-2 py-2">
           <p>Change User Information Here</p>
         </div>
-
         <div className="flex flex-wrap md:justify-between">
           <div className="xs:w-full md:w-1/2 md:p-1 xs:p-1">
             <label
@@ -97,7 +101,6 @@ const ProfileInformation = () => {
             />
           </div>
         </div>
-
         <div className="flex flex-wrap md:justify-between">
           <div className="xs:w-full md:w-1/2 md:p-1 xs:p-1">
             <label
@@ -141,7 +144,6 @@ const ProfileInformation = () => {
             />
           </div>
         </div>
-
         <div className="flex flex-wrap md:justify-between">
           <div className="xs:w-full md:w-1/2 md:p-1 xs:p-1">
             <label className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2">
@@ -196,5 +198,4 @@ const ProfileInformation = () => {
     </Formik>
   );
 };
-
 export default ProfileInformation;

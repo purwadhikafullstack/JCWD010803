@@ -4,6 +4,7 @@ const properties = db.properties;
 const rooms = db.rooms;
 const booking = db.onBooking;
 const category = db.categories;
+const user = db.user;
 
 const propertiesController = {
   sortProperty: async (req, res) => {
@@ -11,7 +12,7 @@ const propertiesController = {
       const categoryId = req.query.categoryId || null;
       const checkIn = req.query.checkIn || null;
       const checkOut = req.query.checkOut || null;
-      const limit = 10;
+      const limit = 15;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const sort = req.query.sort || "ASC";
@@ -24,13 +25,14 @@ const propertiesController = {
         new Date(checkOut).getTime() + 7 * 60 * 60 * 1000
       );
       const findProperty = await properties.findAll({
-        where: { categoryId: categoryId },
+        where: { categoryId: categoryId, isDelete : false },
         include: [
           {
             model: rooms,
             attributes: ["price"],
-            where : {
-              QTY: {[Op.ne] : 0}
+            where: {
+              QTY: { [Op.ne]: 0 },
+              isDelete: false,
             },
             include: [
               {
@@ -54,7 +56,7 @@ const propertiesController = {
             },
           },
         ],
-        limit: 10,
+        limit: limit,
         offset: offset,
         order:
           sortBy === "price"
@@ -63,12 +65,13 @@ const propertiesController = {
       });
 
       const data = await properties.findAll({
-        where: { categoryId: categoryId },
+        where: { categoryId: categoryId, isDelete: false },
         include: [
           {
             model: rooms,
-            where : {
-              QTY: {[Op.ne] : 0}
+            where: {
+              QTY: { [Op.ne]: 0 },
+              isDelete : false
             },
             include: [
               {
@@ -154,7 +157,8 @@ const propertiesController = {
   },
   addProperty: async (req, res) => {
     try {
-      const { propertyName, propertyDesc, categoryId } = req.body;
+      const { propertyName, propertyDesc, categoryId, detailLocation } =
+        req.body;
       const userId = req.user.id;
       const propertyImg = req.file.filename;
       const result = await properties.create({
@@ -163,12 +167,14 @@ const propertiesController = {
         propertyDesc,
         propertyImg,
         userId,
+        detailLocation,
       });
       res.status(200).send({
         message: "add properties success",
         result,
       });
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -183,7 +189,7 @@ const propertiesController = {
           propertyDesc,
           propertyImg,
           propertyName,
-          categoryId
+          categoryId,
         },
         {
           where: { id: propertyId },
@@ -194,7 +200,7 @@ const propertiesController = {
         result,
       });
     } catch (error) {
-			console.log(error);
+      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -216,30 +222,62 @@ const propertiesController = {
   },
   myProperties: async (req, res) => {
     try {
-      const sort = req.query.sort || "DESC"
-      const sortBy = "createdAt"
-      const limit = 4;
+      const sort = req.query.sort || "DESC";
+      const sortBy = "createdAt";
+      const limit = 10;
+      const search = req.query.search || ""
+
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
-      const {id} = req.user
+      const { id } = req.user;
       const result = await properties.findAll({
-        where: { userId: id, isDelete: false },
+        where: { userId: id, isDelete: false, propertyName :  { [Op.like] : `%${search}%`}},
         order: [[sortBy, sort]],
         offset: offset,
         limit: limit,
-        include:{model: category}
+        include: { model: category },
       });
       const checkLength = await properties.findAll({
         where: { userId: id, isDelete: false },
       });
-      const length = checkLength.length
+      const length = checkLength.length;
       res.status(200).send({
         result,
         length,
-        limit
+        limit,
       });
     } catch (error) {
       console.log(error);
+      res.status(400).send(error);
+    }
+  },
+  allProperties: async (req, res) => {
+    try {
+      const limit = 16;
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
+      const result = await properties.findAll({
+        include: [{ model: category }, { model: rooms }],
+        limit: limit,
+        offset: offset,
+      });
+      const get = await properties.findAll();
+      const length = get.length;
+
+      res.status(200).send({ result, length, limit });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  detailProperty: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await properties.findOne({
+        where: { id: id },
+        include: [{ model: category }, { model: user }],
+      });
+      res.status(200).send(result);
+    } catch (error) {
       res.status(400).send(error);
     }
   },

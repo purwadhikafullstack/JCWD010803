@@ -6,6 +6,8 @@ import { EditRoomModal } from '../../components/modal/edit-room-modal';
 import { CreateRoomModal } from '../../components/modal/create-room-modal';
 import { EditImageModal } from '../../components/modal/edit-image-modal';
 import { useNavigate } from 'react-router-dom';
+import { AddSpecialPriceModal } from '../../components/modal/add-special-price';
+import { AddUnavailablity } from '../../components/modal/set-unavailablity-modal';
 
 const RoomList = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -20,6 +22,8 @@ const RoomList = () => {
   const [price, setPrice] = useState("")
   const [openUpdateImage, setOpenUpdateImage] = useState(false)
   const [propertyId, setPropertyId] = useState("")
+  const [openSpecialPrice, setOpenSpecialPrice] = useState(false)
+  const [openAvailable, setOpenAvailable] = useState(false)
   const token = localStorage.getItem('token')
   const navigate = useNavigate()
 
@@ -32,10 +36,12 @@ const RoomList = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
+      <AddUnavailablity  setOpenAvailable={setOpenAvailable} openAvailable={openAvailable} roomId={id} />
       <DeleteRoomModal reload={reload} setReload={setReload} setopenModal={setOpenModal} openModal={openModal} id={id} />
       <EditRoomModal setReload={setReload} reload={reload} editModal={editModal} id={id} setEditModal={setEditModal} price={price} roomName={roomName} roomDesc={roomDesc} />
       <CreateRoomModal propertyId={propertyId} setReload={setReload} reload={reload} openModal={openModalAdd} setOpenModal={setOpenModalAdd} />
       <EditImageModal reload={reload} setReload={setReload} roomId={id} openModal={openUpdateImage} setOpenModal={setOpenUpdateImage} />
+      <AddSpecialPriceModal setOpenSpecialPrice={setOpenSpecialPrice} openSpecialPrice={openSpecialPrice} roomId={id} />
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
@@ -60,7 +66,9 @@ const RoomList = () => {
                 <rect x="4" y="17" width="16" height="2" />
               </svg>
             </button>
-          <RoomListTenant propertyId={propertyId} setPropertyId={setPropertyId} setOpenUpdateImage={setOpenUpdateImage} setRoomId={setRoomId} setOpenModalAdd={setOpenModalAdd} reload={reload} setId={setId} setRoomName={setRoomName} setRoomDesc={setRoomDesc} setPrice={setPrice} setOpenModal={setOpenModal} setEditModal={setEditModal} />
+            <div>
+            </div>
+          <RoomListTenant setOpenAvailable={setOpenAvailable} openAvailable={openAvailable} setOpenSpecialPrice={setOpenSpecialPrice} propertyId={propertyId} setPropertyId={setPropertyId} setOpenUpdateImage={setOpenUpdateImage} setRoomId={setRoomId} setOpenModalAdd={setOpenModalAdd} reload={reload} setId={setId} setRoomName={setRoomName} setRoomDesc={setRoomDesc} setPrice={setPrice} setOpenModal={setOpenModal} setEditModal={setEditModal} />
         </div>
       </div>
     </div>

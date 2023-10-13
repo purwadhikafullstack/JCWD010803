@@ -1,7 +1,7 @@
+const { Op } = require("sequelize");
 const db = require("../../models");
 const transaction = db.userTransactions;
 const room = db.rooms;
-const property = db.properties;
   const properties = db.properties;
   const user = db.user;
   const status = db.status;
@@ -203,10 +203,6 @@ const property = db.properties;
       const checkRoom = await room.findOne({
         where : {id : roomId}
       })
-      const quantityAdjustment = await room.update(
-        {QTY : checkRoom.QTY + 1},
-        {where : {id : roomId}}
-      )
       res.status(200).send({
         message: "reject success",
       });
@@ -229,10 +225,6 @@ const property = db.properties;
       const checkRoom = await room.findOne({
         where : {id : roomId}
       })
-      const quantityAdjustment = await room.update(
-        {QTY : checkRoom.QTY + 1},
-        {where : {id : roomId}}
-      )
       res.status(200).send({
         message: "Cancel success",
       });
@@ -240,6 +232,61 @@ const property = db.properties;
     catch (error) {
       res.status(400).send(error)
     }
-  }
-
+  },
+  salesReport : async (req, res) => {
+    try {
+      const sort = req.query.sort || "DESC";
+      const sortBy = req.query.sortBy || "createdAt";
+      const limit = 10;
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
+      const result = await transaction.findAll({
+        where : {
+          [Op.or] : [
+            {statusId : 7},
+            {statusId : 3}
+          ]
+        },
+        order: [[sortBy, sort]],
+        offset: offset,
+        limit: limit,
+        include : [
+          { model : properties, where :{userId : req.user.id} },
+          { model : user},
+          { model : room},
+          { model : booking}
+        ]
+      });
+      const checkLength = await transaction.findAll({
+        where : {
+          [Op.or] : [
+            {statusId : 7},
+            {statusId : 3}
+          ]
+        },
+        include : [
+          { model : properties, where :{userId : req.user.id} }
+        ]
+      });
+      const length = checkLength.length;
+      
+      res.status(200).send({
+        message : "Sukses",
+        result,
+        length,
+        limit,
+      })
+      
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  allPaymentMethode : async (req, res) => {
+    try {
+        const result = await paymentMethode.findAll()    
+        res.status(200).send(result)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+}
 };

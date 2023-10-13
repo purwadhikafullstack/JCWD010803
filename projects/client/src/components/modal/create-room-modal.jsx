@@ -3,6 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup'
+import Swal from "sweetalert2"
 
 export const CreateRoomModal = ({openModal, setOpenModal, setReload, reload}) => {
     const params = useParams()
@@ -15,24 +16,36 @@ export const CreateRoomModal = ({openModal, setOpenModal, setReload, reload}) =>
     const validationSchema = Yup.object().shape({
         roomName: Yup.string().required('Room name is required'),
         roomDesc: Yup.string().required('Room description is required'),
-        price: Yup.string().required('Price room is required')
+        price: Yup.string().required('Price room is required'),
+        QTY: Yup.string().required('Quantity room is required'),
+        
     })
 
     const addRoom = async (data) => {
         try {
             const formData = new FormData()
-            const {roomName, roomDesc, price} = data
+            const {roomName, roomDesc, price, QTY} = data
             formData.append("roomName", roomName)
             formData.append("roomDesc", roomDesc)
             formData.append("price", price)
+            formData.append("QTY", QTY)
             formData.append("roomImg", file1)
             formData.append("roomImg", file2)
             formData.append("roomImg", file3)
             formData.append("roomImg", file4)
             const response = await axios.post(`http://localhost:8000/api/room/${params.propertyId}`, formData)
+            Swal.fire({
+                icon:"success",
+                title:"Add new room success",
+            })
             setOpenModal(false)
             setReload(!reload)
         } catch (error) {
+            Swal.fire({
+                icon:"warning",
+                title:"Add new room failed",
+                text:error.response.data.message
+            })
             console.log(error);
         }
     }
@@ -55,7 +68,8 @@ export const CreateRoomModal = ({openModal, setOpenModal, setReload, reload}) =>
                                 initialValues={{
                                     roomName: "",
                                     roomDesc: "",
-                                    price: ""
+                                    price: "",
+                                    QTY: ""
                                 }}
                                 validationSchema={validationSchema}
                                 enableReinitialize={true}
@@ -101,6 +115,20 @@ export const CreateRoomModal = ({openModal, setOpenModal, setReload, reload}) =>
                                             />
                                             <ErrorMessage
                                                 name='price'
+                                                component={'div'}
+                                                className="text-red-500 text-base"
+                                            />
+                                        </div>
+                                        <div className='mt-5'>
+                                            <div>Quantity</div>
+                                            <Field
+                                                name="QTY"
+                                                as="input"
+                                                type="number"
+                                                className="w-full h-12 border-2 rounded-md px-5 mt-2"
+                                            />
+                                            <ErrorMessage
+                                                name='QTY'
                                                 component={'div'}
                                                 className="text-red-500 text-base"
                                             />

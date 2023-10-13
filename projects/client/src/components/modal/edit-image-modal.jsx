@@ -17,7 +17,7 @@ export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenMo
             console.log(error);
         }
     }
-    
+
     const editImage = async (id, imageInput) => {
         try {
             const response = await axios.patch(`http://localhost:8000/api/room/editImage/${id}`, { "roomImg": imageInput }, {
@@ -31,7 +31,7 @@ export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenMo
             console.log(error);
         }
     }
-    
+
     useEffect(() => {
         if (imageInput) {
             editImage(id, imageInput)
@@ -58,34 +58,37 @@ export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenMo
                     <div className="p-2 ">
 
                         <div className="p-2 flex flex-wrap gap-7 justify-center">
-                            {data?.map(item => {
-                                return (
-                                    <div>
-                                        <img src={`http://localhost:8000/room/${item.image}`} className="w-40 h-40 rounded-md" alt="" />
-                                        <div className="flex justify-center mt-2">
-                                            <div className="w-full border-2 gap-2 rounded-md px-2 items-center justify-center flex p-1 border-dashed">
-                                                <label
-                                                    onClick={() => {
-                                                        setId(item.id)
-                                                    }}
-                                                    htmlFor="fileInput" className=" text-white bg-bgPrimary rounded-md p-1 cursor-pointer">
-                                                    <AiFillEdit />
-                                                </label>
-                                                <div className="text-gray-500"> Select image </div>
-                                                <input
-                                                    type="file"
-                                                    id="fileInput"
-                                                    className="hidden" // Sembunyikan input file dengan kelas "hidden"
-                                                    onChange={(e) => setImageInput(e.target.files[0])}
-                                                />
+                            {data ?
+                                data.map(item => {
+                                    return (
+                                        <div>
+                                            <img src={`http://localhost:8000/room/${item.image}`} className="w-40 h-40 rounded-md" alt="" />
+                                            <div className="flex justify-center mt-2">
+                                                <div className="w-full border-2 gap-2 rounded-md px-2 items-center justify-center flex p-1 border-dashed">
+                                                    <label
+                                                        onClick={() => {
+                                                            setId(item.id)
+                                                        }}
+                                                        htmlFor="fileInput" className=" text-white bg-bgPrimary rounded-md p-1 cursor-pointer">
+                                                        <AiFillEdit />
+                                                    </label>
+                                                    <div className="text-gray-500"> Select image </div>
+                                                    <input
+                                                        type="file"
+                                                        id="fileInput"
+                                                        className="hidden"
+                                                        onChange={(e) => setImageInput(e.target.files[0])}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
+                                    )
+                                })
+                                :
+                                "undefined"
+                            }
                         </div>
                     </div>
-                    {/* <button className="bg-teal-500" onClick={() => editImage(id, imageInput)}>save</button> */}
                 </div>
             </div>
         </div >

@@ -2,7 +2,6 @@ import axios from "axios";
 import swal from 'sweetalert2'
 
 export const ModalDeleteProperty = ({ open, reload, setOpen, id, setReload }) => {
-  console.log(id);
 
   const closeModal = () => {
     setOpen(false)

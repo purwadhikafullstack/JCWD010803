@@ -1,41 +1,50 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { FaTimes, FaHome, FaChevronDown } from 'react-icons/fa'; // Import ikon yang diperlukan
-import { RxAvatar } from 'react-icons/rx'
+import { FaTimes, FaHome, FaChevronDown } from "react-icons/fa"; // Import ikon yang diperlukan
+import { RxAvatar } from "react-icons/rx";
 import React, { useState, useEffect, useRef } from "react";
 import LogoImage from "../../../assets/images/dashboardtenants.png";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { setValue } from "../../../redux/user-slice";
+import { setData } from "../../../redux/firebase-slice";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
-  const navigate = useNavigate()
-  const { pathname } = location;
-
+  const navigate = useNavigate();
+  const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
   const trigger = useRef(null);
   const sidebar = useRef(null);
-  const [propertyActive, setPropertyActive] = useState(false)
-  const [orderActive, setOrderActive] = useState(false)
-  const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
-  const [sidebarExpanded, setSidebarExpanded] = useState(
-    storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
-  );
+  const dispatch = useDispatch()
+  const [propertyActive, setPropertyActive] = useState(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState()
+  const [orderActive, setOrderActive] = useState(false);
+  const { pathname } = location;
 
   const click = (value) => {
-    navigate(`/${value}`)
-  }
+    navigate(`/${value}`);
+  };
 
   const logout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem("token");
+    localStorage.removeItem("firebase-token");
+    dispatch(setValue(""));
+    dispatch(setData(""));
     Swal.fire({
       icon: "success",
       title: "Good bye..",
-      timer: 1000
-    })
+      timer: 1000,
+    });
     setTimeout(() => {
-      navigate('/login-tenant')
-    },700)
+      navigate("/login-tenant");
+    }, 700);
+  };
+
+  const toLandingPage = (value) => {
+    navigate('/');
   }
 
   useEffect(() => {
+    // {storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"}
     const clickHandler = ({ target }) => {
       if (!sidebar.current || !trigger.current) return;
       if (
@@ -48,7 +57,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  },[pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
@@ -83,7 +92,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         ref={sidebar}
         className={`flex flex-col absolute z-40 left-0 top-0 lg:static 
         lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll 
-        lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 
+        lg:overflow-y-auto no-scrollbar w-64  lg:sidebar-expanded:!w-64 
         2xl:!w-64 shrink-0 border-r shadow-xl bg-white transition-all duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-64"
           }`}
       >
@@ -102,7 +111,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </button>
         </div>
         <div className="flex justify-center p-4 items-center mb-10">
-          <img src={LogoImage} alt="ComfyCribz" className="w-20 h-20" />
+          <img onClick={toLandingPage} src={LogoImage} alt="ComfyCribz" className="w-20 h-20" />
         </div>
 
         {/* Sidebar header */}
@@ -111,39 +120,56 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className="space-y-8">
           {/* Pages group */}
           <div>
-            <div className={`${pathname !== '/dashboard/order-list'  ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard")}>
+            <div
+              className={`${pathname !== "/dashboard/order-list" && pathname !== "/dashboard/sales-report"
+                  ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
+                  : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
+                } `}
+              onClick={() => click("dashboard")}
+            >
               Properties
             </div>
-            <div className={`${pathname === '/dashboard/order-list' ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20" : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"} `} onClick={() => click("dashboard/order-list")}>
+
+            <div
+              className={`${pathname === "/dashboard/order-list"
+                  ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
+                  : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
+                } `}
+              onClick={() => click("dashboard/order-list")}
+            >
               Order list
             </div>
-            <ul className="mt-3">
-              {/* Dashboard */}
-            </ul>
-          </div>
-        </div>
 
-        {/* Expand / collapse button */}
-        <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
-          <div className="px-3 py-2">
-            <button onClick={() => setSidebarExpanded(!sidebarExpanded)}>
-              <span className="sr-only">Expand / collapse sidebar</span>
-              <FaChevronDown
-                size={24}
-                className={`w-6 h-6 fill-current sidebar-expanded:rotate-180 ${sidebarExpanded ? 'rotate-180' : ''
-                  }`}
-              />
-            </button>
+            <div
+              className={`${pathname === "/dashboard/sales-report"
+                  ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
+                  : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
+                } `}
+              onClick={() => click("dashboard/sales-report")}
+            >
+              Sales Report
+            </div>
+
+            <ul className="mt-3">{/* Dashboard */}</ul>
           </div>
         </div>
         <div className="h-full pb-5 justify-center items-end flex">
           <div>
             <div>
-              <div className="flex justify-center w-full mb-2"><RxAvatar size={"40"} /></div>
-              <div className=" flex justify-center mb-10 w-fit ">Akmal Hamidi</div>
+              <div className="flex justify-center w-full mb-2">
+                <RxAvatar size={"40"} />
+              </div>
+              <div className=" flex justify-center mb-10 w-fit ">
+                Akmal Hamidi
+              </div>
             </div>
             <div className="w-full flex justify-center">
-              <div onClick={logout} className=" bg-bgPrimary flex justify-center w-fit hover:bg-bgPrimaryActive hover:scale-95 text-white transition-all p-2 text-lg rounded-md cursor-pointer ">Log out</div>
+              <div
+                onClick={logout}
+                className=" bg-bgPrimary flex justify-center w-fit hover:bg-bgPrimaryActive hover:scale-95 text-white transition-all p-2 text-lg rounded-md cursor-pointer "
+              >
+                Log out
+              </div>
             </div>
           </div>
         </div>
