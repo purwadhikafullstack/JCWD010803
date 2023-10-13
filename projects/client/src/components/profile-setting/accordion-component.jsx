@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import UploadPay from "../modal/upload-payment";
 import ReviewModal from "../modal/review-modal";
+import axios from "axios";
+import Swal from "sweetalert2"
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -16,6 +18,7 @@ function currency(money) {
   let newFormat = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   return `Rp ${newFormat},-`;
 }
+
 
 function stayLong(checkInDate, checkOutDate) {
   const i = new Date(checkInDate);
@@ -34,7 +37,28 @@ const AccordionSection = ({
   setReload,
   reload,
 }) => {
+  console.log(section);
+
   const [openModal, setOpenModal] = useState(false);
+
+  const cancelOrder = async () => {
+    Swal.fire({
+      title: "Are You Sure?",
+      text: "You Want to Cancel This Order?",
+      confirmButtonText: "Yes",
+      showCancelButton: true,
+      confirmButtonColor: "#2CA4A5",
+      cancelButtonColor: "#e3e3e3",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await axios.patch(
+          "http://localhost:8000/api/order/cancel",
+          { transactionId: section.id, roomId: section.roomId }
+        );
+        setReload(!reload);
+      }
+    });
+  };
 
   const toggleSection = () => {
     const nextIndex = isActiveSection ? null : sectionIndex;
@@ -78,9 +102,14 @@ const AccordionSection = ({
             <span className={customStyle}>Need Upload Payment Receipt</span>
           </div>
         ) : (
+
+          <div className="py-1 flex flex-wrap justify-end ">
+            <span className="text-[#f59e0b]">
+
           <div className="py-1 flex flex-wrap justify-between">
             <span className="text-sm text-slate-500">Click to see details order</span>
             <span className={customStyle}>
+
               {section.status.status}{" "}
               {section.statusId == 7 && section.isReview == false
                 ? " - Give A Review"
@@ -95,6 +124,36 @@ const AccordionSection = ({
 
       {isActiveSection && (
         <div>
+          {/* <div>Ini adalah konten</div> */}
+          <div className="text-right w-full justify-end gap-5 flex">
+            {section.statusId === 1 || section.statusId === 2 ? (
+              <button
+                onClick={cancelOrder}
+                className="p-2 bg-red-700 text-white rounded-sm hover:bg-red-600 transition-all"
+              >
+                Cancelled Order
+              </button>
+            ) : null}
+            {section.statusId == 1 ? (
+              <>
+                <button
+                  className="bg-bgPrimary p-1 text-white font-semibold rounded-sm"
+                  onClick={() => {
+                    setOpenModal(true);
+                  }}
+                >
+                  Upload Payment
+                </button>
+                {openModal && (
+                  <UploadPay
+                    setReload={setReload}
+                    reload={reload}
+                    closeModal={setOpenModal}
+                    data={section}
+                  />
+                )}
+              </>
+            ) : null}
           <div className="">
             <div className="px-2">
               <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 border-b">
