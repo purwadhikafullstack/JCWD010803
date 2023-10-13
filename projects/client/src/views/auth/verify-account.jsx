@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import swal from 'sweetalert2';
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Spinner from "../../components/spinner/spinner";
+
+
 
 const VerifyAccount = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
   });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const data = useSelector((state) => state.user.value);
   const token = localStorage.getItem("token");
   const validationSchema = Yup.object().shape({
     firstname: Yup.string().required("Firstname is required"),
@@ -22,6 +27,7 @@ const VerifyAccount = () => {
   });
 
   const handleOtp = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:8000/api/user/otp",
@@ -30,15 +36,15 @@ const VerifyAccount = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      setLoading(false);
       swal.fire({
         icon: 'success',
         title: 'OTP has been sent',
         text: 'Please check your email!',
-        timer: 1500,
-        showConfirmButton: false,
+        
       });
     } catch (error) {
-      console.log(error);
+      setLoading(false);
       swal.fire({
         icon: 'warning',
         iconColor: 'red',
@@ -77,8 +83,17 @@ const VerifyAccount = () => {
         title: 'Verify Failed',
         text: error.response.data.message,
       });
+    } finally {
+      setLoading(false);
     }
   };
+
+  
+  useEffect(()=>{
+    if (!data.id || data.isVerified) {
+      navigate("/")
+    }
+  },[data.id, data.isVerified]);
   return (
     <div className="flex flex-wrap">
       <div className="md:w-3/5 h-screen bg-cover bg-[url(https://img.freepik.com/free-vector/businessman-holding-pencil-big-complete-checklist-with-tick-marks_1150-35019.jpg?w=740&t=st=1694592087~exp=1694592687~hmac=94bcbf09a9d099a2841a8c13b4e85ba948c7cfa53a63e5a8511d9d2bb982dea1)]"></div>
@@ -209,10 +224,11 @@ const VerifyAccount = () => {
                         <button
                           type="button"
                           onClick={() => handleOtp()}
-                          className="w-full bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded"
+                          className=" bg-teal-600 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded"
                           action="#"
+                          disabled={loading}
                         >
-                          Send OTP
+                          {loading ? <Spinner /> : 'Request OTP'}
                         </button>
                       </div>
                     </div>

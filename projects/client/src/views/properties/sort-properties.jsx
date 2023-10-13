@@ -116,6 +116,7 @@ export const SortProperties = () => {
         </div>
       </div>
       {/* copy */}
+      
       <div className=" flex justify-center items-center h-14 gap-5">
         { page > 1 ?
           <div onClick={prevPage} className="cursor-pointer hover:scale-110 active:scale-95"> <BsFillArrowLeftCircleFill size={"30"} /> </div>

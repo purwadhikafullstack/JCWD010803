@@ -6,6 +6,7 @@ const { join } = require("path");
 const db = require("../models");
 const schedule = require('node-schedule');
 const autoComplete = require("../scheduler/auto-complete");
+const OtpAutoClear = require("../scheduler/auto-otp-clear");
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -27,6 +28,7 @@ app.use("/api/order", orderRouter)
 app.use("/api/specialPrice", specialPriceRouter)
 
   schedule.scheduleJob('1 1 10 * * *', autoComplete);
+  schedule.scheduleJob('1 1 10 * * *', OtpAutoClear);
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);

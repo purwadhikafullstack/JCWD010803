@@ -15,7 +15,7 @@ const Navbar = () => {
   const data = useSelector((state) => state.user.value);
   const token = localStorage.getItem("token");
   return (
-    <div className="fixed w-full bg-white z-30 shadow-sm">
+    <div className="fixed w-full bg-white z-[100] shadow-sm">
       <SearchModal setOpen={setOpen} open={open} />
       <div className="py-4 border-b-[1px]">
         <Container>
@@ -37,7 +37,7 @@ const Navbar = () => {
       </div>
       {token === null ? null : data.isVerified  == false ?  (
         <div
-          className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md ${hidden}"
+          className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
           role="alert"
         >
           <div className="flex">
