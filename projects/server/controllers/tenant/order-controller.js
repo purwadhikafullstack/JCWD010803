@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const db = require("../../models");
+const { log } = require("handlebars");
 const transaction = db.userTransactions;
 const room = db.rooms;
   const properties = db.properties;
@@ -235,16 +236,31 @@ const room = db.rooms;
   },
   salesReport : async (req, res) => {
     try {
+      const {startDate, endDate } = req.body;
       const sort = req.query.sort || "DESC";
       const sortBy = req.query.sortBy || "createdAt";
       const limit = 10;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
+      const clause = [];
+
+      if (startDate  && endDate) {
+        clause.push({
+          createdAt: {
+            [Op.between]: [startDate, endDate]
+          }
+        });
+      }
       const result = await transaction.findAll({
         where : {
-          [Op.or] : [
-            {statusId : 7},
-            {statusId : 3}
+          [Op.and]: [
+            {
+              [Op.or]: [
+                { statusId: 7 },
+                { statusId: 3 }
+              ]
+            },
+            clause
           ]
         },
         order: [[sortBy, sort]],
@@ -274,7 +290,7 @@ const room = db.rooms;
         message : "Sukses",
         result,
         length,
-        limit,
+        limit
       })
       
     } catch (error) {
@@ -288,5 +304,35 @@ const room = db.rooms;
     } catch (error) {
         res.status(400).send(error)
     }
-}
+},
+  getAllSales : async (req,res) => {
+    try {
+      const checkLength = await transaction.findAll({
+        where : {
+          [Op.or] : [
+            {statusId : 7},
+            {statusId : 3}
+          ]
+        },
+        include : [
+          { model : properties, where :{userId : req.user.id} }
+        ]
+      });
+      const {id} = req.user.id
+      let totalRevenue = 0;
+      let totalGuest = length;
+      for (const item of checkLength) {
+        totalRevenue = totalRevenue + Number(item.totalPayment);
+      }
+
+      res.status(200).send({
+        message:"OK",
+        // totalRevenue,
+        
+      })
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error)
+    }
+  }
 };

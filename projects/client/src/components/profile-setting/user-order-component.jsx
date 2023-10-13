@@ -263,7 +263,7 @@ const UserOrderList = () => {
         </div>
         <div className="flex flex-wrap gap-x-3 items-center">
           <label
-            htmlFor="country"
+            htmlFor="sortBy"
             className="text-sm font-medium leading-6 text-gray-900"
           >
             Sort by
@@ -287,6 +287,7 @@ const UserOrderList = () => {
           </div>
         </div>
       </div>
+      
       <div className="overflow-y-auto flex flex-col space-y-2 md:px-3">
         {orderList.length > 0 ? (
           <Accordion
