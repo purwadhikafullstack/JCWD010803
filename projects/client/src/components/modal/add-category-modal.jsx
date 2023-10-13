@@ -116,7 +116,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
           <div className="mt-2">
             <Select
               className="w-full h-12 rounded-md"
-              options={categories?.map((item) => ({
+              options={categories.map((item) => ({
                 value: item.id,
                 label: item.category,
               }))}
