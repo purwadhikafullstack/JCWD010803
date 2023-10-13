@@ -14,7 +14,7 @@ const { Op, where } = require("sequelize");
 const handlebars = require("handlebars");
 const fs = require("fs");
 const transporter = require("../../midlewares/transporter");
-const { log } = require("console");
+const { log, error } = require("console");
 
 const otpGenerate = () => {
   const max = 9999;
@@ -304,50 +304,80 @@ const userController = {
   },
   getOtp: async (req, res) => {
     try {
-      const { id, username, email } = req.user;
+      // flow
+      // 1. cek dulu apakah user sudah terverifikasi ? jika sudah throw error
+      // 2. cek apakah verifiedCount sudah mencapai 5 per hari ? jika sudah throw error
+      // 3. cek ke tabel OTP, apakah sudah ada OTP yang dibuat untuk ID ini? jika belum buat data di tabel OTP, dan update verifiedCount di tabel user
+      // 4.
+      const { id } = req.user;
       const checkUser = await user.findOne({
-        where: { email },
-      });
-      const checkOtp = await dbOtp.findAll({
-        where: {
-          userId: id,
-          expiredDate: {
-            [Op.and]: {
-              [Op.gte]: new Date(new Date().setHours(7, 0, 0, 0)),
-              [Op.lte]: new Date(new Date().setHours(30, 59, 59, 999)),
-            },
-          },
-        },
+        where: { id: id },
       });
 
-      const totalSend = await checkOtp.length;
-      const timeInIndonesia = new Date().getTime() + 7 * 60 * 60 * 1000;
-      const time = new Date(timeInIndonesia);
-      time.setTime(time.getTime() + 5 * 60 * 1000);
-      const expiredDate = new Date(time);
-      const otpNumber = otpGenerate();
-      if (totalSend >= 5)
+      if (checkUser.isVerified) {
+        throw { message: `Account already verified` };
+      }
+
+      if (checkUser.verifiedCount >= 5) {
         throw {
           message:
             "Sorry, you have reached the maximum limit of OTP requests in a single day. Please try again tomorrow.",
         };
-      await dbOtp.create({
-        userId: id,
-        expiredDate: expiredDate,
-        otp: otpNumber,
+      }
+
+      const checkOtp = await dbOtp.findOne({
+        where: {
+          userId: id,
+        },
       });
+
+      const currentTime = new Date();
+      const futureTime = new Date(currentTime.getTime() + 40 * 60 * 1000);
+      const otpNumber = otpGenerate();
+      const tempVerifiedCount = checkUser.verifiedCount + 1;
+
+      //kalau OTP belum dibuat
+      if (!checkOtp) {
+        await dbOtp.create({
+          userId: id,
+          expiredDate: futureTime,
+          otp: otpNumber,
+        });
+      } else {
+        if (checkOtp.expiredDate > currentTime) {
+          throw {
+            message:
+              "The previous OTP code is still active, please check your email. or wait 5 minutes to request a new OTP",
+          };
+        } else {
+          await dbOtp.update(
+            {
+              otp: otpNumber,
+              expiredDate: futureTime,
+            },
+            { where: { userId: id } }
+          );
+        }
+      }
+
+      await user.update(
+        { verifiedCount: tempVerifiedCount },
+        { where: { id: id } }
+      );
 
       const data = await fs.readFileSync("./templates/otp.html", "utf-8");
       const tempCompile = await handlebars.compile(data);
       const tempResult = tempCompile({
         otp: otpNumber,
       });
+      const email = checkUser.email;
       await transporter.sendMail({
         from: process.env.EMAIL_TRANSPORT,
         to: email,
         subject: "Verify your account with OTP code",
         html: tempResult,
       });
+
       res.status(200).send({
         message: "We have send OTP to your email",
       });
@@ -360,19 +390,12 @@ const userController = {
       const { firstname, lastname, birthdate, gender, otp } = req.body;
       const { id } = req.user;
 
-      const timeInIndonesia = new Date().getTime() + 7 * 60 * 60 * 1000;
-      const time = new Date(timeInIndonesia);
-
       const result = await dbOtp.findOne({ where: { otp: otp } });
+      
       if (!result)
         throw {
-          message: "Check OTP form your email again",
+          message: "Wrong OTP code",
         };
-      if (time > result.expiredDate)
-        throw {
-          message: "OTP is expired",
-        };
-
       const setData = await user.update(
         {
           firstName: firstname,
@@ -380,6 +403,7 @@ const userController = {
           gender: gender,
           birthdate: birthdate,
           isVerified: true,
+          verifiedCount : 5
         },
         {
           where: { id: id },
@@ -456,7 +480,6 @@ const userController = {
   },
   getOrderList: async (req, res) => {
     try {
-      console.log(req.query);
       const { invoice, status, startDate, endDate } = req.body;
       const sort = req.query.sort || "DESC";
       const sortBy = req.query.sortBy || "createdAt";
@@ -474,10 +497,7 @@ const userController = {
       if (startDate && endDate) {
         clause.push({
           createdAt: {
-            [Op.and]: {
-              [Op.gte]: startDate, 
-              [Op.lte]: endDate, 
-            },
+            [Op.between]: [startDate, endDate],
           },
         });
       }
@@ -512,7 +532,6 @@ const userController = {
         length,
         limit,
       });
-
     } catch (error) {
       res.status(400).send(error);
     }
