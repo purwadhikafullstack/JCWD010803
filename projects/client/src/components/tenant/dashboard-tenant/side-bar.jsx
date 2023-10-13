@@ -39,6 +39,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     }, 700);
   };
 
+  const toLandingPage = (value) => {
+    navigate('/');
+  }
+
   useEffect(() => {
     // {storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"}
     const clickHandler = ({ target }) => {
@@ -107,7 +111,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </button>
         </div>
         <div className="flex justify-center p-4 items-center mb-10">
-          <img src={LogoImage} alt="ComfyCribz" className="w-20 h-20" />
+          <img onClick={toLandingPage} src={LogoImage} alt="ComfyCribz" className="w-20 h-20" />
         </div>
 
         {/* Sidebar header */}

@@ -526,6 +526,7 @@ const userController = {
         length,
         limit,
       });
+
     } catch (error) {
       res.status(400).send(error);
     }

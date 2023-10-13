@@ -119,7 +119,6 @@ const UserOrderList = () => {
     getAllStatus();
   }, [reload, page, sort, sortby]);
 
-  
   return (
     <div className="w-full p-1 flex flex-col space-y-2">
       <h1 className="p-2 xs:text-2xl md:text-5xl xs:mt-3  pb-4 text-slate-700 lg:mb-10 lg:mt-10 ">
