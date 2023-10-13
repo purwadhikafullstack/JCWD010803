@@ -1,8 +1,10 @@
 const db = require("../models");
 const onBooking = db.onBooking;
+const user = db.user; 
 const schedule = require("node-schedule");
-const transporter = require("../midlewares/transporter");
-
+const transporter = require("../middlewares/transporter");
+const fs = require("fs");
+const handlebars = require("handlebars");
 
 const scheduleEmail = async (booking) => {
   try {
@@ -11,47 +13,42 @@ const scheduleEmail = async (booking) => {
       const reminderDate = new Date(checkInDateFromDatabase);
       reminderDate.setDate(reminderDate.getDate() - 1);
 
-      schedule.scheduleJob(reminderDate, () => {
-        const mailOptions = {
-          from: process.env.EMAIL_TRANSPORT,
-          to: booking.user.email,
-          subject: "Reminder: Check-In Tomorrow",
-          text: "Don't forget to check-in tomorrow!",
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.log("Error sending email: " + error);
-          } else {
-            console.log("Email sent: " + info.response);
-          }
-        });
+      schedule.scheduleJob(reminderDate, async () => {
+        try {
+          const data = fs.readFileSync("./templates/mail-schedule-checkin.html", "utf-8");
+          const tempCompile = handlebars.compile(data);
+          const tempResult = tempCompile;
+          const email = booking.user.email;
+      
+          await transporter.sendMail({
+            from: process.env.EMAIL_TRANPORT,
+            to: email,
+            subject: "Hotel Rules and Tenant Regulations",
+            html: tempResult,
+          });
+        } catch (error) {
+          console.error("Error:", error);
+        }
       });
-    } else {
-      console.log("Data pemesanan tidak ditemukan");
     }
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
-
 const sendEmailBasedOnBooking = (id) => {
-  onBooking.findOne({
-      where: {
-        id: id,
-      },
-      include: [
+  onBooking.findByPk(id, {
+    include: [
       {
-        model: User,
+        model: user,
         as: 'user',
       },
     ],
-    })
-    .then(scheduleEmail)
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  })
+  .then(scheduleEmail)
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 };
 
 module.exports = {
