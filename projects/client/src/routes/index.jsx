@@ -19,6 +19,7 @@ import { DetailPropertyPage } from "../pages/detail-property-page";
 import { DetailRoomPage } from "../pages/detail-room-page";
 import { TransactionPage } from "../pages/transaction-page";
 import SalesReportPage from "../pages/sales-report-page";
+import { CalendarProperties } from "../pages/calendar-properties";
 
 // export const AdminLayout = () => {
 //   const outlet = useOutlet()
@@ -55,6 +56,7 @@ const Routes = (
       <Route path="/dashboard/sales-report" element={<SalesReportPage />} />
       <Route path="/dashboard/rooms/:propertyId" element={<RoomListTenant />} />
       <Route path="/dashboard/add-property" element={<AddPropertyPage />} />
+      <Route path="/dashboard/calendar" element={<CalendarProperties />} />
     
     {/* </Route> */}
   </>
