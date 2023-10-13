@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { AiFillEdit, AiOutlineSearch } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
 import { RiImageEditFill } from "react-icons/ri";
 import { SortingRoomList } from '../../../navbar/sorting-room-list';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoIosArrowBack } from 'react-icons/io'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import { GiPriceTag } from 'react-icons/gi'
 import { TbCalendarX } from "react-icons/tb";
@@ -11,7 +11,7 @@ import axios from 'axios'
 
 
 
-export const RoomListTenant = ({ setOpenAvailable, openAvailable, setOpenUpdateImage, setOpenSpecialPrice, reload, setOpenModal, setId, setEditModal, setRoomName, setRoomDesc, setPrice, setOpenModalAdd }) => {
+export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateImage, setOpenSpecialPrice, reload, setOpenModal, setId, setEditModal, setRoomName, setRoomDesc, setPrice, setOpenModalAdd }) => {
     const [room, setRoom] = useState([])
     const [roomImages, setRoomImages] = useState([]);
     const [page, setPage] = useState(1)
@@ -19,7 +19,6 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable, setOpenUpdateI
     const [sortBy, setSortBy] = useState("roomName")
     const [length, setLength] = useState("")
     const [limit, setLimit] = useState("")
-    const [search, setSearch] = useState("")
     const { propertyId } = useParams()
     const maxPage = Math.ceil(length / limit)
     const token = localStorage.getItem('token')
@@ -28,7 +27,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable, setOpenUpdateI
 
     const getRoomByProperty = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${page}&sort=${sort}&sortBy=${sortBy}&search=${search}`);
+            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${page}&sort=${sort}&sortBy=${sortBy}`);
             setRoom(response.data.result);
             setLength(response.data.length)
             setLimit(response.data.limit)
@@ -85,7 +84,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable, setOpenUpdateI
         if (!token) {
             navigate('/login-tenant')
         }
-    }, [reload, page, sort, sortBy, propertyId, search]);
+    }, [reload, page, sort, sortBy, propertyId]);
 
     useEffect(() => {
         const fetchImagesForRooms = async () => {
@@ -100,23 +99,11 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable, setOpenUpdateI
         <div>
             <div className=' text-4xl text-bgPrimary'>My Rooms</div>
             <div className='md:flex block justify-between mt-10 items-end'>
-                <div className='flex gap-5 items-center w-2/4'>
+                <div className='flex gap-10 items-center'>
                     <div>
-                        <div className=' text-gray-800 cursor-pointer hover:scale-95' onClick={() => back()}> <IoIosArrowBack size={'30'} /> </div>
+                        <div className=' text-gray-800 cursor-pointer hover:scale-95' onClick={() => back()}> <AiOutlineArrowLeft size={'30'} /> </div>
                     </div>
                     <div className='bg-bgPrimary p-2 rounded-md text-white hover:bg-bgPrimaryActive hover:scale-95 cursor-pointer w-fit transition-all' onClick={() => setOpenModalAdd(true)}>Do you want to add room?</div>
-                    <div className='w-1/2 flex gap-2 items-center'>
-                        <input
-                            type="search"
-                            onChange={(e) => {
-                                setSearch(e.target.value)
-                            }}
-                            className=" w-20 focus:w-full transition-all duration-500 border-gray-300 active:border-none focus:border-none py-2 px-5 rounded-md border "
-                        />
-                        <div className='text-gray-600'>
-                            <AiOutlineSearch size={"30"} />
-                        </div>
-                    </div>
                 </div>
                 <div className='flex md:mt-0 mt-5 gap-10'>
                     <SortingRoomList sortBy={sortBy} sort={sort} setSort={setSort} setSortBy={setSortBy} />

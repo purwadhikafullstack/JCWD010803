@@ -44,24 +44,24 @@ const AccordionSection = ({
   let customStyle = "";
   let customText = "";
   if (section.statusId == 1) {
-    customStyle = "rounded-md text-white bg-[#ea580c] px-2"
-    customText = "text-[#ea580c] font-semibold"
+    customStyle = "rounded-md text-white bg-[#ea580c] px-2";
+    customText = "text-[#ea580c] font-semibold";
   }
   if (section.statusId == 2) {
-    customStyle = "rounded-md text-white bg-[#facc15] px-2"
-    customText = "text-[#facc15] font-semibold"
+    customStyle = "rounded-md text-white bg-[#facc15] px-2";
+    customText = "text-[#facc15] font-semibold";
   }
   if (section.statusId == 3) {
-    customStyle = "rounded-md text-white bg-[#84cc16] px-2"
-    customText = "text-[#84cc16] font-semibold"
+    customStyle = "rounded-md text-white bg-[#84cc16] px-2";
+    customText = "text-[#84cc16] font-semibold";
   }
   if (section.statusId == 4 || section.statusId == 5 || section.statusId == 6) {
-    customStyle = "rounded-md text-white bg-[#dc2626] px-2"
-    customText = "text-[#dc2626] font-semibold"
+    customStyle = "rounded-md text-white bg-[#dc2626] px-2";
+    customText = "text-[#dc2626] font-semibold";
   }
   if (section.statusId == 7) {
-    customStyle = "rounded-md text-white bg-[#2563eb] px-2"
-    customText = "text-[#2563eb] font-semibold"
+    customStyle = "rounded-md text-white bg-[#2563eb] px-2";
+    customText = "text-[#2563eb] font-semibold";
   }
   return (
     <div className="xs:p-2 md:p-3 border rounded-md ">

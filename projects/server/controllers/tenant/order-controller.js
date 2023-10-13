@@ -286,7 +286,6 @@ const room = db.rooms;
       });
       const length = checkLength.length;
       
-
       res.status(200).send({
         message : "Sukses",
         result,

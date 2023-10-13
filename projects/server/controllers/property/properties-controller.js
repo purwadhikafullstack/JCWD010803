@@ -25,7 +25,7 @@ const propertiesController = {
         new Date(checkOut).getTime() + 7 * 60 * 60 * 1000
       );
       const findProperty = await properties.findAll({
-        where: { categoryId: categoryId, isDelete : false },
+        where: { categoryId: categoryId, isDelete: false },
         include: [
           {
             model: rooms,
@@ -71,7 +71,7 @@ const propertiesController = {
             model: rooms,
             where: {
               QTY: { [Op.ne]: 0 },
-              isDelete : false
+              isDelete: false,
             },
             include: [
               {
@@ -281,6 +281,68 @@ const propertiesController = {
       res.status(400).send(error);
     }
   },
+  editCategory: async (req, res) => {
+    try {
+      const { categoryId, newCategory } = req.body;
+      const { id } = req.user;
+      const checkCategory = await category.findOne({
+        where: { id: categoryId },
+      });
+      if (checkCategory.userId !== id) {
+        throw {
+          message: "You Can't Edit This Location",
+        };
+      }
+      const result = await category.update(
+        { category: newCategory },
+        { where: { id: categoryId } }
+      );
+      res.status(200).send({
+        message: "Updated Category Successfully",
+      });
+    } catch (error) {
+      res.status(400).send({
+        message:
+          error.message || "An error occurred while updating the category",
+      });
+    }
+  },
+  addCategory: async (req, res) => {
+    try {
+      const { category } = req.body;
+      const { id } = req.user;
+      const result = await category.create({ category, userId: id });
+      res.status(200).send({
+        message: " Add Category Success",
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  deleteCategory: async (req, res) => {
+    try {
+      const { categoryId } = req.body;
+      const result = await category.destroy({
+        where: { id: categoryId },
+      });
+      res.status(200).send({
+        message: " Delete Category Success",
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  myCategories: async (req, res) => {
+    try {
+      const { id } = req.user;
+      const checkCategory = await category.findAll({
+        where: {userId: id},
+      })
+      res.status(200).send(checkCategory)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 module.exports = propertiesController;
