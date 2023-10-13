@@ -11,7 +11,7 @@ import axios from 'axios'
 
 
 
-export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateImage, setOpenSpecialPrice, reload, setOpenModal, setId, setEditModal, setRoomName, setRoomDesc, setPrice, setOpenModalAdd }) => {
+export const RoomListTenant = ({ setOpenAvailable, openAvailable, setOpenUpdateImage, setOpenSpecialPrice, reload, setOpenModal, setId, setEditModal, setRoomName, setRoomDesc, setPrice, setOpenModalAdd }) => {
     const [room, setRoom] = useState([])
     const [roomImages, setRoomImages] = useState([]);
     const [page, setPage] = useState(1)
