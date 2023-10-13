@@ -280,6 +280,52 @@ const propertiesController = {
       res.status(400).send(error);
     }
   },
+  editCategory: async (req,res) => {
+    try {
+      const {categoryId, newCategory } = req.body
+      const {id} = req.user
+      const checkCategory = await category.findOne({
+        where : {id : categoryId}
+      })
+      if (checkCategory.userId !== id) throw{
+        message: "you can't edit this location"
+      }
+      const result = await category.update(
+        {category : newCategory},
+        {where: { id: categoryId }}
+      )
+      res.status(200).send({
+        message: "updated category success"
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  addCategory: async (req,res) => {
+    try {
+      const {category } = req.body
+      const {id} = req.user
+      const result = await category.create({category, userId : id})
+      res.status(200).send({
+        message: " add category success"
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  },
+  deleteCategory : async (req, res) => {
+    try {
+      const {categoryId} = req.body
+      const result = await category.destroy({
+        where : {id : categoryId}
+      })
+      res.status(200).send({
+        message: " delete category success"
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  }
 };
 
 module.exports = propertiesController;
