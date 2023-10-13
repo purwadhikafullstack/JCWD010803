@@ -205,6 +205,7 @@ const AccordionSection = ({
 };
 
 const Accordion = ({ sections, setReload, reload }) => {
+  console.log(sections);
   const [activeIndex, setActiveIndex] = useState();
   return (
     <>
