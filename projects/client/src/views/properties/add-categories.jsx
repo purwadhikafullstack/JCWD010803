@@ -190,7 +190,7 @@ export const AddCategory = ({ openCategories, setOpenCategories }) => {
                   type="submit"
                   className=" bg-bgPrimary text-white rounded-md hover:bg-bgPrimaryActive transition-all mt-5 p-2"
                 >
-                  Add
+                  Save
                 </button>
               </div>
             </Form>
