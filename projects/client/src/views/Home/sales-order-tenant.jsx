@@ -6,6 +6,9 @@ import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
 } from "react-icons/bs";
+import { Field, Form, Formik } from "formik";
+import swal from "sweetalert2";
+import PlateSales from "../../components/tenant/dashboard-tenant/content/plate-sales-report";
 
 const SalesReport = () => {
   const token = localStorage.getItem("token");
@@ -15,20 +18,72 @@ const SalesReport = () => {
   const [sortby, setSortby] = useState("createdAt");
   const [limit, setLimit] = useState("");
   const [length, setLength] = useState("");
+  
   const maxPage = Math.ceil(length / limit);
 
-  const getDataSales = async () => {
+  const handleSortChange = (e) => {
+    setSortby(e.target.value);
+  };
+  function checkDate(start, end) {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    return startDate < endDate;
+  }
+
+  const getDataSales = async (data) => {
     try {
-      const response = await axios.post(
-        `http://localhost:8000/api/order/sales?sort=${sort}&page=${page}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
+      if (!data) {
+        const response = await axios.post(
+          `http://localhost:8000/api/order/sales?sort=${sort}&page=${page}&sortBy=${sortby}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setsalesList(response.data.result);
+        setLength(response.data.length);
+        setLimit(response.data.limit);
+      }
+
+      if (data) {
+        if (!data.startDate && data.endDate) {
+          swal.fire({
+            icon: "warning",
+            iconColor: "red",
+            title: "Warning",
+            text: "Start Date must not be empty",
+          });
         }
-      );
-      setsalesList(response.data.result);
-      setLength(response.data.length);
-      setLimit(response.data.limit);
+        if (data.startDate && !data.endDate) {
+          swal.fire({
+            icon: "warning",
+            iconColor: "red",
+            title: "Warning",
+            text: "End Date must not be empty",
+          });
+        }
+
+        if (data.startDate && data.endDate) {
+          if (!checkDate(data.startDate, data.endDate)) {
+            swal.fire({
+              icon: "warning",
+              iconColor: "red",
+              title: "Warning",
+              text: "End date must greater than start date",
+            });
+          }
+        }
+        const response = await axios.post(
+          `http://localhost:8000/api/order/sales?sort=${sort}&page=${page}&sortBy=${sortby}`,
+          data,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setsalesList(response.data.result);
+        setLength(response.data.length);
+        setLimit(response.data.limit);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +103,7 @@ const SalesReport = () => {
 
   useEffect(() => {
     getDataSales();
-  }, [page, sort]);
+  }, [page, sort, sortby]);
   return (
     <div className="md:flex xs:w-full">
       <Sidebar />
@@ -61,54 +116,133 @@ const SalesReport = () => {
           <div className="">
             <h1 className="text-2xl">Sales Report</h1>
           </div>
-          <div className=" flex space-x-2 justify-end">
-            <input className="p-2" type="date"></input>
-            <input className="p-2" type="date"></input>
-          </div>
+          {/* <PlateSales /> */}
+
+          <Formik
+            initialValues={{
+              startDate: "",
+              endDate: "",
+            }}
+            onSubmit={(values) => {
+              getDataSales(values);
+            }}
+          >
+            <Form className=" flex space-x-2 justify-end">
+              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 ">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="startDate"
+                >
+                  Start date
+                </label>
+                <Field
+                  name="startDate"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
+                  id="startDate"
+                  type="date"
+                  placeholder="90210"
+                ></Field>
+              </div>
+              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 ">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="endDate"
+                >
+                  End Date
+                </label>
+                <Field
+                  name="endDate"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="endDate"
+                  type="date"
+                  placeholder="90210"
+                ></Field>
+              </div>
+              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 flex flex-wrap justify-center">
+                <div className=" xs:w-1/4 md:w-full flex flex-col justify-end p-0.5 ">
+                  <button
+                    type="submit"
+                    className="p-2.5 text-center w-full bg-bgPrimary text-white hover:font-semibold rounded-sm "
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </Form>
+          </Formik>
+
           <hr></hr>
         </div>
         {/* ini untuk content accordion sales */}
 
         <div className="p-3" id="content-accordion-sales">
-          <div className="flex gap-x-3 mb-4">
-            <div className="flex items-center gap-x-1">
-              <input
-                id="DESC"
-                name="name"
-                onChange={(e) => {
-                  setSort("DESC");
-                }}
-                checked={sort == "DESC" ? true : false}
-                type="radio"
-                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-              />
-              <label
-                htmlFor="DESC"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Latest
-              </label>
-            </div>
+          <div className="flex justify-between mb-4">
+            <div className="flex gap-x-3">
+              <div className="flex items-center gap-x-1">
+                <input
+                  id="DESC"
+                  name="name"
+                  onChange={(e) => {
+                    setSort("DESC");
+                  }}
+                  checked={sort == "DESC" ? true : false}
+                  type="radio"
+                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                />
+                <label
+                  htmlFor="DESC"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Latest
+                </label>
+              </div>
 
-            <div className="flex items-center gap-x-1">
-              <input
-                id="ASC"
-                name="name"
-                onChange={(e) => {
-                  setSort("ASC");
-                }}
-                checked={sort == "ASC" ? true : false}
-                type="radio"
-                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-              />
+              <div className="flex items-center gap-x-1">
+                <input
+                  id="ASC"
+                  name="name"
+                  onChange={(e) => {
+                    setSort("ASC");
+                  }}
+                  checked={sort == "ASC" ? true : false}
+                  type="radio"
+                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                />
+                <label
+                  htmlFor="ASC"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Oldest
+                </label>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-x-3 items-center">
               <label
-                htmlFor="ASC"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="sortBy"
+                className="text-sm font-medium leading-6 text-gray-900"
               >
-                Oldest
+                Sort by
               </label>
+              <div className="">
+                <select
+                  id="sortby"
+                  name="sortby"
+                  autoComplete="sortby"
+                  className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  value={sortby}
+                  onChange={handleSortChange}
+                >
+                  <option key="1" value="createdAt">
+                    Date
+                  </option>
+                  <option key="2" value="totalPayment">
+                    Revenue
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
+
           {salesList.length > 0 ? (
             <AccordionSales sections={salesList} />
           ) : null}
