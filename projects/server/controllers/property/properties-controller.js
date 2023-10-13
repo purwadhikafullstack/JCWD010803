@@ -225,12 +225,13 @@ const propertiesController = {
       const sort = req.query.sort || "DESC";
       const sortBy = "createdAt";
       const limit = 10;
+      const search = req.query.search || ""
 
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const { id } = req.user;
       const result = await properties.findAll({
-        where: { userId: id, isDelete: false },
+        where: { userId: id, isDelete: false, propertyName :  { [Op.like] : `%${search}%`}},
         order: [[sortBy, sort]],
         offset: offset,
         limit: limit,
