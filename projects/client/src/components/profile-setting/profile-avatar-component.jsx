@@ -50,6 +50,12 @@ const ProfileAvatar = ({ reload, setReload }) => {
       }
     } catch (error) {
       console.error(error);
+      swal.fire({
+        icon: "warning",
+        iconColor: "red",
+        title: "Upload Failed",
+        text: "Max file size is 1MB ",
+      });
     }
   };
   useEffect(() => {}, [reload]);
@@ -62,10 +68,6 @@ const ProfileAvatar = ({ reload, setReload }) => {
         <div className="p-2 w-full">
           <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
             <div className="text-center justify-center">
-              {/* <PhotoIcon
-                className="mx-auto h-12 w-12 text-gray-300"
-                aria-hidden="true"
-              /> */}
               <div className="w-full flex justify-center">
                 <img
                   id="selected-image"
@@ -88,6 +90,7 @@ const ProfileAvatar = ({ reload, setReload }) => {
                     name="file"
                     type="file"
                     className="sr-only"
+                    accept=".png, .jpg, .gif "
                     onChange={(e) => {
                       setFile(e.target.files[0]);
                       const selectImage =

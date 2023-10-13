@@ -19,8 +19,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const [sidebarExpanded, setSidebarExpanded] = useState()
   const [orderActive, setOrderActive] = useState(false);
   const { pathname } = location;
-  storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
-
 
   const click = (value) => {
     navigate(`/${value}`);
@@ -42,6 +40,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   };
 
   useEffect(() => {
+    // {storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"}
     const clickHandler = ({ target }) => {
       if (!sidebar.current || !trigger.current) return;
       if (

@@ -4,10 +4,12 @@ const { verifyToken } = require('../midlewares/token');
 const { userController } = require('../controllers/user');
 // const { multerUpload } = require('../midlewares/avatar');
 const { multerUpload } = require('../midlewares/multer');
+const { orderController } = require('../controllers/tenant');
 const router = require('express').Router();
 
 
 router.post('/login', userController.login)
+router.get('/allStatus', orderController.getAllStatus)
 router.post('/checkFirebase', userController.checkFirebase);
 router.post('/register', userController.register);
 router.post('/keepLogin',verifyToken , userController.keepLogin)
@@ -19,7 +21,7 @@ router.post('/otp', verifyToken, userController.getOtp);
 router.post('/verify', verifyToken, userController.verifyAccount);
 router.post('/information-update', verifyToken, userController.updateProfile);
 router.post('/avatar', verifyToken, multerUpload('./public/avatars', 'ava').single('file'),userController.updateAvatar);
-router.get('/orders', verifyToken, userController.getOrderList);
+router.post('/orders', verifyToken, userController.getOrderList);
 router.post('/upload-payment',multerUpload('./public/payment', 'pc').single('file'), userController.uploadPayment);
 router.post('/review', userController.postReview);
 
