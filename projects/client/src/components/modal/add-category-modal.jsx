@@ -48,7 +48,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
   const deleteCategory = async () => {
     Swal.fire({
       title: 'Are you sure?',
-      text: "You want to delete this location?",
+      text: "You Want to Delete This Location?",
       confirmButtonText: 'Yes',
       showCancelButton: true,
       confirmButtonColor: '#2CA4A5',
@@ -73,7 +73,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
       );
       Swal.fire({
         icon: "success",
-        title: "Location successfully added",
+        title: "Location Successfully Added",
         timer: 800
       });
       setTimeout(() => {
