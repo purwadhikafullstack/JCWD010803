@@ -3,13 +3,9 @@ import * as Yup from 'yup'
 import swal from "sweetalert2";
 import axios from "axios"
 import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 
 export const FormChangePassword = () => {
     const token = localStorage.getItem('token')
-    const [show1, setShow1] = useState(false)
-    const [show2, setShow2] = useState(false)
-    const [show3, setShow3] = useState(false)
 
     const validationSchema = Yup.object().shape({
         currentPassword: Yup.string().required('Current password is required'),
@@ -51,16 +47,6 @@ export const FormChangePassword = () => {
         window.location.reload()
     }
 
-    const checkShow1 = () => {
-        setShow1(!show1)
-    }
-    const checkShow2 = () => {
-        setShow2(!show2)
-    }
-    const checkShow3 = () => {
-        setShow3(!show3)
-    }
-
     return (
         <div className="w-full">
             <div className="pb-10">
@@ -71,7 +57,7 @@ export const FormChangePassword = () => {
                         confirmPassword: ""
                     }}
                     validationSchema={validationSchema}
-                    onSubmit={(values, action) => {
+                    onSubmit={(values,action) => {
                         onChangePassword(values)
                         action.resetForm()
                     }}
@@ -113,19 +99,10 @@ export const FormChangePassword = () => {
                             <div className="w-full">
                                 <div className="mb-3">
                                     <div>Current password</div>
-                                    <div className="flex w-full justify-end items-center">
-                                        <Field
-                                            className=" relative border-2 w-full h-11 mt-2 px-5 rounded"
-                                            name="currentPassword"
-                                            type={`${show1 ? "text" : "password"}`}
-                                        />
-                                        <div onClick={checkShow1} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show1 ? "flex" : "hidden"}`}>
-                                            <AiOutlineEye />
-                                        </div>
-                                        <div onClick={checkShow1} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show1 ? "hidden" : "flex"}`}>
-                                            <AiOutlineEyeInvisible />
-                                        </div>
-                                    </div>
+                                    <Field
+                                        className="border-2 w-full h-11 mt-2 px-5 rounded"
+                                        name="currentPassword"
+                                    />
                                     <ErrorMessage
                                         name="currentPassword"
                                         component={'div'}
@@ -134,20 +111,10 @@ export const FormChangePassword = () => {
                                 </div>
                                 <div className="mb-3">
                                     <div>New password</div>
-                                    <div className="flex w-full justify-end items-center">
-                                        <Field
-                                            className="border-2 w-full h-11 mt-2 px-5 rounded"
-                                            name="newPassword"
-                                            type={`${show2 ? "text" : "password"}`}
-                                        />
-                                        <div onClick={checkShow2} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show2 ? "flex" : "hidden"}`}>
-                                            <AiOutlineEye />
-                                        </div>
-                                        <div onClick={checkShow2} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show2 ? "hidden" : "flex"}`}>
-                                            <AiOutlineEyeInvisible />
-                                        </div>
-                                    </div>
-
+                                    <Field
+                                        className="border-2 w-full h-11 mt-2 px-5 rounded"
+                                        name="newPassword"
+                                    />
                                     <ErrorMessage
                                         name="newPassword"
                                         component={'div'}
@@ -156,21 +123,10 @@ export const FormChangePassword = () => {
                                 </div>
                                 <div>
                                     <div>Confirm password</div>
-                                    <div className="flex w-full justify-end items-center">
-                                        <Field
-                                            className="border-2 w-full h-11 mt-2 px-5 rounded"
-                                            name="confirmPassword"
-                                            type={`${show3 ? "text" : "password"}`}
-                                        />
-                                        <div onClick={checkShow3} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show3 ? "flex" : "hidden"}`}>
-                                            <AiOutlineEye />
-                                        </div>
-                                        <div onClick={checkShow3} className={` absolute mt-2 pr-10 text-gray-600 text-2xl cursor-pointer my-auto ${show3 ? "hidden" : "flex"}`}>
-                                            <AiOutlineEyeInvisible />
-                                        </div>
-                                    </div>
-
-
+                                    <Field
+                                        className="border-2 w-full h-11 mt-2 px-5 rounded"
+                                        name="confirmPassword"
+                                    />
                                     <ErrorMessage
                                         name="confirmPassword"
                                         component={'div'}
