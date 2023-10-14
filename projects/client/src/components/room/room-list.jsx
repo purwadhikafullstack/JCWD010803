@@ -76,7 +76,7 @@ export const RoomList = () => {
 
     useEffect(() => {
         getRoomByProperty();
-    }, [sort, page,sortBy]);
+    }, [sort, page, sortBy]);
 
     useEffect(() => {
         const fetchImagesForRooms = async () => {
@@ -186,3 +186,4 @@ export const RoomList = () => {
         </div>
     )
 }
+

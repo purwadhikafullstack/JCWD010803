@@ -8,17 +8,28 @@ import { ProfileSettingSelectTop } from "../../components/profile-setting/profil
 import FormChangeProfile from "../../components/profile-setting/form-change-profile";
 import UserOrderList from "../../components/profile-setting/user-order-component";
 import Navbar from "../../components/navbar/navbar";
+import { useNavigate } from "react-router-dom";
 export const ProfileSetting = () => {
 	const [click, setClick] = useState("changeProfile")
 	const [reload, setReload] = useState(false)
 	const tokenFireBase = localStorage.getItem('firebase-token')
-
+	const token = localStorage.getItem('token');
+	const navigate = useNavigate();
+	const data = useSelector((state) => state.user.value);
+	
+	console.log(data);
 	const handleClick = (value) => {
 		setClick(value)
 	}
 	useEffect(() => {
 		if (tokenFireBase) {
 			setClick("orderList")
+		}
+		if(!token && !tokenFireBase){
+			navigate("/");
+		}
+		if(data.roleId == 1){
+			navigate("/");
 		}
 	},[])
 

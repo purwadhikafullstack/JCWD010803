@@ -88,17 +88,18 @@ module.exports = {
       const { propertyId } = req.params;
       const page = req.query.page || 1;
       const limit = 10;
+      const search = req.query.search || ""
       const offset = (page - 1) * limit;
       const sort = req.query.sort || "DESC";
       const sortBy = req.query.sortBy || "createdAt";
 
       const checkLength = await room.findAll({
-        where: { propertyId: propertyId, isDelete: false },
+        where: { propertyId: propertyId, isDelete: false, roomName: {[Op.like] : `%${search}%`} },
       });
       const length = checkLength.length;
 
       const result = await room.findAll({
-        where: { propertyId: propertyId, isDelete: false },
+        where: { propertyId: propertyId, isDelete: false, roomName: {[Op.like] : `%${search}%`} },
         offset: offset,
         limit: limit,
         order: [[sortBy, sort]],

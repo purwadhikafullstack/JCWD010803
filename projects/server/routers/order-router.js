@@ -10,7 +10,8 @@ router.patch('/cancel',orderController.cancelOrder)
 router.patch('/confirm',orderController.confirmTransaction)
 router.post('/myOrder',verifyToken, orderController.orderMyProperty)
 router.get('/status', orderController.getAllStatus)
-router.get('/sales',verifyToken, orderController.salesReport);
+router.post('/sales',verifyToken, orderController.salesReport);
+router.get('/totalSales,', verifyToken, orderController.getAllSales);
 
 
 // router ini harus paling bawah

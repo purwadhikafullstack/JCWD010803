@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/tenant/dashboard-tenant/side-bar';
+import { AddCategoryModal } from '../../components/modal/add-category-modal';
 import { UpdatePropertyModal } from '../../components/modal/update-property';
 import { ModalDeleteProperty } from '../../components/modal/confirm-delete-property';
 import { MyProperties } from '../../components/tenant/dashboard-tenant/content/properties-list';
@@ -29,6 +30,7 @@ const Dashboard = () => {
     <div className="flex h-screen overflow-hidden">
       <UpdatePropertyModal reload={reload} setReload={setReload} location={location} setOpen={setOpen} open={open} propertyCategory={propCat} propertyDescProp={propDesc} propertyNameProp={propName} propertyImgProp={propertyImg} Id={id} />
       <ModalDeleteProperty reload={reload} setReload={setReload} id={id} open={confirmOpen} setOpen={setConfirmOpen} />
+      <AddCategoryModal/>
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
