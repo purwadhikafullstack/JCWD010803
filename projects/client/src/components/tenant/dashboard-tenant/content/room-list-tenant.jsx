@@ -3,7 +3,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { RiImageEditFill } from "react-icons/ri";
 import { SortingRoomList } from '../../../navbar/sorting-room-list';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { AiOutlineArrowLeft, AiOutlineSearch } from 'react-icons/ai'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import { GiPriceTag } from 'react-icons/gi'
 import { TbCalendarX } from "react-icons/tb";
@@ -19,6 +19,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
     const [sortBy, setSortBy] = useState("roomName")
     const [length, setLength] = useState("")
     const [limit, setLimit] = useState("")
+    const [search, setSearch] = useState("")
     const { propertyId } = useParams()
     const maxPage = Math.ceil(length / limit)
     const token = localStorage.getItem('token')
@@ -27,7 +28,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
 
     const getRoomByProperty = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${page}&sort=${sort}&sortBy=${sortBy}`);
+            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${page}&sort=${sort}&sortBy=${sortBy}&search=${search}`);
             setRoom(response.data.result);
             setLength(response.data.length)
             setLimit(response.data.limit)
@@ -84,7 +85,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
         if (!token) {
             navigate('/login-tenant')
         }
-    }, [reload, page, sort, sortBy, propertyId]);
+    }, [reload, page, sort, sortBy, propertyId,search]);
 
     useEffect(() => {
         const fetchImagesForRooms = async () => {

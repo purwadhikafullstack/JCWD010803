@@ -97,8 +97,8 @@ export const Transaction = () => {
     return (
         <div>
             <div> <Navbar /> </div>
-            <div className="pt-44 px-20 flex">
-                <div className="w-2/3 h-screen">
+            <div className="pt-44 p-5 lg:px-20 block lg:flex">
+                <div className="w-full lg:w-2/3">
                     <div className="flex gap-5 items-center h-fit">
                         <div className="flex items-center">
                             <div onClick={back} className=" cursor-pointer hover:scale-95 transition-all">
@@ -146,7 +146,7 @@ export const Transaction = () => {
                         </ul>
                         <hr className="mt-10" />
                     </div>
-                    <div className="mt-10 text-sm px-14 w-2/3">
+                    <div className="mt-10 text-sm px-14 w-full lg:w-2/3">
                         By selecting the button below, I agree to the <span className=" font-bold">Payment and Cancellation Policy</span>, and that COMFYCRIBZ <span className=" font-bold">may charge my payment method</span> if I'm liable for damages.
                     </div>
                     <div className="px-14 mt-10">
@@ -155,7 +155,7 @@ export const Transaction = () => {
                         }} className="p-2 text-xl bg-bgPrimary text-white rounded-md transition-all hover:bg-bgPrimaryActive cursor-pointer">Confirm and Pay</button>
                     </div>
                 </div>
-                <div className=" pt-10 w-1/3">
+                <div className=" pt-10 w-full lg:w-1/3">
                     <div className=" top-40 sticky w-full shadow-lg rounded-lg p-5">
                         <div className="flex mb-5 w-full gap-5">
                             <img src={`http://localhost:8000/room/${image[0] ? image[0].image : "undefined"}`} className="w-2/4 rounded-l-lg h-full " />
