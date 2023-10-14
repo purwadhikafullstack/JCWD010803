@@ -92,8 +92,8 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
   return (
     <div>
       <div className=" text-3xl w-full flex sm:justify-start justify-center text-teal-700">My Properties</div>
-      <div className=" mt-2 h-12 items-center text-gray-700 flex justify-center sm:justify-between ">
-        <div className='flex w-3/4 gap-5'>
+      <div className=" mt-2 items-center text-gray-700 md:flex block justify-center sm:justify-between ">
+        <div className='flex w-full justify-start md:gap-5 gap-2'>
           <div className='p-2 hidden sm:block bg-bgPrimary rounded-lg text-white font-thin cursor-pointer hover:scale-95' onClick={toAddProperty}>
             Do you want to add property?
           </div>
@@ -106,20 +106,20 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
           >
             Do you want to add category?
           </div>
-          <div className='w-2/6 flex gap-2 items-center'>
+          <div className='md:w-2/6 w-full flex gap-2 items-center'>
             <input
               type="search"
               onChange={(e) => {
                 setSearch(e.target.value)
               }}
-              className=" w-20 focus:w-full transition-all duration-500 border-gray-300 focus:border-none py-2 px-5 rounded-md border "
+              className=" md:w-20 w-full focus:md:w-full transition-all duration-500 border-gray-300 focus:border-none py-2 px-5 rounded-md border "
             />
             <div className='text-gray-600'>
               <AiOutlineSearch size={"30"} />
             </div>
           </div>
         </div>
-        <div className="flex gap-5">
+        <div className='md:mt-0 mt-5 flex gap-5'>
           <div class=" flex items-center space-x-2">
             <input
               type="radio"
