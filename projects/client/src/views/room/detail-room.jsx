@@ -113,9 +113,9 @@ export const DetailRoom = () => {
     return (
         <div>
             <div> <Navbar /> </div>
-            <div className="pt-40 w-full flex justify-center">
-                <div className=" h-full w-4/6">
-                    <div className=" pt-5 flex items-end">
+            <div className="pt-40 w-full flex justify-start lg:px-0 lg:justify-center">
+                <div className=" h-full w-full">
+                    <div className=" pt-5 px-5 lg:px-20 flex items-end">
                         <div className="flex items-end">
                             <div onClick={back} className=" cursor-pointer hover:scale-95 transition-all">
                                 <IoIosArrowBack size={"40"} />
@@ -123,42 +123,42 @@ export const DetailRoom = () => {
                         </div>
                         <div className=" text-5xl text-gray-800"> {data.roomName} </div>
                     </div>
-                    <div className='w-full h-3/4 mt-10'>
+                    <div className='w-full px-20 h-3/4 mt-10'>
                         <div className='w-full gap-2 flex'>
                             <img
-                                className=' w-1/2 bg-cover h-64 rounded-tl-xl'
+                                className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-tl-xl'
                                 src={`http://localhost:8000/room/${roomImages[0] ? roomImages[0][0].image : "undefined"}`}
                             />
                             <img
-                                className='w-1/2 bg-cover h-64 rounded-tr-xl'
+                                className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-tr-xl'
                                 src={`http://localhost:8000/room/${roomImages[0] ? roomImages[0][1].image : "undefined"}`}
                             />
                         </div>
                         <div className=' mt-2 w-full flex gap-2'>
                             <img
-                                className=' w-1/2 bg-cover h-64 rounded-bl-xl'
+                                className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-bl-xl'
                                 src={`http://localhost:8000/room/${roomImages[0] ? roomImages[0][2].image : "undefined"}`}
                             />
                             <img
-                                className='w-1/2 bg-cover h-64 rounded-br-xl'
+                                className='w-1/2 lg:w-2/3 bg-cover h-64 rounded-br-xl'
                                 src={`http://localhost:8000/room/${roomImages[0] ? roomImages[0][3].image : "undefined"}`}
                             />
                         </div>
                     </div>
-                    <div className="w-full gap-10 flex mt-10">
-                        <div className=" w-4/5 h-fit">
+                    <div className="w-full lg:px-20 px-10 gap-10 lg:flex block mt-10">
+                        <div className=" w-full lg:w-4/5 h-fit">
                             <div>
                                 <div className=" text-3xl border-t border-gray-300 pt-10 font-semibold text-gray-800">About this room</div>
                                 <div className=" w-2/3 mt-2 text-gray-600 text-lg"> {data.roomDesc} </div>
                             </div>
                             <div>
-                                <div className=" mt-10 text-3xl border-t border-gray-300 pt-10 font-semibold text-gray-800">Room Facilities</div>
+                                <div className=" w-full mt-10 text-3xl border-t border-gray-300 pt-10 font-semibold text-gray-800">Room Facilities</div>
                                 <div className="flex w-full">
                                     <RoomFacilities />
                                 </div>
                             </div>
                         </div>
-                        <div className=" w-2/5 h-fit py-5 border rounded-xl shadow-md">
+                        <div className=" lg:mt-0 mt-5 w-full lg:w-2/5 h-fit py-5 border rounded-xl shadow-md">
                             <div>
                                 <>
                                     {data.specialPrices ?
@@ -220,7 +220,7 @@ export const DetailRoom = () => {
                                     {`Sorry, this room is not available from ${data.availableRooms ? new Date(data.availableRooms[0].startDate).getDate() : "undefined"} - ${data.availableRooms ? new Date(data.availableRooms[0].endDate).getDate() : "undefined"} ${data.availableRooms ? new Date(data.availableRooms[0].endDate).toLocaleDateString('default', { month: 'long' }).slice(0, 3) : "undefined"}`}
                                 </div>
                                 <div className={`px-5 mt-2 text-sm  text-gray-400 ${message ? "flex" : "hidden"}`}>
-                                    {`Sorry, this room is full`} 
+                                    {`Sorry, this room is full`}
                                 </div>
                                 <div className="w-full flex justify-between px-5 text-lg mt-5  text-gray-600">
                                     <>
