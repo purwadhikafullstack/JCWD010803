@@ -2,6 +2,10 @@
 /node_modules
 /.pnp
 .pnp.js
+.env
+
+# folder
+/public
 
 # testing
 /coverage

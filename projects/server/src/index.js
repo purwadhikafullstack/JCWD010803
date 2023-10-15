@@ -1,25 +1,34 @@
 require("dotenv/config");
+const {userRouter, propertyRouter, roomRouter, orderRouter, transactionRouter,tenantRouter, specialPriceRouter} = require('../routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
+const db = require("../models");
+const schedule = require('node-schedule');
+const autoComplete = require("../scheduler/auto-complete");
+const OtpAutoClear = require("../scheduler/auto-otp-clear");
 
 const PORT = process.env.PORT || 8000;
 const app = express();
+
 app.use(
   cors({
-    origin: [
-      process.env.WHITELISTED_DOMAIN &&
-        process.env.WHITELISTED_DOMAIN.split(","),
-    ],
+    origin: "*",
   })
 );
-
+app.use(express.static("./public"));
 app.use(express.json());
 
-//#region API ROUTES
+app.use("/api/user", userRouter);
+app.use("/api/room", roomRouter);
+app.use("/api/tenant", tenantRouter)
+app.use("/api/properties", propertyRouter)
+app.use("/api/transaction", transactionRouter)
+app.use("/api/order", orderRouter)
+app.use("/api/specialPrice", specialPriceRouter)
 
-// ===========================
-// NOTE : Add your routes here
+  schedule.scheduleJob('1 1 10 * * *', autoComplete);
+  schedule.scheduleJob('1 1 10 * * *', OtpAutoClear);
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
@@ -69,6 +78,7 @@ app.listen(PORT, (err) => {
   if (err) {
     console.log(`ERROR: ${err}`);
   } else {
-    console.log(`APP RUNNING at ${PORT} ✅`);
+    // db.sequelize.sync({ alter: true }); 
+    console.log(`APP RUNNING at ${PORT}✅`);
   }
 });
