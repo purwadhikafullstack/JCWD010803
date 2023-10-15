@@ -1,12 +1,11 @@
 require("dotenv/config");
-const {userRouter, propertyRouter, roomRouter, orderRouter, transactionRouter,tenantRouter, specialPriceRouter} = require('../routers')
+const {userRouter, propertyRouter, roomRouter, orderRouter, transactionRouter,tenantRouter, specialPriceRouter} = require('./routers')
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
-const db = require("../models");
 const schedule = require('node-schedule');
-const autoComplete = require("../scheduler/auto-complete");
-const OtpAutoClear = require("../scheduler/auto-otp-clear");
+const autoComplete = require("./scheduler/auto-complete");
+const OtpAutoClear = require("./scheduler/auto-otp-clear");
 
 const PORT = process.env.PORT || 8000;
 const app = express();

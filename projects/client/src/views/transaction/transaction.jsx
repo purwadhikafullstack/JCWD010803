@@ -242,10 +242,9 @@ export const Transaction = () => {
             </div>
           </div>
         </div>
-        <div className="mt-20">
-
-          <Footer />
-        </div>
+      </div>
+      <div className="mt-20">
+        <Footer />
       </div>
     </div>
   );
