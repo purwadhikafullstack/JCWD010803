@@ -12,8 +12,8 @@ const transactionController = {
       const roomData = await room.findOne({
         where: { id: roomId },
       });
-      const checkInDate = new Date(new Date(checkIn));
-      const checkOutDate = new Date(new Date(checkOut).setHours(17, 0, 0, 0));
+      const checkInDate = new Date(new Date(checkIn).setHours(9, 0, 0, 0));
+      const checkOutDate = new Date(new Date(checkOut).setHours(19, 0, 0, 0));
       const rangeDate = Math.ceil(
         (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
       );

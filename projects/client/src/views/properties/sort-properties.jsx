@@ -25,6 +25,7 @@ export const SortProperties = () => {
   
 
   const maxPage = Math.ceil(length / limit)
+  console.log(length);
   
 
   const sortProperties = async () => {
