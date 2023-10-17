@@ -13,7 +13,7 @@ const UploadPay = ({ closeModal, data, reload, setReload }) => {
         formData.append("id", data.id);
         formData.append("userId", data.userId);
         const response = await axios.post(
-          `http://localhost:8000/api/user/upload-payment`,
+          `${process.env.REACT_APP_API_BASE_URL}/user/upload-payment`,
           formData,
           {
             headers: {

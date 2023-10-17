@@ -1,4 +1,6 @@
-require("dotenv/config");
+const path = require("path")
+require("dotenv").config({path: path.resolve(__dirname, "../.env")})
+// require("dotenv/config")
 const {userRouter, propertyRouter, roomRouter, orderRouter, transactionRouter,tenantRouter, specialPriceRouter} = require('./routers')
 const express = require("express");
 const cors = require("cors");
@@ -6,6 +8,7 @@ const { join } = require("path");
 const schedule = require('node-schedule');
 const autoComplete = require("./scheduler/auto-complete");
 const OtpAutoClear = require("./scheduler/auto-otp-clear");
+const db = require('./models')
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -77,7 +80,7 @@ app.listen(PORT, (err) => {
   if (err) {
     console.log(`ERROR: ${err}`);
   } else {
-    // db.sequelize.sync({ alter: true }); 
+    db.sequelize.sync({ alter: true }); 
     console.log(`APP RUNNING at ${PORT}✅`);
   }
 });

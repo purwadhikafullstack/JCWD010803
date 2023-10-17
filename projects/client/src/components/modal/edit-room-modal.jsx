@@ -12,7 +12,7 @@ export const EditRoomModal = ({ setReload, reload, editModal, setEditModal, pric
 
     const editRoom = async (data) => {
         try {
-            const response = await axios.patch(`http://localhost:8000/api/room/${id}`, data)
+            const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/room/${id}`, data)
             setReload(!reload)
         } catch (error) {
             console.log(error);

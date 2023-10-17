@@ -30,7 +30,7 @@ const VerifyAccount = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/user/otp",
+        `${process.env.REACT_APP_API_BASE_URL}/user/otp`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -57,7 +57,7 @@ const VerifyAccount = () => {
   const onVerify = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/user/verify",
+        `${process.env.REACT_APP_API_BASE_URL}/user/verify`,
         data,
         {
           headers: { Authorization: `Bearer ${token}` },

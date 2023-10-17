@@ -33,7 +33,7 @@ export const CreateRoomModal = ({openModal, setOpenModal, setReload, reload}) =>
             formData.append("roomImg", file2)
             formData.append("roomImg", file3)
             formData.append("roomImg", file4)
-            const response = await axios.post(`http://localhost:8000/api/room/${params.propertyId}`, formData)
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/room/${params.propertyId}`, formData)
             Swal.fire({
                 icon:"success",
                 title:"Add new room success",

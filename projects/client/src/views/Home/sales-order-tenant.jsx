@@ -34,7 +34,7 @@ const SalesReport = () => {
     try {
       if (!data) {
         const response = await axios.post(
-          `http://localhost:8000/api/order/sales?sort=${sort}&page=${page}&sortBy=${sortby}`,
+          `${process.env.REACT_APP_API_BASE_URL}/order/sales?sort=${sort}&page=${page}&sortBy=${sortby}`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -74,7 +74,7 @@ const SalesReport = () => {
           }
         }
         const response = await axios.post(
-          `http://localhost:8000/api/order/sales?sort=${sort}&page=${page}&sortBy=${sortby}`,
+          `${process.env.REACT_APP_API_BASE_URL}/order/sales?sort=${sort}&page=${page}&sortBy=${sortby}`,
           data,
           {
             headers: { Authorization: `Bearer ${token}` },

@@ -27,7 +27,7 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
 
   const myProperties = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/properties/myProperties?sort=${sort}&page=${page}&search=${search}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties/myProperties?sort=${sort}&page=${page}&search=${search}`, {
         headers: { Authorization: `Bearer: ${token}` }
       })
       setProperties(response.data.result)

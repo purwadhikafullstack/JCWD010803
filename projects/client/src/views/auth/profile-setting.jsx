@@ -17,7 +17,6 @@ export const ProfileSetting = () => {
 	const navigate = useNavigate();
 	const data = useSelector((state) => state.user.value);
 	
-	console.log(data);
 	const handleClick = (value) => {
 		setClick(value)
 	}
