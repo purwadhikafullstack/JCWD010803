@@ -29,7 +29,7 @@ export const FormAddPropertyCat = ({ setPage, onClick, setDetailLocation, proper
 
   const getCategories = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/properties/allCategories`)
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties/allCategories`)
       setCategory(response.data)
     } catch (error) {
       console.log(error);

@@ -15,7 +15,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
   const myCategories = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/properties/category`,
+        `${process.env.REACT_APP_API_BASE_URL}/properties/category`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -29,7 +29,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
   const editCategory = async (values) => {
     try {
       const response = await axios.patch(
-        "http://localhost:8000/api/properties/category",
+        `${process.env.REACT_APP_API_BASE_URL}/properties/category`,
         { categoryId: value, newCategory: values.newCategory },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -43,7 +43,6 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
       console.log(error);
     }
   };
-  console.log(value);
 
   const deleteCategory = async () => {
     Swal.fire({
@@ -55,7 +54,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
       cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.delete(`http://localhost:8000/api/properties/category/${value}`)
+        const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/properties/category/${value}`)
         setOpenCategories(false)
         setValue("")
       }
@@ -65,7 +64,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
   const addCategory = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/properties/category",
+        `${process.env.REACT_APP_API_BASE_URL}/properties/category`,
         values,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -135,7 +134,6 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
               }}
               onSubmit={(values, action) => {
                 editCategory(values);
-                console.log(values);
                 action.resetForm();
               }}
             >

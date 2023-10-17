@@ -15,7 +15,7 @@ export const ProfileSettingSelect = ({ reload, choose, values }) => {
   const getUser = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/user/keepLogin`,
+        `${process.env.REACT_APP_API_BASE_URL}/user/keepLogin`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

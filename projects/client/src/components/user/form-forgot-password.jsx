@@ -14,7 +14,7 @@ export const FormForgotPassword = ({ value, token, id }) => {
 
   const checkEmail = async (data) => {
     try {
-      const response = await Axios.post(`http://localhost:8000/api/user/sendMail`, data)
+      const response = await Axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/sendMail`, data)
       Swal.fire({
         icon: "success",
         title: 'send OTP success',
@@ -27,6 +27,7 @@ export const FormForgotPassword = ({ value, token, id }) => {
         value(true)
       }, 2000)
     } catch (error) {
+      console.log(error);
       Swal.fire({
         icon: "warning",
         iconColor: 'red',

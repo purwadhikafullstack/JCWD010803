@@ -9,7 +9,7 @@ export const ModalDeleteProperty = ({ open, reload, setOpen, id, setReload }) =>
 
   const deleteProperty = async () => {
     try {
-      const response = await axios.patch(`http://localhost:8000/api/properties/delete/${id}`)
+      const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/properties/delete/${id}`)
       swal.fire({
         icon: 'success',
         title: 'Delete property success',

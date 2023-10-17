@@ -25,7 +25,7 @@ export const RoomList = () => {
 
     const getRoomByProperty = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${id}?page=${page}&sort=${sort}&sortBy=${sortBy}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/room/roomByProperty/${id}?page=${page}&sort=${sort}&sortBy=${sortBy}`);
             setRoom(response.data.result);
             setLength(response.data.length)
             setLimit(response.data.limit)
@@ -36,7 +36,7 @@ export const RoomList = () => {
 
     const fetchRoomImages = async (roomId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/RoomImg/${roomId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/room/RoomImg/${roomId}`);
             const data = response.data;
             return data;
         } catch (error) {

@@ -17,7 +17,7 @@ const ReviewModal = ({ toggleSection, setReload, reload, data }) => {
       if (reviewText) {
         data.review = reviewText;
         const response = await axios.post(
-          `http://localhost:8000/api/user/review`,
+          `${process.env.REACT_APP_API_BASE_URL}/user/review`,
           data
         );
         setReload(!reload)

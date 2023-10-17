@@ -45,7 +45,7 @@ const RegisterTenant = () => {
       formData.append("password", password);
       formData.append("file", ktpFile);
       const response = await axios.post(
-        "http://localhost:8000/api/tenant/registerTenant",
+        `${process.env.REACT_APP_API_BASE_URL}/tenant/registerTenant`,
         formData,
         {
           headers: {

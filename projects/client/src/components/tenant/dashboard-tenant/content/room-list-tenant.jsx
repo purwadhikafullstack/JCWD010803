@@ -28,7 +28,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
 
     const getRoomByProperty = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/roomByProperty/${propertyId}?page=${page}&sort=${sort}&sortBy=${sortBy}&search=${search}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/room/roomByProperty/${propertyId}?page=${page}&sort=${sort}&sortBy=${sortBy}&search=${search}`);
             setRoom(response.data.result);
             setLength(response.data.length)
             setLimit(response.data.limit)
@@ -39,7 +39,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
 
     const fetchRoomImages = async (roomId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/RoomImg/${roomId}?page=${page}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/room/RoomImg/${roomId}?page=${page}`);
             const data = response.data;
             return data;
         } catch (error) {

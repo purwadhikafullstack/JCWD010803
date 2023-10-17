@@ -12,7 +12,7 @@ export const AllProperties = () => {
   const maxPage = Math.ceil(length / limit)
   const allProperties = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/properties?page=${page}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties?page=${page}`);
       setData(response.data.result);
       setLength(response.data.length)
       setLimit(response.data.limit)

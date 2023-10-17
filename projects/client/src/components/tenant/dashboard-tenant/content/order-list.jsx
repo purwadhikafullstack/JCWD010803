@@ -20,7 +20,7 @@ export const OrderListComponent = ({ setOpen, reload, setDetail, setOrderId }) =
   const maxPage = Math.ceil(length / limit)
   const getOrder = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/api/order/myOrder?page=${page}&statusId=${status}&sort=${sort}`, {}, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order/myOrder?page=${page}&statusId=${status}&sort=${sort}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
       setLimit(response.data.limit)
@@ -32,7 +32,7 @@ export const OrderListComponent = ({ setOpen, reload, setDetail, setOrderId }) =
   }
   const detailOrder = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/order/${id}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/order/${id}`)
       setDetail(response.data)
     } catch (error) {
       console.log(error);

@@ -21,7 +21,7 @@ export const FormChangePassword = () => {
 
     const onChangePassword = async (data) => {
         try {
-            const response = await axios.patch('http://localhost:8000/api/user/changePassword', data, {
+            const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/user/changePassword`, data, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             swal.fire({

@@ -22,15 +22,12 @@ export const SortProperties = () => {
   const checkOut = queryParams.get('checkOut')
   const sorting = queryParams.get('sort')
   const sortingBy = queryParams.get('sortBy')
-  
-
   const maxPage = Math.ceil(length / limit)
-  console.log(length);
   
 
   const sortProperties = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/properties/sortProperties?page=${page}&categoryId=${categoryId}&checkIn=${checkIn}&checkOut=${checkOut}&sort=${sort}&sortBy=${sortBy}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties/sortProperties?page=${page}&categoryId=${categoryId}&checkIn=${checkIn}&checkOut=${checkOut}&sort=${sort}&sortBy=${sortBy}`)
       setProperties(response.data.properties)
       setLength(response.data.length)
       setLimit(response.data.limit)
