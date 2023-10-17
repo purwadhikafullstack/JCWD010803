@@ -11,7 +11,7 @@ export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenMo
 
     const getImageRoom = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/RoomImg/${roomId}`)
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/room/RoomImg/${roomId}`)
             setData(response.data)
         } catch (error) {
             console.log(error);
@@ -20,7 +20,7 @@ export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenMo
 
     const editImage = async (id, imageInput) => {
         try {
-            const response = await axios.patch(`http://localhost:8000/api/room/editImage/${id}`, { "roomImg": imageInput }, {
+            const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/room/editImage/${id}`, { "roomImg": imageInput }, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },

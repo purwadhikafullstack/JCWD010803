@@ -1,4 +1,4 @@
-const db = require("../..//models");
+const db = require("../../models");
 const user = db.user;
 const dbOtp = db.codeOtp;
 const userTransaction = db.userTransactions;
@@ -8,13 +8,13 @@ const property = db.properties;
 const statusPay = db.status;
 const category = db.categories;
 const review = db.review;
+const path = require('path');
 const jwt = require("jsonwebtoken");
 const enc = require("bcrypt");
 const { Op, where } = require("sequelize");
 const handlebars = require("handlebars");
 const fs = require("fs");
 const transporter = require("../../midlewares/transporter");
-const { log, error } = require("console");
 
 const otpGenerate = () => {
   const max = 9999;
@@ -226,13 +226,14 @@ const userController = {
         expiredDate: expiredDate,
         otp: otpNumber,
       });
-      const data = await fs.readFileSync("./templates/otp.html", "utf-8");
+      const filePath = path.join(__dirname, "../../templates/otp.html");
+      const data = fs.readFileSync(filePath, "utf-8");
       const tempCompile = await handlebars.compile(data);
       const tempResult = tempCompile({
         otp: otpNumber,
       });
       await transporter.sendMail({
-        from: "hamidiakmal@gmail.com",
+        from: process.env.EMAIL_TRANSPORT,
         to: email,
         subject: "Verify your account with OTP code",
         html: tempResult,
@@ -359,7 +360,8 @@ const userController = {
         { where: { id: id } }
       );
 
-      const data = await fs.readFileSync("./templates/otp.html", "utf-8");
+      const filePath = path.join(__dirname, "../../templates/otp.html");
+      const data = fs.readFileSync(filePath, "utf-8");
       const tempCompile = await handlebars.compile(data);
       const tempResult = tempCompile({
         otp: otpNumber,
@@ -376,6 +378,7 @@ const userController = {
         message: "We have send OTP to your email",
       });
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -526,7 +529,6 @@ const userController = {
         length,
         limit,
       });
-
     } catch (error) {
       res.status(400).send(error);
     }

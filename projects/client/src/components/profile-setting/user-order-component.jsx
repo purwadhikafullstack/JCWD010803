@@ -35,7 +35,7 @@ const UserOrderList = () => {
     try {
       if (!data) {
         const response = await axios.post(
-          `http://localhost:8000/api/user/orders?sort=${sort}&page=${page}&by=${sortby}`,
+          `${process.env.REACT_APP_API_BASE_URL}/user/orders?sort=${sort}&page=${page}&by=${sortby}`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -76,7 +76,7 @@ const UserOrderList = () => {
         }
 
         const response = await axios.post(
-          `http://localhost:8000/api/user/orders?sort=${sort}&page=${page}&sortBy=${sortby}`,
+          `${process.env.REACT_APP_API_BASE_URL}/user/orders?sort=${sort}&page=${page}&sortBy=${sortby}`,
           data,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -93,7 +93,7 @@ const UserOrderList = () => {
   const getAllStatus = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/user/allStatus`,
+        `${process.env.REACT_APP_API_BASE_URL}/user/allStatus`,
         {}
       );
       setAllStatus(response.data);

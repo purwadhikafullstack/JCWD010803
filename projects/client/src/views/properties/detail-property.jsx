@@ -14,7 +14,7 @@ export const DetailProperty = () => {
     const navigate = useNavigate()
     const property = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/properties/${id}`)
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties/${id}`)
             setData(response.data)
         } catch (error) {
             console.log(error);

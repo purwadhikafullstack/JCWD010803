@@ -31,12 +31,11 @@ export const Transaction = () => {
   const [methodeValue, setMethodeValue] = useState(1);
   const [room, setRoom] = useState();
   const [image, setImage] = useState([]);
-  console.log(new Date(checkOutDate));
 
   const getMethode = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/order/paymentMethode"
+        `${process.env.REACT_APP_API_BASE_URL}/order/paymentMethode`
       );
       setMethode(response.data);
     } catch (error) {
@@ -47,7 +46,7 @@ export const Transaction = () => {
   const getRoomImg = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/room/roomImg/${roomId}`
+        `${process.env.REACT_APP_API_BASE_URL}/room/roomImg/${roomId}`
       );
       setImage(response.data);
     } catch (error) {
@@ -58,7 +57,7 @@ export const Transaction = () => {
   const booking = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/transaction/bookingRoom`,
+        `${process.env.REACT_APP_API_BASE_URL}/transaction/bookingRoom`,
         {
           roomId: roomId,
           checkIn: checkInDate,
@@ -100,7 +99,7 @@ export const Transaction = () => {
 
   const getRoom = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/api/room/roomById/${roomId}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/room/roomById/${roomId}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
       setRoom(response.data.result)
 
     } catch (error) {

@@ -24,7 +24,7 @@ const ProfileAvatar = ({ reload, setReload }) => {
         formData.append("file", file);
         formData.append("fileName", file.name);
         const response = await axios.post(
-          `http://localhost:8000/api/user/avatar`,
+          `${process.env.REACT_APP_API_BASE_URL}/user/avatar`,
           formData,
           {
             headers: {

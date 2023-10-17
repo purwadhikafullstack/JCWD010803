@@ -33,7 +33,7 @@ export const DetailRoom = () => {
 
     const room = async (id) => {
         try {
-            const response = await axios.post(`http://localhost:8000/api/room/roomById/${id}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/room/roomById/${id}`, { "checkIn": checkInDate, "checkOut": checkOutDate })
             setData(response.data.result)
             setMessage(response.data.message)
             getTotalPayment()
@@ -44,7 +44,7 @@ export const DetailRoom = () => {
     }
     const fetchRoomImages = async (roomId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/room/RoomImg/${roomId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/room/RoomImg/${roomId}`);
             const data = response.data;
             return data;
         } catch (error) {

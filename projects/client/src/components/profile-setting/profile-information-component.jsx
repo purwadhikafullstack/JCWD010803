@@ -21,7 +21,7 @@ const ProfileInformation = ({ reload, setReload }) => {
   const onUpdate = async (data) => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/user/information-update`,
+        `${process.env.REACT_APP_API_BASE_URL}/user/information-update`,
         data,
         {
           headers: { Authorization: `Bearer ${token}` },

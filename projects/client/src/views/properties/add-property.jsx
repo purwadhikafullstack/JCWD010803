@@ -46,7 +46,7 @@ export const AddProperty = () => {
         formData.append("detailLocation", detailLocation)
 
         try {
-            const response = await axios.post('http://localhost:8000/api/properties', formData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/properties`, formData, {
                 headers: { Authorization: `Bearer: ${token}` }
             })
             swal.fire({

@@ -20,7 +20,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
       cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.patch('http://localhost:8000/api/order/confirm', { transactionId: data.userTransaction.id })
+        const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/order/confirm`, { transactionId: data.userTransaction.id })
         setReload(!reload)
         setOpen(false)
       }
@@ -37,7 +37,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
       cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.patch('http://localhost:8000/api/order/reject', { transactionId: data.userTransaction.id, roomId: data.room.id })
+        const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/order/reject`, { transactionId: data.userTransaction.id, roomId: data.room.id })
         setReload(!reload)
         setOpen(false)
       }
@@ -53,7 +53,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
       cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.patch('http://localhost:8000/api/order/cancel', { transactionId: data.userTransaction.id, roomId: data.room.id })
+        const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/order/cancel`, { transactionId: data.userTransaction.id, roomId: data.room.id })
         setReload(!reload)
         setOpen(false)
       }

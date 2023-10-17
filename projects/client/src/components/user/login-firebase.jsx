@@ -22,16 +22,15 @@ export const FireBaseLogin = ({buttonText}) => {
       };
 
       const check = await axios.post(
-        `http://localhost:8000/api/user/checkFirebase`,
+        `${process.env.REACT_APP_API_BASE_URL}/user/checkFirebase`,
         data
       );
 
       if (!check.data.result) {
         const response = await axios.post(
-          `http://localhost:8000/api/user/register`,  
+          `${process.env.REACT_APP_API_BASE_URL}/user/register`,  
           data
         );
-        console.log(response);
         const tokenFireBase = auth.user.accessToken;
         const token = response.data.token;
         dispatch(setData(data));

@@ -10,13 +10,12 @@ const PlateSales = () => {
   const getTotal = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/order/totalSales",
+        `${process.env.REACT_APP_API_BASE_URL}/order/totalSales`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
       // setTotalGuest(response.data.)
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
