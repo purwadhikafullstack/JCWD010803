@@ -57,7 +57,7 @@ export const AllProperties = () => {
             className="bg-white border rounded-lg overflow-hidden shadow-md hover:shadow-lg cursor-pointer transition-transform transform hover:scale-105"
           >
             <img
-              src={`http://localhost:8000/property/${item.propertyImg}`}
+              src={`${process.env.REACT_APP_API_IMG_URL}/property/${item.propertyImg}`}
               alt={item.propertyName}
               className="w-full h-48 object-cover"
             />

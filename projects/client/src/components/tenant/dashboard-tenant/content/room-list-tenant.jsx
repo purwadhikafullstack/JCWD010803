@@ -136,7 +136,7 @@ export const RoomListTenant = ({ setOpenAvailable, openAvailable,setOpenUpdateIm
                                         <img
                                             className='w-full h-full'
                                             key={image.id}
-                                            src={`http://localhost:8000/room/${image.image}`}
+                                            src={`${process.env.REACT_APP_API_IMG_URL}/room/${image.image}`}
                                             alt={image.imageName}
                                         />
                                     </div>
