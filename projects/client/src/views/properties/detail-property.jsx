@@ -54,7 +54,7 @@ export const DetailProperty = () => {
                         </div>
                     </div>
                     <div className=" w-full mt-5 h-3/4 ">
-                        <img className=" w-2/3 h-full rounded-xl" src={`http://localhost:8000/property/${data.propertyImg}`} alt="" />
+                        <img className=" w-2/3 h-full rounded-xl" src={`${process.env.REACT_APP_API_IMG_URL}/property/${data.propertyImg}`} alt="" />
                     </div>
                     <div className="mb-10 w-full">
                         <div className=" text-2xl text-gray-800 font-semibold mt-5">

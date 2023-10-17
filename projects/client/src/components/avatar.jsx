@@ -12,7 +12,7 @@ const Avatar = () => {
       // height="30"
       // width="30"
       alt="Avatar"
-      src={`${data.profileImg? `http://localhost:8000/avatars/${data.profileImg}` : placeholderImage}`}
+      src={`${data.profileImg? `${process.env.REACT_APP_API_IMG_URL}/avatars/${data.profileImg}` : placeholderImage}`}
     />
   );
 };

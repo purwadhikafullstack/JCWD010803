@@ -5,6 +5,6 @@ const { verifyToken } = require('../midlewares/token')
 
 const router = express.Router()
 
-router.post('/bookingRoom',verifyToken,multerUpload('./public/payment-user', 'payment-user').single('file'), transactionController.addBooking )
+router.post('/bookingRoom',verifyToken, transactionController.addBooking )
 
 module.exports = router

@@ -55,7 +55,7 @@ export const ProfileSettingSelect = ({ reload, choose, values }) => {
             {image || dataFireBase.profileImg ? (
               <img
                 className="h-14 w-14 border rounded-full object-fill"
-                src={`http://localhost:8000/avatars/${
+                src={`${process.env.REACT_APP_API_IMG_URL}/avatars/${
                   image || dataFireBase.imgUrl
                 }`}
                 alt="Avatar"

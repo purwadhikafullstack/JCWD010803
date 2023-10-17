@@ -148,7 +148,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
                     <div className="h-full">
 
                       {data.userTransaction.paymentImg !== null ?
-                        <img className="w-full h-full rounded" src={`http://localhost:8000/payment/${data.userTransaction.paymentImg}`} alt="" />
+                        <img className="w-full h-full rounded" src={`${process.env.REACT_APP_API_IMG_URL}/payment/${data.userTransaction.paymentImg}`} alt="" />
                         :
                         <div className=" w-full h-full flex text-center justify-center items-center text-gray-500">
                           payment proof has not been attached.
