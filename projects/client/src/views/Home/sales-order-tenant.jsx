@@ -9,7 +9,7 @@ import {
 import { Field, Form, Formik } from "formik";
 import swal from "sweetalert2";
 import PlateSales from "../../components/tenant/dashboard-tenant/content/plate-sales-report";
-import NoDataPage from "../auth/alert/no-data-page";
+import NoDataPage from "../alert/no-data-page";
 
 const SalesReport = () => {
   const token = localStorage.getItem("token");
@@ -30,6 +30,20 @@ const SalesReport = () => {
     const startDate = new Date(start);
     const endDate = new Date(end);
     return startDate < endDate;
+  }
+
+  const getAllSalesData = async () =>{
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/order/totalSales`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const getDataSales = async (data) => {
@@ -105,6 +119,7 @@ const SalesReport = () => {
 
   useEffect(() => {
     getDataSales();
+    getAllSalesData();
   }, [page, sort, sortby]);
   return (
     <div className="md:flex xs:w-full">
@@ -112,11 +127,11 @@ const SalesReport = () => {
       <div className="xs:p-2 md:px-10  w-full" id="content-container space-y-2">
         {/* ini untuk header */}
         <div
-          className="p-3 w-full xs:space-y-2 md:space-y-4 "
+          className="p-3 w-full xs:space-y-2 md:space-y-4"
           id="header-container-sales flex flex-col space-y-2"
         >
           <div className="">
-            <h1 className="xs:text-3xl md:text-4xl font-medium text-bgPrimary">Sales Report</h1>
+            <h1 className="xs:text-3xl md:text-4xl text-bgPrimary">Sales Report</h1>
           </div>
           {/* <PlateSales /> */}
 
@@ -162,7 +177,7 @@ const SalesReport = () => {
                 ></Field>
               </div>
               <div className="xs:mt-3 md:mt-0 md:mb-0 md:flex md:justify-center">
-                <div className=" md:w-full flex flex-col justify-end p-0.5 ">
+                <div className=" xs:w-1/4 md:w-full flex flex-col justify-end p-0.5 ">
                   <button
                     type="submit"
                     className="p-2.5 md:px-7 text-center w-full bg-bgPrimary text-white hover:font-semibold rounded-sm "
@@ -173,7 +188,6 @@ const SalesReport = () => {
               </div>
             </Form>
           </Formik>
-          
         </div>
         {/* ini untuk content accordion sales */}
 

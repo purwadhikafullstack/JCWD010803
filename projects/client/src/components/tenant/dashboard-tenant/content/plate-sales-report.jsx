@@ -3,34 +3,13 @@ import axios from "axios";
 
 
 const PlateSales = () => {
-  const token = localStorage.getItem("token");
-  const [totalRevenue, setTotalRevenue] = useState(0);
-  const [totalGuest, setTotalGuest] = useState(0);
-
-  const getTotal = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/order/totalSales`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      // setTotalGuest(response.data.)
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(()=>{
-    getTotal();
-  },[])
   return (
-    <div className='grid grid-cols-5 gap-4 mt-3 mb-3'>
-      <div className='border p-3 grid grid-rows-2 grid-flow-col gap-1 rounded-md'>
+    <div className='gap-4 mt-3 mb-3 flex'>
+      <div className='border p-3 grid grid-rows-2 grid-flow-col gap-1 rounded-md xs:w-1/3 md:w-1/5'>
         <p>Total Revenue</p>
         <p>Rp. 21.000.000,-</p>
       </div>
-      <div className='border p-3 grid grid-rows-2 grid-flow-col gap-1 rounded-md'>
+      <div className='border p-3 grid grid-rows-2 grid-flow-col gap-1 rounded-md xs:w-1/3 md:w-1/5'>
         <p>Total Guest</p>
         <p>Rp. 21.000.000,-</p>
       </div>
