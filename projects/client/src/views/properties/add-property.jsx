@@ -58,11 +58,12 @@ export const AddProperty = () => {
             navigate('/dashboard')
 
         } catch (error) {
+            console.log(error.response.data);
             swal.fire({
                 icon: 'warning',
                 iconColor: 'red',
                 title: 'Add property failed',
-                text: error.response.data.message,
+                text: error.response.data.message
             });
         }
     }
