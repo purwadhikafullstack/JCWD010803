@@ -309,9 +309,9 @@ const propertiesController = {
   },
   addCategory: async (req, res) => {
     try {
-      const { category } = req.body;
+      const { categoryName } = req.body;
       const { id } = req.user;
-      const result = await category.create({ category, userId: id });
+      const result = await category.create({ category: categoryName, userId: id });
       res.status(200).send({
         message: " Add Category Success",
       });
@@ -321,14 +321,16 @@ const propertiesController = {
   },
   deleteCategory: async (req, res) => {
     try {
-      const { categoryId } = req.body;
+      const { id } = req.params;
+      console.log(id);
       const result = await category.destroy({
-        where: { id: categoryId },
+        where: { id: id },
       });
       res.status(200).send({
-        message: " Delete Category Success",
+        message: "Delete Category Success",
       });
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   },
@@ -342,7 +344,8 @@ const propertiesController = {
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 };
+
 
 module.exports = propertiesController;

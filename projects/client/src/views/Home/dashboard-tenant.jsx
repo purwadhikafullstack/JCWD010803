@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [open, setOpen] = useState(false)
+  const [openCategories, setOpenCategories] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [propCat, setPropCat] = useState("")
   const [propDesc, setPropDesc] = useState("")
@@ -30,7 +31,7 @@ const Dashboard = () => {
     <div className="flex h-screen overflow-hidden">
       <UpdatePropertyModal reload={reload} setReload={setReload} location={location} setOpen={setOpen} open={open} propertyCategory={propCat} propertyDescProp={propDesc} propertyNameProp={propName} propertyImgProp={propertyImg} Id={id} />
       <ModalDeleteProperty reload={reload} setReload={setReload} id={id} open={confirmOpen} setOpen={setConfirmOpen} />
-      <AddCategoryModal/>
+      <AddCategoryModal openCategories={openCategories} setOpenCategories={setOpenCategories}/>
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
@@ -57,7 +58,7 @@ const Dashboard = () => {
         {/* Site header */}
         {/* Content area content */}
         <div className='p-10'>
-          <MyProperties setConfirmOpen={setConfirmOpen} reload={reload} setOpen={setOpen} propertyCategory={setPropCat} propertyDesc={setPropDesc} propertyName={setPropName} propertyImg={setPropertyImg} id={setId} location={setLocation} />
+          <MyProperties setConfirmOpen={setConfirmOpen} reload={reload} setOpen={setOpen} propertyCategory={setPropCat} propertyDesc={setPropDesc} propertyName={setPropName} propertyImg={setPropertyImg} id={setId} location={setLocation} setOpenCategories={setOpenCategories} openCategories={openCategories} />
         </div>
       </div>
     </div>

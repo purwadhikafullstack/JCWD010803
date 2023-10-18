@@ -5,6 +5,8 @@ const { verifyToken } = require('../midlewares/token');
 const path = require('path')
 const router = require('express').Router()
 
+router.patch('/editCategory', verifyToken, propertiesController.editCategory);
+router.post('/addCategory', verifyToken, propertiesController.addCategory);
 router.get('/category', verifyToken, propertiesController.myCategories)
 router.get('/myProperties', verifyToken,propertiesController.myProperties)
 router.get('/sortProperties', propertiesController.sortProperty)
@@ -15,9 +17,7 @@ router.patch('/:id', propertyImg(path.join(__dirname, "../../public/property"), 
 router.patch('/delete/:id', propertiesController.deleteProperty)
 router.get('/', propertiesController.allProperties)
 router.get('/:id', propertiesController.detailProperty)
-router.patch('/editCategory', verifyToken, propertiesController.editCategory);
-router.post('/addCategory', verifyToken, propertiesController.addCategory);
-router.delete('/deleteCategory', verifyToken, propertiesController.deleteCategory)
+router.delete('/deleteCategory/:id', propertiesController.deleteCategory)
 
 
 module.exports = router
