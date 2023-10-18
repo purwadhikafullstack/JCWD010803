@@ -5,34 +5,46 @@ import { BiEditAlt } from "react-icons/bi";
 import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
+  BsFillCalendarCheckFill
 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { BsFillHouseAddFill } from "react-icons/bs";
 import { AiOutlineSearch } from "react-icons/ai";
 
-
-export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, propertyCategory, propertyName, propertyDesc, id, propertyImg }) => {
-  const [properties, setProperties] = useState([])
-  const [sort, setSort] = useState("DESC")
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState("")
-  const [length, setLength] = useState("")
-  const [search, setSearch] = useState("")
-  const navigate = useNavigate()
-  const token = localStorage.getItem('token')
-  const maxPage = Math.ceil(length / limit)
-
-
-
+export const MyProperties = ({
+  setConfirmOpen,
+  reload,
+  setOpen,
+  openCategories,
+  setOpenCategories,
+  location,
+  propertyCategory,
+  propertyName,
+  propertyDesc,
+  id,
+  propertyImg,
+}) => {
+  const [properties, setProperties] = useState([]);
+  const [sort, setSort] = useState("DESC");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState("");
+  const [length, setLength] = useState("");
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const maxPage = Math.ceil(length / limit);
 
   const myProperties = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties/myProperties?sort=${sort}&page=${page}&search=${search}`, {
-        headers: { Authorization: `Bearer: ${token}` }
-      })
-      setProperties(response.data.result)
-      setLength(response.data.length)
-      setLimit(response.data.limit)
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/properties/myProperties?sort=${sort}&page=${page}&search=${search}`,
+        {
+          headers: { Authorization: `Bearer: ${token}` },
+        }
+      );
+      setProperties(response.data.result);
+      setLength(response.data.length);
+      setLimit(response.data.limit);
     } catch (error) {
       console.log(error);
     }
@@ -40,6 +52,10 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
 
   const openModal = () => {
     setOpen(true);
+  };
+
+  const openModalCategories = () => {
+    setOpenCategories(true);
   };
 
   const openDeleteModal = () => {
@@ -80,46 +96,59 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
   const toAddProperty = () => {
     navigate("/dashboard/add-property");
   };
-  
+
   const toDetailProperty = (id) => {
     navigate(`/dashboard/rooms/${id}`);
   };
 
-
   useEffect(() => {
-    myProperties()
-  }, [sort, reload, page, search])
+    myProperties();
+  }, [sort, reload, page, search]);
   return (
     <div>
-      <div className=" text-3xl w-full flex sm:justify-start justify-center text-teal-700">My Properties</div>
+      <div className=" text-3xl w-full flex sm:justify-start justify-center text-teal-700">
+        My Properties
+      </div>
       <div className=" mt-2 items-center text-gray-700 md:flex block justify-center sm:justify-between ">
-        <div className='flex w-full justify-start md:gap-5 gap-2'>
-          <div className='p-2 hidden sm:block bg-bgPrimary rounded-lg text-white font-thin cursor-pointer hover:scale-95' onClick={toAddProperty}>
+        <div className="flex w-full justify-start md:gap-5 gap-2">
+          <div
+            className="p-2 hidden sm:block bg-bgPrimary rounded-lg text-white font-thin cursor-pointer hover:scale-95"
+            onClick={toAddProperty}
+          >
             Do you want to add property?
           </div>
-          
-          <div className='p-1 block sm:hidden mr-3 bg-bgPrimary rounded-lg text-white font-thin cursor-pointer hover:scale-95' onClick={toAddProperty}>
+
+          <div
+            className="p-1 block sm:hidden mr-3 bg-bgPrimary rounded-lg text-white font-thin cursor-pointer hover:scale-95"
+            onClick={toAddProperty}
+          >
             <BsFillHouseAddFill size={"25"} />
           </div>
           <div
             className="p-2 hidden sm:block bg-bgPrimary rounded-lg text-white font-thin cursor-pointer hover:scale-95"
+            onClick={() => {
+              openModalCategories();
+            }}
           >
-            Do you want to add category?
+            Do you want to add location?
           </div>
-          <div className='md:w-2/6 w-full flex gap-2 items-center'>
+          <div className="md:w-2/6 w-full flex gap-2 items-center">
             <input
               type="search"
               onChange={(e) => {
-                setSearch(e.target.value)
+                setSearch(e.target.value);
               }}
               className=" md:w-20 w-full focus:md:w-full transition-all duration-500 border-gray-300 focus:border-none py-2 px-5 rounded-md border "
             />
-            <div className='text-gray-600'>
+            <div className="text-gray-600">
               <AiOutlineSearch size={"30"} />
             </div>
           </div>
         </div>
-        <div className='md:mt-0 mt-5 flex gap-5'>
+        <div className="md:mt-0 mt-5 flex gap-5">
+              <div className="">
+              <BsFillCalendarCheckFill size={20}/>
+              </div>
           <div class=" flex items-center space-x-2">
             <input
               type="radio"

@@ -9,6 +9,7 @@ import {
 import { Field, Form, Formik } from "formik";
 import swal from "sweetalert2";
 import PlateSales from "../../components/tenant/dashboard-tenant/content/plate-sales-report";
+import NoDataPage from "../auth/alert/no-data-page";
 
 const SalesReport = () => {
   const token = localStorage.getItem("token");
@@ -24,6 +25,7 @@ const SalesReport = () => {
   const handleSortChange = (e) => {
     setSortby(e.target.value);
   };
+
   function checkDate(start, end) {
     const startDate = new Date(start);
     const endDate = new Date(end);
@@ -107,17 +109,18 @@ const SalesReport = () => {
   return (
     <div className="md:flex xs:w-full">
       <Sidebar />
-      <div className="p-2 border w-full" id="content-container space-y-2">
+      <div className="xs:p-2 md:px-10  w-full" id="content-container space-y-2">
         {/* ini untuk header */}
         <div
-          className="p-3 w-full"
+          className="p-3 w-full xs:space-y-2 md:space-y-4 "
           id="header-container-sales flex flex-col space-y-2"
         >
           <div className="">
-            <h1 className="text-2xl">Sales Report</h1>
+            <h1 className="xs:text-3xl md:text-4xl font-medium text-bgPrimary">Sales Report</h1>
           </div>
           {/* <PlateSales /> */}
 
+          
           <Formik
             initialValues={{
               startDate: "",
@@ -127,8 +130,8 @@ const SalesReport = () => {
               getDataSales(values);
             }}
           >
-            <Form className=" flex space-x-2 justify-end">
-              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 ">
+            <Form className=" md:flex xs:space-y-4 md:space-y-0 md:space-x-2 md:w-1/2">
+              <div className="">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="startDate"
@@ -137,13 +140,13 @@ const SalesReport = () => {
                 </label>
                 <Field
                   name="startDate"
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="startDate"
                   type="date"
                   placeholder="90210"
                 ></Field>
               </div>
-              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 ">
+              <div className="">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="endDate"
@@ -158,11 +161,11 @@ const SalesReport = () => {
                   placeholder="90210"
                 ></Field>
               </div>
-              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 flex flex-wrap justify-center">
-                <div className=" xs:w-1/4 md:w-full flex flex-col justify-end p-0.5 ">
+              <div className="xs:mt-3 md:mt-0 md:mb-0 md:flex md:justify-center">
+                <div className=" md:w-full flex flex-col justify-end p-0.5 ">
                   <button
                     type="submit"
-                    className="p-2.5 text-center w-full bg-bgPrimary text-white hover:font-semibold rounded-sm "
+                    className="p-2.5 md:px-7 text-center w-full bg-bgPrimary text-white hover:font-semibold rounded-sm "
                   >
                     Search
                   </button>
@@ -170,8 +173,7 @@ const SalesReport = () => {
               </div>
             </Form>
           </Formik>
-
-          <hr></hr>
+          
         </div>
         {/* ini untuk content accordion sales */}
 
@@ -245,7 +247,7 @@ const SalesReport = () => {
 
           {salesList.length > 0 ? (
             <AccordionSales sections={salesList} />
-          ) : null}
+          ) : (<NoDataPage />)}
         </div>
         <div className=" flex justify-center items-center h-14 gap-5">
           {page > 1 ? (
