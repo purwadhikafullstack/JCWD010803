@@ -74,7 +74,7 @@ const ProfileAvatar = ({ reload, setReload }) => {
                   className="h-32 w-32 border rounded-full object-fill bg-[#e2e8f0]"
                   src={
                     data.profileImg
-                      ? `http://localhost:8000/avatars/${data.profileImg}`
+                      ? `${process.env.REACT_APP_API_IMG_URL}/avatars/${data.profileImg}`
                       : ""
                   }
                 />

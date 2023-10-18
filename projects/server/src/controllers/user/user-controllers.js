@@ -535,13 +535,14 @@ const userController = {
   },
   uploadPayment: async (req, res) => {
     try {
-      const { fileName, id, userId } = req.body;
+      const { id, userId } = req.body;
+      const {filename} = req.file
       if (req.file == undefined) {
         throw { message: "Receipt Cannot be empty" };
       }
       const result = await userTransaction.update(
         {
-          paymentImg: fileName,
+          paymentImg: filename,
           statusId: 2,
         },
         {

@@ -62,7 +62,7 @@ export const EditImageModal = ({ reload, setReload, roomId, openModal, setOpenMo
                                 data.map(item => {
                                     return (
                                         <div>
-                                            <img src={`http://localhost:8000/room/${item.image}`} className="w-40 h-40 rounded-md" alt="" />
+                                            <img src={`${process.env.REACT_APP_API_IMG_URL}/room/${item.image}`} className="w-40 h-40 rounded-md" alt="" />
                                             <div className="flex justify-center mt-2">
                                                 <div className="w-full border-2 gap-2 rounded-md px-2 items-center justify-center flex p-1 border-dashed">
                                                     <label
