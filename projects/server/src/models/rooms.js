@@ -38,9 +38,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
-      roomName: {
-        type: DataTypes.STRING,
-      },
       QTY: {
         type: DataTypes.INTEGER,
         allowNull: false,

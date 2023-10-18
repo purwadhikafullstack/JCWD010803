@@ -18,7 +18,7 @@ export const ProfileSettingSelectTop = ({ choose, value }) => {
   };
   return (
     <div className="w-full">
-      <div className="flex justify-between w-full  bg-bgPrimary px-2 ">
+      <div className="flex justify-between w-full  bg-bgPrimary px-2">
         <div
           className={`
           px-3
@@ -51,7 +51,8 @@ export const ProfileSettingSelectTop = ({ choose, value }) => {
           Profile
         </div>
 
-        <div className={`
+        <div
+          className={`
           px-4
           py-3
           text-md
@@ -61,7 +62,10 @@ export const ProfileSettingSelectTop = ({ choose, value }) => {
           hover:bg-bgPrimaryActive
           cursor-pointer		
 					`}
-          onClick={clickOrder}>Order History</div>
+          onClick={clickOrder}
+        >
+          Order History
+        </div>
       </div>
     </div>
   );

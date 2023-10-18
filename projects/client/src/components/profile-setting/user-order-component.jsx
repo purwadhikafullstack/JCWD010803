@@ -7,7 +7,7 @@ import {
 } from "react-icons/bs";
 import { Field, Form, Formik } from "formik";
 import swal from "sweetalert2";
-import NoDataPage from "../../views/auth/alert/no-data-page";
+import NoDataPage from "../../views/alert/no-data-page";
 
 function checkDate(start, end) {
   const startDate = new Date(start);
@@ -32,7 +32,6 @@ const UserOrderList = () => {
   }
 
   const getDataOrder = async (data) => {
-    
     try {
       if (!data) {
         const response = await axios.post(
@@ -46,7 +45,7 @@ const UserOrderList = () => {
         setLength(response.data.length);
         setLimit(response.data.limit);
       }
-
+      
       if (data) {
         if (!data.startDate && data.endDate) {
           swal.fire({
@@ -133,6 +132,7 @@ const UserOrderList = () => {
           endDate: "",
         }}
         onSubmit={(values) => {
+          
           getDataOrder(values);
         }}
       >
