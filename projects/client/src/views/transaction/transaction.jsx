@@ -180,7 +180,7 @@ export const Transaction = () => {
         <div className=" pt-10 w-full lg:w-1/3">
           <div className=" top-40 sticky w-full shadow-lg rounded-lg p-5">
             <div className="flex mb-5 w-full gap-5">
-              <img src={`http://localhost:8000/room/${image[0] ? image[0].image : "undefined"}`} className="w-2/4 rounded-l-lg h-full " />
+              <img src={`${process.env.REACT_APP_API_IMG_URL}/room/${image[0] ? image[0].image : "undefined"}`} className="w-2/4 rounded-l-lg h-full " />
               <div className=" my-auto">
                 <div>
                   <div className=" text-gray-800 font-semibold"> {room ? room.roomName : "undefined"} </div>

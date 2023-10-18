@@ -115,7 +115,7 @@ export const UpdatePropertyModal = ({ reload, setReload,location, open, setOpen,
                 </div>
                 <div className="mt-10 mb-2">
                   <div className="border rounded-md w-full flex justify-center">
-                    <img className=" w-64 h-72" id="selected-image" src={propertyImgProp ? `http://localhost:8000/property/${propertyImgProp}` : ''} alt="" />
+                    <img className=" w-64 h-72" id="selected-image" src={propertyImgProp ? `${process.env.REACT_APP_API_IMG_URL}/property/${propertyImgProp}` : ''} alt="" />
                   </div>
                   <input
                     type="file"
