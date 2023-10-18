@@ -537,6 +537,7 @@ const userController = {
     try {
       const { id, userId } = req.body;
       const {filename} = req.file
+      console.log(filename);
       if (req.file == undefined) {
         throw { message: "Receipt Cannot be empty" };
       }

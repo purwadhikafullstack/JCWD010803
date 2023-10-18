@@ -161,6 +161,13 @@ const propertiesController = {
         req.body;
       const userId = req.user.id;
       const propertyImg = req.file.filename;
+      const checkProperty = await properties.findOne({
+       where : {propertyName : propertyName}
+      })
+      console.log(checkProperty);
+      if (checkProperty) throw{
+       message: "Property name has been decliar"
+      }
       const result = await properties.create({
         categoryId,
         propertyName,
@@ -169,6 +176,7 @@ const propertiesController = {
         userId,
         detailLocation,
       });
+
       res.status(200).send({
         message: "add properties success",
         result,
