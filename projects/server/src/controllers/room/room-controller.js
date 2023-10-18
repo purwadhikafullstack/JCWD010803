@@ -16,6 +16,7 @@ module.exports = {
       const { roomName, QTY, price, roomDesc } = req.body;
       const propertyId = req.params.id;
       const data = req.files;
+      console.log(roomName);
       const checkRoom = await room.findOne({
         where: { roomName: roomName, propertyId: propertyId },
       });

@@ -25,6 +25,7 @@ const SalesReport = () => {
   const handleSortChange = (e) => {
     setSortby(e.target.value);
   };
+
   function checkDate(start, end) {
     const startDate = new Date(start);
     const endDate = new Date(end);
@@ -134,6 +135,7 @@ const SalesReport = () => {
           </div>
           {/* <PlateSales /> */}
 
+          
           <Formik
             initialValues={{
               startDate: "",
@@ -153,7 +155,7 @@ const SalesReport = () => {
                 </label>
                 <Field
                   name="startDate"
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="startDate"
                   type="date"
                   placeholder="90210"
@@ -186,7 +188,6 @@ const SalesReport = () => {
               </div>
             </Form>
           </Formik>
-
         </div>
         {/* ini untuk content accordion sales */}
 
