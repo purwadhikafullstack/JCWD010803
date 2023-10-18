@@ -2,11 +2,13 @@ const { Op } = require("sequelize");
 const { Sequelize } = require("sequelize");
 const db = require("../../models");
 const room = db.rooms;
+const user = db.user;
 const roomImg = db.roomImg;
 const specialPrice = db.specialPrice;
 const availableRoom = db.availableRoom;
 const onBooking = db.onBooking;
 const review = db.review;
+const transaction = db.userTransactions;
 
 module.exports = {
   addRoom: async (req, res) => {
@@ -89,18 +91,26 @@ module.exports = {
       const { propertyId } = req.params;
       const page = req.query.page || 1;
       const limit = 10;
-      const search = req.query.search || ""
+      const search = req.query.search || "";
       const offset = (page - 1) * limit;
       const sort = req.query.sort || "DESC";
       const sortBy = req.query.sortBy || "createdAt";
 
       const checkLength = await room.findAll({
-        where: { propertyId: propertyId, isDelete: false, roomName: {[Op.like] : `%${search}%`} },
+        where: {
+          propertyId: propertyId,
+          isDelete: false,
+          roomName: { [Op.like]: `%${search}%` },
+        },
       });
       const length = checkLength.length;
 
       const result = await room.findAll({
-        where: { propertyId: propertyId, isDelete: false, roomName: {[Op.like] : `%${search}%`} },
+        where: {
+          propertyId: propertyId,
+          isDelete: false,
+          roomName: { [Op.like]: `%${search}%` },
+        },
         offset: offset,
         limit: limit,
         order: [[sortBy, sort]],
@@ -402,7 +412,7 @@ module.exports = {
           where: { id },
         });
         res.status(200).send({
-          result
+          result,
         });
       }
     } catch (error) {
@@ -425,41 +435,38 @@ module.exports = {
       res.status(400).send(error);
     }
   },
-  getReview : async (req, res) => {
+  getReview: async (req, res) => {
     try {
-      
-      //limit gue kasih 3 biar ga kepanjangan 
-
-      const roomId = 1
-      const sort ="DESC";
+      const roomId = req.params.id;
+      const sort = "DESC";
       const sortBy = "createdAt";
       const limit = 3;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
 
       const countReview = await review.count({
-        where : {
-          roomdId: roomId
-        }
+        where: {
+          roomId: roomId,
+        },
       });
 
       const result = await review.findAll({
-        where: {roomId : roomId},
+        where: { roomId: roomId },
+        include: [{ model: transaction, include: { model: user } }],
         order: [[sortBy, sort]],
         offset: offset,
         limit: limit,
-      })
+      });
 
       res.status(200).send({
         message: "OK",
         result,
-        length,
         limit,
-        totalReview : countReview
+        totalReview: countReview,
       });
-
     } catch (error) {
-      res.status(400).send(error)
+      console.log(error);
+      res.status(400).send(error);
     }
-  }
+  },
 };
