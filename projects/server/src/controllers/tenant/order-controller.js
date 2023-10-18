@@ -243,12 +243,19 @@ const room = db.rooms;
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const clause = [];
+      const clauseLength = [];
 
       if (startDate  && endDate) {
         clause.push({
           createdAt: {
             [Op.between]: [startDate, endDate]
           }
+        });
+
+        clauseLength.push({
+          createdAt: {
+            [Op.between]: [startDate, endDate],
+          },
         });
       }
       const result = await transaction.findAll({
@@ -274,14 +281,19 @@ const room = db.rooms;
         ]
       });
       const checkLength = await transaction.findAll({
-        where : {
-          [Op.or] : [
-            {statusId : 7},
-            {statusId : 3}
+        where: {
+          [Op.and]: [
+            clauseLength,
+            {
+              [Op.or]: [
+                { statusId: 7 },
+                { statusId: 3 }
+              ]
+            }
           ]
         },
-        include : [
-          { model : properties, where :{userId : req.user.id} }
+        include: [
+          { model: properties, where: { userId: req.user.id } }
         ]
       });
       const length = checkLength.length;
@@ -307,6 +319,7 @@ const room = db.rooms;
 },
   getAllSales : async (req,res) => {
     try {
+      
       const checkLength = await transaction.findAll({
         where : {
           [Op.or] : [
@@ -326,8 +339,7 @@ const room = db.rooms;
       }
 
       res.status(200).send({
-        message:"OK",
-        // totalRevenue,
+        id
         
       })
     } catch (error) {
