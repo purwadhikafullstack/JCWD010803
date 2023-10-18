@@ -5,7 +5,7 @@
 .env
 
 # folder
-/public
+# /public
 
 # testing
 /coverage
