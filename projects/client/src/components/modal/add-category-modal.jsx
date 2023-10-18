@@ -29,7 +29,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
   const editCategory = async (values) => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_API_BASE_URL}/properties/category`,
+        `${process.env.REACT_APP_API_BASE_URL}/properties/editCategory`,
         { categoryId: value, newCategory: values.newCategory },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -54,17 +54,24 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
       cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/properties/category/${value}`)
+        const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/properties/deleteCategory/${value}`)
         setOpenCategories(false)
         setValue("")
+
+        Swal.fire({
+          icon: "success",
+          title: 'Success',
+          text: "Location Has Been Deleted",
+        })
       }
+
     })
   }
 
   const addCategory = async (values) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/properties/category`,
+        `${process.env.REACT_APP_API_BASE_URL}/properties/addCategory`,
         values,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -79,6 +86,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
         setOpenCategories(false);
       },700);
     } catch (error) {
+      console.log(error);
       Swal.fire({
         icon: "error",
         title: error.response.data.message,
