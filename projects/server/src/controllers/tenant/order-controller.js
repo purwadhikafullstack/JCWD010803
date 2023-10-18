@@ -319,6 +319,7 @@ const room = db.rooms;
 },
   getAllSales : async (req,res) => {
     try {
+      
       const checkLength = await transaction.findAll({
         where : {
           [Op.or] : [
@@ -338,8 +339,7 @@ const room = db.rooms;
       }
 
       res.status(200).send({
-        message:"OK",
-        // totalRevenue,
+        id
         
       })
     } catch (error) {

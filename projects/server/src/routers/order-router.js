@@ -5,13 +5,13 @@ const { verifyToken } = require('../midlewares/token')
 const router = express.Router()
 
 router.get('/paymentMethode', orderController.allPaymentMethode)
+router.get('/totalSales,',verifyToken, orderController.getAllSales);
 router.patch('/reject',orderController.rejectTransaction)
 router.patch('/cancel',orderController.cancelOrder)
 router.patch('/confirm',orderController.confirmTransaction)
 router.post('/myOrder',verifyToken, orderController.orderMyProperty)
 router.get('/status', orderController.getAllStatus)
 router.post('/sales',verifyToken, orderController.salesReport);
-router.get('/totalSales,', verifyToken, orderController.getAllSales);
 
 
 // router ini harus paling bawah

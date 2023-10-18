@@ -31,6 +31,20 @@ const SalesReport = () => {
     return startDate < endDate;
   }
 
+  const getAllSalesData = async () =>{
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/order/totalSales`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const getDataSales = async (data) => {
     try {
       if (!data) {
@@ -104,6 +118,7 @@ const SalesReport = () => {
 
   useEffect(() => {
     getDataSales();
+    getAllSalesData();
   }, [page, sort, sortby]);
   return (
     <div className="md:flex xs:w-full">
@@ -111,11 +126,11 @@ const SalesReport = () => {
       <div className="xs:p-2 md:px-10  w-full" id="content-container space-y-2">
         {/* ini untuk header */}
         <div
-          className="p-3 w-full"
+          className="p-3 w-full xs:space-y-2 md:space-y-4"
           id="header-container-sales flex flex-col space-y-2"
         >
           <div className="">
-            <h1 className="xs:text-3xl md:text-4xl  text-bgPrimary">Sales Report</h1>
+            <h1 className="xs:text-3xl md:text-4xl text-bgPrimary">Sales Report</h1>
           </div>
           {/* <PlateSales /> */}
 
@@ -128,8 +143,8 @@ const SalesReport = () => {
               getDataSales(values);
             }}
           >
-            <Form className=" flex space-x-2 justify-end">
-              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 ">
+            <Form className=" md:flex xs:space-y-4 md:space-y-0 md:space-x-2 md:w-1/2">
+              <div className="">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="startDate"
@@ -144,7 +159,7 @@ const SalesReport = () => {
                   placeholder="90210"
                 ></Field>
               </div>
-              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 ">
+              <div className="">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="endDate"
@@ -159,11 +174,11 @@ const SalesReport = () => {
                   placeholder="90210"
                 ></Field>
               </div>
-              <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0 flex flex-wrap justify-center">
+              <div className="xs:mt-3 md:mt-0 md:mb-0 md:flex md:justify-center">
                 <div className=" xs:w-1/4 md:w-full flex flex-col justify-end p-0.5 ">
                   <button
                     type="submit"
-                    className="p-2.5 text-center w-full bg-bgPrimary text-white hover:font-semibold rounded-sm "
+                    className="p-2.5 md:px-7 text-center w-full bg-bgPrimary text-white hover:font-semibold rounded-sm "
                   >
                     Search
                   </button>
@@ -172,7 +187,6 @@ const SalesReport = () => {
             </Form>
           </Formik>
 
-          <hr></hr>
         </div>
         {/* ini untuk content accordion sales */}
 
