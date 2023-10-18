@@ -29,7 +29,7 @@ export const AddUnavailablity = ({ roomId, openAvailable, setOpenAvailable }) =>
             cancelButtonColor: '#e3e3e3',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/room/unAvailablity`, { "startDate": new Date(new Date(startDate).setHours(7,0,0,0) ), "endDate": new Date(new Date(endDate).setHours(7,0,0,0) ), "roomId": roomId })
+                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/room/unAvailablity`, { "startDate": new Date(new Date(startDate).setHours(7, 0, 0, 0)), "endDate": new Date(new Date(endDate).setHours(7, 0, 0, 0)), "roomId": roomId })
                 setOpenAvailable(false)
             }
         })
@@ -74,6 +74,5 @@ export const AddUnavailablity = ({ roomId, openAvailable, setOpenAvailable }) =>
                 </div>
             </div>
         </div>
-
     )
 }
