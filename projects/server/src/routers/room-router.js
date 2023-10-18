@@ -6,6 +6,7 @@ const { multerUpload } = require('../midlewares/multer')
 const router = express.Router()
 
 router.post('/unAvailablity', roomController.addUnavailableDate)
+router.post('review', roomController.getReview)
 router.get('/roomImg/:roomId', roomController.getRoomImage)
 router.post('/roomById/:id', roomController.roomById)
 router.get('/roomByProperty/:propertyId', roomController.getRoomByProperties)

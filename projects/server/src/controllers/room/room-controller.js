@@ -6,6 +6,7 @@ const roomImg = db.roomImg;
 const specialPrice = db.specialPrice;
 const availableRoom = db.availableRoom;
 const onBooking = db.onBooking;
+const review = db.review;
 
 module.exports = {
   addRoom: async (req, res) => {
@@ -424,4 +425,41 @@ module.exports = {
       res.status(400).send(error);
     }
   },
+  getReview : async (req, res) => {
+    try {
+      
+      //limit gue kasih 3 biar ga kepanjangan 
+
+      const roomId = 1
+      const sort ="DESC";
+      const sortBy = "createdAt";
+      const limit = 3;
+      const page = req.query.page || 1;
+      const offset = (page - 1) * limit;
+
+      const countReview = await review.count({
+        where : {
+          roomdId: roomId
+        }
+      });
+
+      const result = await review.findAll({
+        where: {roomId : roomId},
+        order: [[sortBy, sort]],
+        offset: offset,
+        limit: limit,
+      })
+
+      res.status(200).send({
+        message: "OK",
+        result,
+        length,
+        limit,
+        totalReview : countReview
+      });
+
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  }
 };

@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       rooms.hasOne(models.onBooking);
       rooms.hasMany(models.specialPrice)
       rooms.hasMany(models.availableRoom)
+      rooms.hasMany(models.review)
     }
   }
   rooms.init(

@@ -562,11 +562,13 @@ const userController = {
   },
   postReview: async (req, res) => {
     try {
+      console.log(req.body);
       const transactionIsExist = await userTransaction.findOne({
         where: {
           [Op.and]: [{ id: req.body.id }, { statusId: 7 }, { isReview: false }],
         },
       });
+      
       if (transactionIsExist) {
         const result = await userTransaction.update(
           {
@@ -585,6 +587,7 @@ const userController = {
         const setReview = await review.create({
           userReview: req.body.review,
           userTransactionId: req.body.id,
+          roomId : req.body.roomId
         });
         res.status(200).send({
           message: "Give a review success",
