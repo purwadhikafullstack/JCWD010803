@@ -64,12 +64,12 @@ export const AllProperties = () => {
             <div className="p-4">
               <h2 className="text-xl font-semibold text-gray-800">
                 {item.propertyName},{" "}
-                <span className="text-sm text-gray-600 block sm:inline">
+                <span className="text-sm text-gray-600 font-bold block sm:inline">
                   {item.category.category}
                 </span>
               </h2>
               <p className="mt-2 text-sm text-gray-700">{item.propertyDesc}</p>
-              <p className="mt-2 text-sm text-gray-700">
+              <p className="mt-2 text-sm font-bold text-gray-700">
                 {item.rooms[0] ? formatRupiah(item.rooms[0].price) : null}
               </p>
             </div>
