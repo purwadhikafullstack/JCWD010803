@@ -16,7 +16,6 @@ const { join } = require("path");
 const schedule = require("node-schedule");
 const autoComplete = require("./scheduler/auto-complete");
 const OtpAutoClear = require("./scheduler/auto-otp-clear");
-const emailScheduler = require("./scheduler/email-scheduler");
 const db = require("./models");
 
 const PORT = process.env.PORT || 8000;
@@ -40,7 +39,6 @@ app.use("/api/specialPrice", specialPriceRouter);
 
 schedule.scheduleJob("1 1 10 * * *", autoComplete);
 schedule.scheduleJob("1 1 10 * * *", OtpAutoClear);
-emailScheduler();
 
 app.use("/", express.static(__dirname + "./public"));
 
