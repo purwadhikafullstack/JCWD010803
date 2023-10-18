@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       review.belongsTo(models.userTransactions);
+      review.belongsTo(models.rooms);
     }
   }
   review.init({
