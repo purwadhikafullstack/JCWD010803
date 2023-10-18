@@ -215,7 +215,7 @@ const AccordionSection = ({
                 {section.statusId === 1 || section.statusId === 2 ? (
                   <button
                     onClick={cancelOrder}
-                    className="p-1 bg-red-700 text-white font-semibold rounded-md hover:bg-red-600 transition-all px-2 py-1 mr-3"
+                    className="p-1 bg-red-600 text-white font-semibold rounded-md hover:bg-red-500 transition-all px-2 py-1 mr-3"
                   >
                     Cancelled Order
                   </button>
