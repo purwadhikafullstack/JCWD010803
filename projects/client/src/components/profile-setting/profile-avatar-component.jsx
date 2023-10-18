@@ -60,8 +60,8 @@ const ProfileAvatar = ({ reload, setReload }) => {
   };
   useEffect(() => {}, [reload]);
   return (
-    <div className="w-full p-4">
-      <div className="text-gray-700 xs:text-xl md:text-3xl font-semibold">
+    <div className="w-full p-10">
+      <div className="text-bgPrimary xs:text-2xl md:text-4xl font-semibold">
         <p>Change Your Avatar Here</p>{" "}
       </div>
       <form onSubmit={handleSubmit} action="#">
