@@ -157,6 +157,81 @@ export const DetailRoom = () => {
                                     <RoomFacilities />
                                 </div>
                             </div>
+                            <div>
+                                <div className=" w-full mt-10 text-3xl border-t border-gray-300 pt-10 font-semibold text-gray-800">Review This Room</div>
+                                <div className=" flex flex-wrap">
+                                    <div className=" mt-5 w-1/2 text-gray-600">
+                                        <div className="flex gap-2 items-center">
+                                            <div className="w-14 h-14 rounded-full bg-black"></div>
+                                            <div className="h-full flex items-center">
+                                                <div>Akmal</div>
+                                            </div>
+                                        </div>
+                                        <div className=" text-sm text-black font-bold mt-2">
+                                            29 September 2023
+                                        </div>
+                                        <div className=" mt-2 text-sm">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, at veniam dolore eligendi, aspernatur accusantium iure voluptates optio id nostrum non harum tempore ad tempora consequuntur ipsum voluptas nesciunt rerum!
+                                        </div>
+                                    </div>
+                                    <div className=" mt-5 w-1/2 text-gray-600">
+                                        <div className="flex gap-2 items-center">
+                                            <div className="w-14 h-14 rounded-full bg-black"></div>
+                                            <div className="h-full flex items-center">
+                                                <div>Akmal</div>
+                                            </div>
+                                        </div>
+                                        <div className=" text-sm text-black font-bold mt-2">
+                                            29 September 2023
+                                        </div>
+                                        <div className=" mt-2 text-sm">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, at veniam dolore eligendi, aspernatur accusantium iure voluptates optio id nostrum non harum tempore ad tempora consequuntur ipsum voluptas nesciunt rerum!
+                                        </div>
+                                    </div>
+                                    <div className=" mt-5 w-1/2 text-gray-600">
+                                        <div className="flex gap-2 items-center">
+                                            <div className="w-14 h-14 rounded-full bg-black"></div>
+                                            <div className="h-full flex items-center">
+                                                <div>Akmal</div>
+                                            </div>
+                                        </div>
+                                        <div className=" text-sm text-black font-bold mt-2">
+                                            29 September 2023
+                                        </div>
+                                        <div className=" mt-2 text-sm">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, at veniam dolore eligendi, aspernatur accusantium iure voluptates optio id nostrum non harum tempore ad tempora consequuntur ipsum voluptas nesciunt rerum!
+                                        </div>
+                                    </div>
+                                    <div className=" mt-5 w-1/2 text-gray-600">
+                                        <div className="flex gap-2 items-center">
+                                            <div className="w-14 h-14 rounded-full bg-black"></div>
+                                            <div className="h-full flex items-center">
+                                                <div>Akmal</div>
+                                            </div>
+                                        </div>
+                                        <div className=" text-sm text-black font-bold mt-2">
+                                            29 September 2023
+                                        </div>
+                                        <div className=" mt-2 text-sm">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, at veniam dolore eligendi, aspernatur accusantium iure voluptates optio id nostrum non harum tempore ad tempora consequuntur ipsum voluptas nesciunt rerum!
+                                        </div>
+                                    </div>
+                                    <div className=" mt-5 w-1/2 text-gray-600">
+                                        <div className="flex gap-2 items-center">
+                                            <div className="w-14 h-14 rounded-full bg-black"></div>
+                                            <div className="h-full flex items-center">
+                                                <div>Akmal</div>
+                                            </div>
+                                        </div>
+                                        <div className=" text-sm text-black font-bold mt-2">
+                                            29 September 2023
+                                        </div>
+                                        <div className=" mt-2 text-sm">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, at veniam dolore eligendi, aspernatur accusantium iure voluptates optio id nostrum non harum tempore ad tempora consequuntur ipsum voluptas nesciunt rerum!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className=" lg:mt-0 mt-5 w-full lg:w-2/5 h-fit py-5 border rounded-xl shadow-md">
                             <div>
