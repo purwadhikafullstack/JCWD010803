@@ -127,21 +127,21 @@ export const DetailRoom = () => {
                         <div className='w-full gap-2 flex'>
                             <img
                                 className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-tl-xl'
-                                src={`http://localhost:8000/room/${roomImages[0] ? roomImages[0][0].image : "undefined"}`}
+                                src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[0] ? roomImages[0][0].image : "undefined"}`}
                             />
                             <img
                                 className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-tr-xl'
-                                src={`http://localhost:8000/room/${roomImages[0] ? roomImages[0][1].image : "undefined"}`}
+                                src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[0] ? roomImages[0][1].image : "undefined"}`}
                             />
                         </div>
                         <div className=' mt-2 w-full flex gap-2'>
                             <img
                                 className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-bl-xl'
-                                src={`http://localhost:8000/room/${roomImages[0] ? roomImages[0][2].image : "undefined"}`}
+                                src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[0] ? roomImages[0][2].image : "undefined"}`}
                             />
                             <img
                                 className='w-1/2 lg:w-2/3 bg-cover h-64 rounded-br-xl'
-                                src={`http://localhost:8000/room/${roomImages[0] ? roomImages[0][3].image : "undefined"}`}
+                                src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[0] ? roomImages[0][3].image : "undefined"}`}
                             />
                         </div>
                     </div>

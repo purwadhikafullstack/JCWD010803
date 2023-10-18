@@ -163,7 +163,7 @@ export const MyProperties = ({ setConfirmOpen, reload, setOpen, location, proper
                 <img
                   onClick={() => toDetailProperty(item.id)}
                   className=" w-full sm:w-full h-full border  sm:rounded-l-lg"
-                  src={`http://localhost:8000/property/${item.propertyImg}`}
+                  src={`${process.env.REACT_APP_API_IMG_URL}/property/${item.propertyImg}`}
                   alt={`Property ${item.propertyName}`}
                 />
               </div>

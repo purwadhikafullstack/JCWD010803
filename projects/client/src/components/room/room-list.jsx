@@ -99,7 +99,7 @@ export const RoomList = () => {
                                         <div className='w-full'>
                                             <img
                                                 className='w-full h-full bg-cover rounded-tl-lg lg:rounded-l-lg'
-                                                src={`http://localhost:8000/room/${roomImages[index] ? roomImages[index][0].image : "undefined"}`}
+                                                src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[index] ? roomImages[index][0].image : "undefined"}`}
                                             />
                                         </div>
                                         <div className='w-full h-full flex lg:flex-col flex-row'>
@@ -107,7 +107,7 @@ export const RoomList = () => {
                                                 <div key={imageIndex} className='lg:w-2/4 w-fit max-h-1/3 flex lg:flex-grow'>
                                                     <img
                                                         className='w-full h-full bg-cover'
-                                                        src={`http://localhost:8000/room/${image.image}`}
+                                                        src={`${process.env.REACT_APP_API_IMG_URL}/room/${image.image}`}
                                                     />
                                                 </div>
                                             ))}
