@@ -14,6 +14,8 @@ export const DetailRoom = () => {
     const { id } = useParams()
     const [roomImages, setRoomImages] = useState([]);
     const [data, setData] = useState({})
+    const [review, setReview] = useState([])
+    const [totalReview, setTotalReview] = useState("")
     const [message, setMessage] = useState("")
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
@@ -52,6 +54,18 @@ export const DetailRoom = () => {
             return [];
         }
     };
+
+    const getReview = async () => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/room/review/${id}`)
+            setReview(response.data.result)
+            setTotalReview(response.data.totalReview)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    console.log(review);
+    console.log(totalReview);
     useEffect(() => {
         room(id)
         const fetchImagesForRooms = async () => {
@@ -105,11 +119,33 @@ export const DetailRoom = () => {
             window.scrollTo(0, 0);
         }
     }
+    const formattedDate = (date) => {
+        return new Intl.DateTimeFormat('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        }).format(date);
+    }
+
+    function getRandomColor() {
+        const colors = [
+            "bg-red-500",
+            "bg-blue-500",
+            "bg-green-500",
+            "bg-yellow-500",
+            "bg-purple-500",
+            "bg-pink-500",
+            "bg-indigo-500",
+        ];
+        const randomIndex = Math.floor(Math.random() * colors.length);
+        return colors[randomIndex];
+    }
 
     useEffect(() => {
+        getRandomColor()
         getTotalPayment()
-    }, [getTotalPayment])
-
+        getReview()
+    }, [totalPayment])
     return (
         <div>
             <div> <Navbar /> </div>
@@ -155,6 +191,43 @@ export const DetailRoom = () => {
                                 <div className=" w-full mt-10 text-3xl border-t border-gray-300 pt-10 font-semibold text-gray-800">Room Facilities</div>
                                 <div className="flex w-full">
                                     <RoomFacilities />
+                                </div>
+                            </div>
+                            <div>
+                                <div className=" w-full mt-10 text-3xl border-t border-gray-300 pt-10 font-semibold text-gray-800">Review This Room</div>
+                                <div className=" flex flex-wrap">
+                                    {review.length > 1 ?
+                                        <>
+                                            {review?.map((item) => {
+                                                return (
+                                                    <div className=" mt-5 w-1/2 text-gray-600">
+                                                        <div className="flex gap-2 items-center">
+                                                            {item.userTransaction.user.profileImg ?
+                                                                <img src={`${process.env.REACT_APP_API_IMG_URL}/avatars/${item.userTransaction.user.profileImg}`} className="w-14 h-14 rounded-full "></img>
+                                                                :
+                                                                <div className={` w-14 flex justify-center items-center h-14 rounded-full ${getRandomColor()}`}>
+                                                                    {item.userTransaction.user.username.split("")[0]}
+                                                                </div>
+                                                            }
+                                                            <div className="h-full flex items-center">
+                                                                <div> {item.userTransaction.user.username} </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className=" text-sm text-black font-bold mt-2">
+                                                            {formattedDate(new Date(item.createdAt))}
+                                                        </div>
+                                                        <div className=" mt-2 text-sm">
+                                                            {item.userReview}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                        </>
+                                        :
+                                        <div className=" mt-10 text-2xl text-gray-400">
+                                            Sorry, this room is not available for review yet
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
