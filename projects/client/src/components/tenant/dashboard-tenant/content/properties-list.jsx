@@ -101,6 +101,10 @@ export const MyProperties = ({
     navigate(`/dashboard/rooms/${id}`);
   };
 
+  const toCalendar = () => {
+    navigate("/dashboard/calendar");
+  };
+
   useEffect(() => {
     myProperties();
   }, [sort, reload, page, search]);
@@ -146,8 +150,8 @@ export const MyProperties = ({
           </div>
         </div>
         <div className="md:mt-0 mt-5 flex gap-5">
-              <div className="">
-              <BsFillCalendarCheckFill size={20}/>
+              <div className="m-auto cursor-pointer">
+              <BsFillCalendarCheckFill size={20} onClick={toCalendar}/>
               </div>
           <div class=" flex items-center space-x-2">
             <input
