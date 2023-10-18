@@ -49,7 +49,7 @@ const emailScheduler = async () => {
               subject: "Hotel Rules and Tenant Regulations",
               text: `Hello,
   
-        Welcome to Comfy Cribz!
+        Welcome to ComfyCribz!
         
         Don't Forget to Check in at ${moment(
           element.checkIn,

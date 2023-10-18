@@ -38,9 +38,9 @@ app.use("/api/transaction", transactionRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/specialPrice", specialPriceRouter);
 
+emailScheduler();
 schedule.scheduleJob("1 1 10 * * *", autoComplete);
 schedule.scheduleJob("1 1 10 * * *", OtpAutoClear);
-emailScheduler();
 
 app.use("/", express.static(__dirname + "./public"));
 
