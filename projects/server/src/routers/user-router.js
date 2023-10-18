@@ -19,9 +19,9 @@ router.patch('/changePassword', verifyToken,checkNewPassword, userController.cha
 router.post('/otp', verifyToken, userController.getOtp);
 router.post('/verify', verifyToken, userController.verifyAccount);
 router.post('/information-update', verifyToken, userController.updateProfile);
-router.post('/avatar', verifyToken, multerUpload(path.join(__dirname, '../../public/avatars'), 'ava').single('file'),userController.updateAvatar);
+router.post('/avatar', verifyToken, multerUpload('/avatars', 'ava').single('file'),userController.updateAvatar);
 router.post('/orders', verifyToken, userController.getOrderList);
-router.post('/upload-payment',multerUpload(path.join(__dirname, "../../public/payment"), 'pc').single("file"), userController.uploadPayment);
+router.post('/upload-payment',multerUpload("/payment", 'pc').single("file"), userController.uploadPayment);
 router.post('/review', userController.postReview);
 
 module.exports = router;

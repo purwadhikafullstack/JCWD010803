@@ -6,7 +6,7 @@ const path = require('path')
 
 const router = express.Router()
 
-router.post('/registerTenant',multerUpload(path.join(__dirname, "../../public/tenant/KTP"), 'IDCard').single("file"), checkRegister , AuthController.regisTenant)
+router.post('/registerTenant',multerUpload("/KTP", 'IDCard').single("file"), checkRegister , AuthController.regisTenant)
 router.post('/loginTenant', AuthController.loginTenant)
 
 module.exports = router

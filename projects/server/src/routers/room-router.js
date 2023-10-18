@@ -13,8 +13,8 @@ router.get('/roomByProperty/:propertyId', roomController.getRoomByProperties)
 router.post('/review/:id', roomController.getReview)
 router.patch('/:id', roomController.updateRoom)
 router.patch('/:id', roomController.updateRoom)
-router.patch('/editImage/:id',multerUpload(path.join(__dirname, "../../public/room"), 'roomImg').single("roomImg") ,roomController.editImage)
+router.patch('/editImage/:id',multerUpload("/room", 'roomImg').single("roomImg") ,roomController.editImage)
 router.patch('/delete/:id', roomController.deleteRoom)
-router.post('/:id',multerUpload(path.join(__dirname, "../../public/room"), 'roomImg').single("roomImg"),checkRoom,roomController.addRoom)
+router.post('/:id',multerUpload("/room", 'roomImg').single("roomImg"),checkRoom,roomController.addRoom)
 
 module.exports = router
