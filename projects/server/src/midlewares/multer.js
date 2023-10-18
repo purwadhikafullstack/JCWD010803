@@ -2,10 +2,10 @@ const multer = require("multer");
 const fs = require("fs");
 
 module.exports = {
-  propertyImg: (directry = "./public/property", name = "PIMG") => {
+  propertyImg: (directory = "./public/property", name = "PIMG") => {
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
-        cb(null, directry);
+        cb(null, directory);
       },
       filename: (req, file, cb) => {
         cb(
@@ -21,7 +21,7 @@ module.exports = {
     });
 
     const fileFilter = (req, file, cb) => {
-      const extFilter = ["jpg", "jpeg", "png", "webp", "gif"];
+      const extFilter = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
       const checkExt = extFilter.includes(file.mimetype.split("/")[1]);
 
             if (!checkExt) {

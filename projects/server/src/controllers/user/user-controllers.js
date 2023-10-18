@@ -484,6 +484,7 @@ const userController = {
       const page = req.query.page || 1;
       const offset = (page - 1) * limit;
       const clause = [{ userId: req.user.id }];
+      const clauseLength = [];
 
       if (invoice) {
         clause.push({ id: invoice });
@@ -497,6 +498,13 @@ const userController = {
             [Op.between]: [startDate, endDate],
           },
         });
+
+        clauseLength.push({
+          createdAt: {
+            [Op.between]: [startDate, endDate],
+          },
+        });
+
       }
 
       const result = await userTransaction.findAll({
@@ -520,7 +528,12 @@ const userController = {
         ],
       });
       const checkLength = await userTransaction.findAll({
-        where: { userId: req.user.id },
+        where : {
+          [Op.and] : [
+            {userId: req.user.id},
+            clauseLength
+          ]
+        }
       });
       const length = checkLength.length;
       res.status(200).send({

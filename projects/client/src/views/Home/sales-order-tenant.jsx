@@ -9,6 +9,7 @@ import {
 import { Field, Form, Formik } from "formik";
 import swal from "sweetalert2";
 import PlateSales from "../../components/tenant/dashboard-tenant/content/plate-sales-report";
+import NoDataPage from "../alert/no-data-page";
 
 const SalesReport = () => {
   const token = localStorage.getItem("token");
@@ -107,14 +108,14 @@ const SalesReport = () => {
   return (
     <div className="md:flex xs:w-full">
       <Sidebar />
-      <div className="p-2 border w-full" id="content-container space-y-2">
+      <div className="xs:p-2 md:px-10  w-full" id="content-container space-y-2">
         {/* ini untuk header */}
         <div
           className="p-3 w-full"
           id="header-container-sales flex flex-col space-y-2"
         >
           <div className="">
-            <h1 className="text-2xl">Sales Report</h1>
+            <h1 className="xs:text-3xl md:text-4xl  text-bgPrimary">Sales Report</h1>
           </div>
           {/* <PlateSales /> */}
 
@@ -245,7 +246,7 @@ const SalesReport = () => {
 
           {salesList.length > 0 ? (
             <AccordionSales sections={salesList} />
-          ) : null}
+          ) : (<NoDataPage />)}
         </div>
         <div className=" flex justify-center items-center h-14 gap-5">
           {page > 1 ? (
