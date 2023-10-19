@@ -154,7 +154,7 @@ export const DetailRoom = () => {
     useEffect(() => {
         getTotalPayment();
         getReview();
-    }, [totalPayment]);
+    }, [getTotalPayment]);
     return (
         <div>
             <div>
