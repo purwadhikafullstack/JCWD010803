@@ -7,6 +7,7 @@ import {
 } from "react-icons/bs";
 import { Field, Form, Formik } from "formik";
 import swal from "sweetalert2";
+import NoDataPage from "../../views/alert/no-data-page";
 
 function checkDate(start, end) {
   const startDate = new Date(start);
@@ -31,7 +32,6 @@ const UserOrderList = () => {
   }
 
   const getDataOrder = async (data) => {
-    
     try {
       if (!data) {
         const response = await axios.post(
@@ -45,7 +45,7 @@ const UserOrderList = () => {
         setLength(response.data.length);
         setLimit(response.data.limit);
       }
-
+      
       if (data) {
         if (!data.startDate && data.endDate) {
           swal.fire({
@@ -120,8 +120,8 @@ const UserOrderList = () => {
   }, [reload, page, sort, sortby]);
 
   return (
-    <div className="w-full p-1 flex flex-col space-y-2">
-      <h1 className="p-2 xs:text-2xl md:text-5xl xs:mt-3  pb-4 text-slate-700 lg:mb-10 lg:mt-10 ">
+    <div className="w-full xs:p-4 flex flex-col space-y-2">
+      <h1 className="p-2 xs:text-2xl md:text-5xl xs:mt-3  text-bgPrimary pb-4  lg:mb-10 lg:mt-3 ">
         My Order List
       </h1>
       <Formik
@@ -132,6 +132,7 @@ const UserOrderList = () => {
           endDate: "",
         }}
         onSubmit={(values) => {
+          
           getDataOrder(values);
         }}
       >
@@ -295,7 +296,7 @@ const UserOrderList = () => {
             setReload={setReload}
             sections={orderList}
           />
-        ) : null}
+        ) : (<NoDataPage />)}
       </div>
       <div className=" flex justify-center items-center h-14 gap-5">
         {page > 1 ? (

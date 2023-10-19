@@ -75,6 +75,8 @@ const UserMenu = () => {
           <div
             className={`
             ${tokenFireBase ? "hidden" : "flex"}
+            hidden
+            md:block
             text-sm 
             font-semibold 
             py-3 

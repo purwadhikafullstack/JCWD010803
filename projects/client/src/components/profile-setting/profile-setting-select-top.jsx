@@ -1,27 +1,33 @@
-import { useState } from "react"
+import { useState } from "react";
 
 export const ProfileSettingSelectTop = ({ choose, value }) => {
-  const [click, setClick] = useState("")
-  const fireBaseToken = localStorage.getItem("firebase-token")
+  const [click, setClick] = useState("");
+  const fireBaseToken = localStorage.getItem("firebase-token");
 
   const clickChangeProfile = () => {
-    setClick("changeProfile")
-    choose("changeProfile")
-  }
+    setClick("changeProfile");
+    choose("changeProfile");
+  };
+  const clickOrder = () => {
+    setClick("orderList");
+    choose("orderList");
+  };
   const clickChangePassword = () => {
-    setClick("changePassword")
-    choose("changePassword")
-  }
+    setClick("changePassword");
+    choose("changePassword");
+  };
   return (
     <div className="w-full">
-      <div className="flex justify-between w-full  bg-bgPrimary h-14">
-        <div className={`
-          pt-4
-          p-2
-          text-sm
+      <div className="flex justify-between w-full  bg-bgPrimary px-2">
+        <div
+          className={`
+          px-3
+          py-3
+          text-md
           ${fireBaseToken ? "hidden" : "block"}
-					${click || value === "changePassword" ? "bg-bgPrimaryActive" : "bg-bgPrimary"}
-          ${click || value === "changePassword" ? "text-white" : "text-white"}
+          text-white
+          hover:font-semibold
+          hover:bg-bgPrimaryActive
           cursor-pointer		
 					`}
           onClick={clickChangePassword}
@@ -29,19 +35,38 @@ export const ProfileSettingSelectTop = ({ choose, value }) => {
           Change password
         </div>
 
-        <div className={
-        `my-auto ${fireBaseToken ? "hidden" : "block"}`}
+        <div
+          className={`
+          px-5
+          py-3
+          text-md
+          ${fireBaseToken ? "hidden" : "block"}
+          text-white
+          hover:font-semibold
+          hover:bg-bgPrimaryActive
+          cursor-pointer		
+					`}
+          onClick={clickChangeProfile}
         >
           Profile
         </div>
 
-        <div className={
-        "my-auto"}
+        <div
+          className={`
+          px-4
+          py-3
+          text-md
+          ${fireBaseToken ? "hidden" : "block"}
+          text-white
+          hover:font-semibold
+          hover:bg-bgPrimaryActive
+          cursor-pointer		
+					`}
+          onClick={clickOrder}
         >
           Order History
         </div>
-        
       </div>
     </div>
-  )
-}
+  );
+};
