@@ -162,21 +162,21 @@ export const DetailRoom = () => {
                     <div className='w-full px-20 h-3/4 mt-10'>
                         <div className='w-full gap-2 flex'>
                             <img
-                                className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-tl-xl'
+                                className=' w-1/2 lg:w-2/3 bg-cover h-80 rounded-tl-xl'
                                 src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[0] ? roomImages[0][0].image : "undefined"}`}
                             />
                             <img
-                                className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-tr-xl'
+                                className=' w-1/2 lg:w-2/3 bg-cover h-80 rounded-tr-xl'
                                 src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[0] ? roomImages[0][1].image : "undefined"}`}
                             />
                         </div>
                         <div className=' mt-2 w-full flex gap-2'>
                             <img
-                                className=' w-1/2 lg:w-2/3 bg-cover h-64 rounded-bl-xl'
+                                className=' w-1/2 lg:w-2/3 bg-cover h-80 rounded-bl-xl'
                                 src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[0] ? roomImages[0][2].image : "undefined"}`}
                             />
                             <img
-                                className='w-1/2 lg:w-2/3 bg-cover h-64 rounded-br-xl'
+                                className='w-1/2 lg:w-2/3 bg-cover h-80 rounded-br-xl'
                                 src={`${process.env.REACT_APP_API_IMG_URL}/room/${roomImages[0] ? roomImages[0][3].image : "undefined"}`}
                             />
                         </div>
@@ -196,7 +196,7 @@ export const DetailRoom = () => {
                             <div>
                                 <div className=" w-full mt-10 text-3xl border-t border-gray-300 pt-10 font-semibold text-gray-800">Review This Room</div>
                                 <div className=" flex flex-wrap">
-                                    {review.length > 1 ?
+                                    {review.length >= 1 ?
                                         <>
                                             {review?.map((item) => {
                                                 return (
@@ -205,7 +205,7 @@ export const DetailRoom = () => {
                                                             {item.userTransaction.user.profileImg ?
                                                                 <img src={`${process.env.REACT_APP_API_IMG_URL}/avatars/${item.userTransaction.user.profileImg}`} className="w-14 h-14 rounded-full "></img>
                                                                 :
-                                                                <div className={` w-14 flex justify-center items-center h-14 rounded-full ${getRandomColor()}`}>
+                                                                <div className={` w-14 flex justify-center items-center h-14 rounded-full bg-bgPrimary text-white`}>
                                                                     {item.userTransaction.user.username.split("")[0]}
                                                                 </div>
                                                             }

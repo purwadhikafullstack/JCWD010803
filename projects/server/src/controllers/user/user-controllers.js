@@ -240,7 +240,7 @@ const userController = {
         html: tempResult,
       });
       const payload = { id: result.id };
-      const token = jwt.sign(payload, "key", { expiresIn: "1d" });
+      const token = jwt.sign(payload, process.env.TOKEN_KEY, { expiresIn: "1d" });
       res.status(200).send({
         message: "Check your email",
         result,
