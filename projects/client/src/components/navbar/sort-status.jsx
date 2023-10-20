@@ -7,7 +7,7 @@ export const SortStatus = ({ setStatus, setStatusName}) => {
 
     const allStatus = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/order/status')
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/order/status`)
             setData([{id:"", status:"All"},...response.data])
         } catch (error) {
             console.log(error);

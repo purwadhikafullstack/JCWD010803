@@ -22,14 +22,12 @@ export const SortProperties = () => {
   const checkOut = queryParams.get('checkOut')
   const sorting = queryParams.get('sort')
   const sortingBy = queryParams.get('sortBy')
-  
-
   const maxPage = Math.ceil(length / limit)
   
 
   const sortProperties = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/properties/sortProperties?page=${page}&categoryId=${categoryId}&checkIn=${checkIn}&checkOut=${checkOut}&sort=${sort}&sortBy=${sortBy}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties/sortProperties?page=${page}&categoryId=${categoryId}&checkIn=${checkIn}&checkOut=${checkOut}&sort=${sort}&sortBy=${sortBy}`)
       setProperties(response.data.properties)
       setLength(response.data.length)
       setLimit(response.data.limit)
@@ -92,7 +90,7 @@ export const SortProperties = () => {
                       <div className="w-72 h-96 absolute z-10 hover:bg-white cursor-pointer opacity-20 " onClick={(() => handleClick(item.id))}></div>
                       <img
                         className="w-full h-2/3  rounded-xl relative"
-                        src={`http://localhost:8000/property/${item.propertyImg}`}
+                        src={`${process.env.REACT_APP_API_IMG_URL}/property/${item.propertyImg}`}
                         alt={`Property ${item.propertyName}`}
                       />
                       <div className=" z-0">

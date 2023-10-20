@@ -12,6 +12,7 @@ export const FireBaseLogin = ({buttonText}) => {
   const onButtonClick = async () => {
     try {
       const auth = await googleAuth();
+      console.log(auth);
       const data = {
         userName: auth.user.displayName,
         email: auth.user.email,
@@ -20,18 +21,19 @@ export const FireBaseLogin = ({buttonText}) => {
         profileImg: auth.user.providerData[0].photoURL,
         flag: 1,
       };
+      console.log(data);
 
       const check = await axios.post(
-        `http://localhost:8000/api/user/checkFirebase`,
+        `${process.env.REACT_APP_API_BASE_URL}/user/checkFirebase`,
         data
       );
+      console.log(check);
 
       if (!check.data.result) {
         const response = await axios.post(
-          `http://localhost:8000/api/user/register`,  
+          `${process.env.REACT_APP_API_BASE_URL}/user/register`,  
           data
         );
-        console.log(response);
         const tokenFireBase = auth.user.accessToken;
         const token = response.data.token;
         dispatch(setData(data));

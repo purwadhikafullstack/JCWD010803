@@ -30,7 +30,7 @@ const Registration = () => {
   const onRegis = async (data) => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/user/register`,
+        `${process.env.REACT_APP_API_BASE_URL}/user/register`,
         data
       );
       dispatch(setValue(response.data.result));

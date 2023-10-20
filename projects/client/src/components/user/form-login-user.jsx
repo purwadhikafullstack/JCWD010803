@@ -25,7 +25,7 @@ export default function FormLoginUser() {
 
   const onLogin = async (data) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/user/login', data);
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/login`, data);
       dispatch(setValue(response.data.result));
       localStorage.setItem('token', response.data.token);
       swal.fire({

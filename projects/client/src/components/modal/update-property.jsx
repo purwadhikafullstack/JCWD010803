@@ -11,7 +11,7 @@ export const UpdatePropertyModal = ({ reload, setReload,location, open, setOpen,
   const [idCategory, setIdCategory] = useState(propertyCategory)
   const getCategories = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/properties/allCategories`)
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties/allCategories`)
       setCategory(response.data)
     } catch (error) {
       console.log(error);
@@ -26,7 +26,7 @@ export const UpdatePropertyModal = ({ reload, setReload,location, open, setOpen,
       formData.append("propertyDesc", propertyDesc);
       formData.append("categoryId", categoryId);
       formData.append("file", file);
-      const response = await axios.patch(`http://localhost:8000/api/properties/${Id}`, formData, {
+      const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/properties/${Id}`, formData, {
         headers: { "Content-type": "multipart/form-data" }
       })
       setReload(!reload)
@@ -115,7 +115,7 @@ export const UpdatePropertyModal = ({ reload, setReload,location, open, setOpen,
                 </div>
                 <div className="mt-10 mb-2">
                   <div className="border rounded-md w-full flex justify-center">
-                    <img className=" w-64 h-72" id="selected-image" src={propertyImgProp ? `http://localhost:8000/property/${propertyImgProp}` : ''} alt="" />
+                    <img className=" w-64 h-72" id="selected-image" src={propertyImgProp ? `${process.env.REACT_APP_API_IMG_URL}/property/${propertyImgProp}` : ''} alt="" />
                   </div>
                   <input
                     type="file"

@@ -25,7 +25,7 @@ export const FormResetPassowrd = () => {
 
   const resetPassword = async (data) => {
     try {
-      const response = await axios.patch('http://localhost:8000/api/user/resetPassword', data, {
+      const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/user/resetPassword`, data, {
         headers: { Authorization: `Bearer ${token.Token}` }
       })
       Swal.fire({

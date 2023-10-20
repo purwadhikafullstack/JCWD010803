@@ -1,11 +1,23 @@
-require("dotenv/config");
-const {userRouter, propertyRouter, roomRouter, orderRouter, transactionRouter,tenantRouter, specialPriceRouter} = require('../routers')
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+// require("dotenv/config")
+const {
+  userRouter,
+  propertyRouter,
+  roomRouter,
+  orderRouter,
+  transactionRouter,
+  tenantRouter,
+  specialPriceRouter,
+} = require("./routers");
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
-const db = require("../models");
-const schedule = require('node-schedule');
-const autoComplete = require("../scheduler/auto-complete");
+const schedule = require("node-schedule");
+const autoComplete = require("./scheduler/auto-complete");
+const OtpAutoClear = require("./scheduler/auto-otp-clear");
+const emailScheduler = require("./scheduler/email-scheduler");
+const db = require("./models");
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -20,13 +32,17 @@ app.use(express.json());
 
 app.use("/api/user", userRouter);
 app.use("/api/room", roomRouter);
-app.use("/api/tenant", tenantRouter)
-app.use("/api/properties", propertyRouter)
-app.use("/api/transaction", transactionRouter)
-app.use("/api/order", orderRouter)
-app.use("/api/specialPrice", specialPriceRouter)
+app.use("/api/tenant", tenantRouter);
+app.use("/api/properties", propertyRouter);
+app.use("/api/transaction", transactionRouter);
+app.use("/api/order", orderRouter);
+app.use("/api/specialPrice", specialPriceRouter);
 
-  schedule.scheduleJob('1 1 10 * * *', autoComplete);
+schedule.scheduleJob("1 1 10 * * *", autoComplete);
+schedule.scheduleJob("1 1 10 * * *", OtpAutoClear);
+emailScheduler()
+
+app.use("/", express.static(__dirname + "./public"));
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);

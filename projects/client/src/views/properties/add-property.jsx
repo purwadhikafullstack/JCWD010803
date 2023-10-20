@@ -46,7 +46,7 @@ export const AddProperty = () => {
         formData.append("detailLocation", detailLocation)
 
         try {
-            const response = await axios.post('http://localhost:8000/api/properties', formData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/properties`, formData, {
                 headers: { Authorization: `Bearer: ${token}` }
             })
             swal.fire({
@@ -58,11 +58,12 @@ export const AddProperty = () => {
             navigate('/dashboard')
 
         } catch (error) {
+            console.log(error.response.data);
             swal.fire({
                 icon: 'warning',
                 iconColor: 'red',
                 title: 'Add property failed',
-                text: error.response.data.message,
+                text: error.response.data.message
             });
         }
     }

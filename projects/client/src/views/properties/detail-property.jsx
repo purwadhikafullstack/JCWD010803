@@ -14,7 +14,7 @@ export const DetailProperty = () => {
     const navigate = useNavigate()
     const property = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/properties/${id}`)
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties/${id}`)
             setData(response.data)
         } catch (error) {
             console.log(error);
@@ -30,7 +30,7 @@ export const DetailProperty = () => {
     return (
         <div>
             <div> <Navbar /> </div>
-            <div className="pt-40 pl-44 w-full flex justify-center">
+            <div className="pt-40 lg:pl-44 pl-0 w-full flex justify-center">
                 <div className=" w-full h-full px-10">
                     <div className=" pt-5 ">
                         <div className="flex items-end gap-5">
@@ -45,27 +45,29 @@ export const DetailProperty = () => {
                             <div>Tenant:</div>
                             <div> {data.user ? data.user.firstName : "undefined"} {data.user ? data.user.lastName : "undefined"} </div>
                         </div>
-                        <div className="flex gap-2 items-center mt-5">
-                            <FaMapMarkerAlt size={"30"} />
-                            <div className=" text-xl underline mt-2 text-gray-800"> {data.category ? data.category.category : "undefined"},</div>
+                        <div className="lg:flex block gap-2 items-center mt-5">
+                            <div className="flex">
+                                <FaMapMarkerAlt size={"30"} />
+                                <div className=" text-xl underline mt-2 text-gray-800"> {data.category ? data.category.category : "undefined"},</div>
+                            </div>
                             <div className=" text-xl underline mt-2 text-gray-800"> {data.detailLocation} </div>
                         </div>
                     </div>
                     <div className=" w-full mt-5 h-3/4 ">
-                        <img className=" w-2/3 h-full rounded-xl" src={`http://localhost:8000/property/${data.propertyImg}`} alt="" />
+                        <img className=" w-2/3 h-full rounded-xl" src={`${process.env.REACT_APP_API_IMG_URL}/property/${data.propertyImg}`} alt="" />
                     </div>
                     <div className="mb-10 w-full">
                         <div className=" text-2xl text-gray-800 font-semibold mt-5">
                             About this property
                         </div>
-                        <div className=" mt-3 w-1/2 text-gray-600 text-lg">
+                        <div className=" mt-3 lg:w-1/2 w-full text-gray-600 text-lg">
                             {data.propertyDesc}
                         </div>
                     </div>
                     <hr className="w-3/4 bg-gray-900 mt-5" />
                 </div>
             </div>
-            <div className=" mt-10 px-52 text-2xl font-semibold text-gray-800">
+            <div className=" mt-10 px-10 lg:px-52 text-2xl font-semibold text-gray-800">
                 {`Rooms Available at ${data.propertyName}`}
             </div>
             <RoomList />

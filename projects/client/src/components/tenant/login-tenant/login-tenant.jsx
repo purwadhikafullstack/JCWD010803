@@ -21,7 +21,7 @@ const LoginTenantForm = () => {
     onSubmit: async (values) => {
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/tenant/loginTenant",
+          `${process.env.REACT_APP_API_BASE_URL}/tenant/loginTenant`,
           values
         );
         localStorage.setItem("token", response.data.token)
@@ -110,7 +110,7 @@ const LoginTenantForm = () => {
             <p className="">
               Don't have an account?{" "}
               <a
-                href="/registerTenant"
+                href="/register-tenant"
                 className="text-teal-500 hover:text-teal-700 font-semibold"
               >
                 Sign Up

@@ -24,7 +24,7 @@ const ProfileAvatar = ({ reload, setReload }) => {
         formData.append("file", file);
         formData.append("fileName", file.name);
         const response = await axios.post(
-          `http://localhost:8000/api/user/avatar`,
+          `${process.env.REACT_APP_API_BASE_URL}/user/avatar`,
           formData,
           {
             headers: {
@@ -60,8 +60,8 @@ const ProfileAvatar = ({ reload, setReload }) => {
   };
   useEffect(() => {}, [reload]);
   return (
-    <div className="w-full p-4">
-      <div className="text-gray-700 xs:text-xl md:text-3xl font-semibold">
+    <div className="w-full p-10">
+      <div className="text-bgPrimary xs:text-2xl md:text-3xl xs:mt-3 ">
         <p>Change Your Avatar Here</p>{" "}
       </div>
       <form onSubmit={handleSubmit} action="#">
@@ -74,7 +74,7 @@ const ProfileAvatar = ({ reload, setReload }) => {
                   className="h-32 w-32 border rounded-full object-fill bg-[#e2e8f0]"
                   src={
                     data.profileImg
-                      ? `http://localhost:8000/avatars/${data.profileImg}`
+                      ? `${process.env.REACT_APP_API_IMG_URL}/avatars/${data.profileImg}`
                       : ""
                   }
                 />

@@ -20,7 +20,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
       cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.patch('http://localhost:8000/api/order/confirm', { transactionId: data.userTransaction.id })
+        const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/order/confirm`, { transactionId: data.userTransaction.id })
         setReload(!reload)
         setOpen(false)
       }
@@ -37,7 +37,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
       cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.patch('http://localhost:8000/api/order/reject', { transactionId: data.userTransaction.id, roomId: data.room.id })
+        const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/order/reject`, { transactionId: data.userTransaction.id, roomId: data.room.id })
         setReload(!reload)
         setOpen(false)
       }
@@ -53,7 +53,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
       cancelButtonColor: '#e3e3e3',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await axios.patch('http://localhost:8000/api/order/cancel', { transactionId: data.userTransaction.id, roomId: data.room.id })
+        const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/order/cancel`, { transactionId: data.userTransaction.id, roomId: data.room.id })
         setReload(!reload)
         setOpen(false)
       }
@@ -148,7 +148,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
                     <div className="h-full">
 
                       {data.userTransaction.paymentImg !== null ?
-                        <img className="w-full h-full rounded" src={`http://localhost:8000/payment/${data.userTransaction.paymentImg}`} alt="" />
+                        <img className="w-full h-full rounded" src={`${process.env.REACT_APP_API_IMG_URL}/payment/${data.userTransaction.paymentImg}`} alt="" />
                         :
                         <div className=" w-full h-full flex text-center justify-center items-center text-gray-500">
                           payment proof has not been attached.
@@ -173,7 +173,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
                 </div>
               ) : (
                 <div className="flex items-center gap-5">
-                  {data.userTransaction.statusId === 3 ? (
+                  {data.userTransaction.statusId === 3 || data.userTransaction.statusId === 2 ? (
                     <div 
                     onClick={cancelOrder}
                     className="p-1 flex justify-center  cursor-pointer transition-all hover:bg-red-700 bg-red-600 rounded-lg text-white font-thin px-2 items-center h-10">
@@ -182,14 +182,14 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
                   ) : (
                     <div
                       onClick={rejectOrder}
-                      className={`p-1 flex cursor-pointer transition-all hover:bg-red-700 bg-red-600 rounded-lg text-white font-thin px-2 items-center h-10`}
+                      className={`p-1 ${data.userTransaction.statusId !== 2 ? "hidden" : "flex"} cursor-pointer transition-all hover:bg-red-700 bg-red-600 rounded-lg text-white font-thin px-2 items-center h-10`}
                     >
                       Reject order
                     </div>
                   )}
                   <div
                     onClick={confirmOrder}
-                    className={`${data.userTransaction.statusId === 3
+                    className={`${data.userTransaction.statusId !== 2
                       ? "hidden"
                       : "block"
                       } p-1 flex cursor-pointer transition-all hover:bg-green-700 bg-green-600 rounded-lg text-white font-thin px-2 items-center h-10`}

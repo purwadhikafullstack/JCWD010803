@@ -21,7 +21,7 @@ export const FormChangePassword = () => {
 
     const onChangePassword = async (data) => {
         try {
-            const response = await axios.patch('http://localhost:8000/api/user/changePassword', data, {
+            const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/user/changePassword`, data, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             swal.fire({
@@ -58,7 +58,8 @@ export const FormChangePassword = () => {
                 >
                     <Form>
                         <div className="flex w-full border-b p-5 justify-between">
-                            <div className="my-auto">Change password</div>
+                            <div className="my-auto">Change your password</div>
+
                             <div className="flex gap-3">
                                 <div className="
                                     bg-gray-100 
@@ -92,10 +93,8 @@ export const FormChangePassword = () => {
                                 <div className="mb-3">
                                     <div>Current password</div>
                                     <Field
-                                        type={"password"}
                                         className="border-2 w-full h-11 mt-2 px-5 rounded"
                                         name="currentPassword"
-                                        placeholder=""
                                     />
                                     <ErrorMessage
                                         name="currentPassword"
@@ -106,7 +105,6 @@ export const FormChangePassword = () => {
                                 <div className="mb-3">
                                     <div>New password</div>
                                     <Field
-                                        type={"password"}
                                         className="border-2 w-full h-11 mt-2 px-5 rounded"
                                         name="newPassword"
                                     />
@@ -119,7 +117,6 @@ export const FormChangePassword = () => {
                                 <div>
                                     <div>Confirm password</div>
                                     <Field
-                                        type={"password"}
                                         className="border-2 w-full h-11 mt-2 px-5 rounded"
                                         name="confirmPassword"
                                     />

@@ -12,7 +12,7 @@ export const AllProperties = () => {
   const maxPage = Math.ceil(length / limit)
   const allProperties = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/properties?page=${page}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties?page=${page}`);
       setData(response.data.result);
       setLength(response.data.length)
       setLimit(response.data.limit)
@@ -57,19 +57,19 @@ export const AllProperties = () => {
             className="bg-white border rounded-lg overflow-hidden shadow-md hover:shadow-lg cursor-pointer transition-transform transform hover:scale-105"
           >
             <img
-              src={`http://localhost:8000/property/${item.propertyImg}`}
+              src={`${process.env.REACT_APP_API_IMG_URL}/property/${item.propertyImg}`}
               alt={item.propertyName}
               className="w-full h-48 object-cover"
             />
             <div className="p-4">
               <h2 className="text-xl font-semibold text-gray-800">
                 {item.propertyName},{" "}
-                <span className="text-sm text-gray-600 block sm:inline">
+                <span className="text-sm text-gray-600 font-bold block sm:inline">
                   {item.category.category}
                 </span>
               </h2>
               <p className="mt-2 text-sm text-gray-700">{item.propertyDesc}</p>
-              <p className="mt-2 text-sm text-gray-700">
+              <p className="mt-2 text-sm font-bold text-gray-700">
                 {item.rooms[0] ? formatRupiah(item.rooms[0].price) : null}
               </p>
             </div>

@@ -56,9 +56,8 @@ const UserMenu = () => {
       <div className="flex flex-row items-center gap-3">
         {data.roleId === 1 ?
           <div
-            className="
-        hidden
-            md:block
+            className={`
+            ${tokenFireBase ? "hidden" : "flex"}
             text-sm 
             font-semibold 
             py-3 
@@ -67,14 +66,15 @@ const UserMenu = () => {
             hover:bg-neutral-100 
             transition 
             cursor-pointer
-          "
+            `}
             onClick={toDashboard}
           >
             Back To Dashboard
           </div>
           :
           <div
-            className="
+            className={`
+            ${tokenFireBase ? "hidden" : "flex"}
             hidden
             md:block
             text-sm 
@@ -85,7 +85,7 @@ const UserMenu = () => {
             hover:bg-neutral-100 
             transition 
             cursor-pointer
-            "
+            `}
             onClick={toLoginTenant}
           >
             Cribs That Feel Like Home
@@ -122,16 +122,13 @@ const UserMenu = () => {
         absolute
         rounded-xl
         shadow-md
-        w-[40vw]
-        md:w-3/4
         bg-bg-secondary
-        overflow-hidden
         right-0
         top-12
         text-sm
         "
         >
-          <div className="flex flex-col cursor-pointer bg-white">
+          <div className="flex rounded-xl flex-col cursor-pointer bg-white">
             {token ? (
               <div>
                 <MenuItem onClick={toProfileSetting} label="Profile" />

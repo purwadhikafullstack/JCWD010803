@@ -15,7 +15,8 @@ export const ProfileSetting = () => {
 	const tokenFireBase = localStorage.getItem('firebase-token')
 	const token = localStorage.getItem('token');
 	const navigate = useNavigate();
-
+	const data = useSelector((state) => state.user.value);
+	
 	const handleClick = (value) => {
 		setClick(value)
 	}
@@ -24,6 +25,9 @@ export const ProfileSetting = () => {
 			setClick("orderList")
 		}
 		if(!token && !tokenFireBase){
+			navigate("/");
+		}
+		if(data.roleId == 1){
 			navigate("/");
 		}
 	},[])

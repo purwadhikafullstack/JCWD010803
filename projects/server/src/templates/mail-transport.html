@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Confirmation</title>
+  <style>
+    .container {
+      width: 45%;
+      margin: auto;
+      background-color: whitesmoke;
+      font-family: "Farfetch Basis", "Helvetica Neue", Arial, sans-serif;
+      border-radius: 5px;
+    }
+
+    .th {
+      font-size: large;
+      font-weight: bold;
+    }
+
+    .btn {
+      background-color: #dc2626;
+      border-radius: 4px;
+      border-style: none;
+      box-sizing: border-box;
+      color: #fff;
+      cursor: pointer;
+      display: inline-block;
+      font-family: "Farfetch Basis", "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.5;
+      margin: 3%;
+      max-width: none;
+      min-height: 44px;
+      min-width: 10px;
+      outline: none;
+      overflow: hidden;
+      padding: 9px 20px 8px;
+      position: relative;
+      text-align: center;
+      text-transform: none;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      width: 30%;
+    }
+
+    .btn:hover,
+    .btn:focus {
+      opacity: .75;
+      cursor: pointer;
+    }
+
+    .bor-b {
+      border-bottom: 1px solid rgb(155, 155, 155);
+      border-width: 80%;
+    }
+
+    header {
+      padding-top: 3%;
+    }
+
+    footer {
+      padding-bottom: 3%;
+      padding-top: 3%;
+    }
+
+    small {
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body style="background-color: #cbd5e1; padding: 2%; color: #171717; text-align: center;">
+  <section class="container">
+    <header class="bor-b">
+      <p class="th" style="color: #da3737;">
+        <bold>Lease Harmony</bold>
+      </p>
+    </header>
+    <section>
+      <article>
+        <header>
+          <p class="th">
+            <bold>Verifikasi Email</bold>
+          </p>
+          <p>{{payloads.email}}</p>
+          <p>{{token}}</p>
+        </header>
+        <article style="font-family: Farfetch Basis, Helvetica Neue, Arial,sans-serif; color: black;">
+          Selamat datang di <span>Lease Harmony</span><br>
+          Untuk menyelesaikan registarasi anda silahkan verfikasi<br>
+          email anda dengan mengklik tombol verifikasi dibawah
+        </article>
+        <a href="http://localhost:3000/verification">
+          <button class="btn">Verifikasi</button><br>
+        </a>
+        <small>jika anda tidak pernah mendaftar, abaikan email ini</small>
+      </article>
+    </section>
+    <footer>
+      <p style="margin-bottom: 0%; font-weight: bold;">Copyright<span>&#169;</span>2023, Lease Harmony</p>
+      <small>Bandung, Jawa Barat</small><br>
+    </footer>
+  </section>
+</body>
+
+</html>

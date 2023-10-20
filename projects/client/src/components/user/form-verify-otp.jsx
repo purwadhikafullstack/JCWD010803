@@ -25,7 +25,7 @@ export const VerifyOtp = ({token, id}) => {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault()
-            const response = await axios.post(`http://localhost:8000/api/user/checkOtp`, { otp: `${otp.join('')}`, id:id})
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/checkOtp`, { otp: `${otp.join('')}`, id:id})
             Swal.fire({
                 icon: "success",
                 title: "Verify OTP success",

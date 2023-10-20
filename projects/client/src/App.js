@@ -14,7 +14,7 @@ function App() {
     const keepLogin = async () => {
       if (token) {
         const response = await axios.post(
-          `http://localhost:8000/api/user/keepLogin`,
+          `${process.env.REACT_APP_API_BASE_URL}/user/keepLogin`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
