@@ -3,6 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const RegisterTenant = () => {
   const [ktpFile, setKtpFile] = useState(null);
@@ -53,7 +54,18 @@ const RegisterTenant = () => {
           },
         }
       );
-      navigate("/login-tenant");
+
+      // SweetAlert untuk notifikasi sukses
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful",
+        text: "You have successfully registered as a tenant!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect user to the login page or another page as needed
+          navigate("/login-tenant");
+        }
+      });
     } catch (error) {
       console.error(error);
     }
@@ -182,11 +194,11 @@ const RegisterTenant = () => {
                     className="hidden"
                   />
                 </div>
-                  <ErrorMessage
-                    name="ktp"
-                    component={"div"}
-                    className="text-red-500 text-base p-2"
-                  />
+                <ErrorMessage
+                  name="ktp"
+                  component={"div"}
+                  className="text-red-500 text-base p-2"
+                />
               </div>
               <button
                 type="submit"
