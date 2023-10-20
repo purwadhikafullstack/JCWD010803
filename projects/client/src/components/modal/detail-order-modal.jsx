@@ -173,7 +173,7 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
                 </div>
               ) : (
                 <div className="flex items-center gap-5">
-                  {data.userTransaction.statusId === 3 ? (
+                  {data.userTransaction.statusId === 3 || data.userTransaction.statusId === 2 ? (
                     <div 
                     onClick={cancelOrder}
                     className="p-1 flex justify-center  cursor-pointer transition-all hover:bg-red-700 bg-red-600 rounded-lg text-white font-thin px-2 items-center h-10">
@@ -182,14 +182,14 @@ export const DetailOrderModal = ({ open, setOpen, data, reload, setReload }) => 
                   ) : (
                     <div
                       onClick={rejectOrder}
-                      className={`p-1 flex cursor-pointer transition-all hover:bg-red-700 bg-red-600 rounded-lg text-white font-thin px-2 items-center h-10`}
+                      className={`p-1 ${data.userTransaction.statusId !== 2 ? "hidden" : "flex"} cursor-pointer transition-all hover:bg-red-700 bg-red-600 rounded-lg text-white font-thin px-2 items-center h-10`}
                     >
                       Reject order
                     </div>
                   )}
                   <div
                     onClick={confirmOrder}
-                    className={`${data.userTransaction.statusId === 3
+                    className={`${data.userTransaction.statusId !== 2
                       ? "hidden"
                       : "block"
                       } p-1 flex cursor-pointer transition-all hover:bg-green-700 bg-green-600 rounded-lg text-white font-thin px-2 items-center h-10`}
