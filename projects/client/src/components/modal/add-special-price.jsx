@@ -32,10 +32,26 @@ export const AddSpecialPriceModal = ({ roomId, openSpecialPrice, setOpenSpecialP
             cancelButtonColor: '#e3e3e3',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/specialPrice`, { "newPrice": price, "percent": percent, "startDate": new Date(new Date(startDate).setHours(7,0,0,0)), "endDate": new Date(new Date(endDate).setHours(7,0,0,0)), "roomId": roomId })
-                setOpenSpecialPrice(false)
-                setPercent("")
-                setPrice("")
+                try {
+                    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/specialPrice`, { "newPrice": price, "percent": percent, "startDate": new Date(new Date(startDate).setHours(7,0,0,0)), "endDate": new Date(new Date(endDate).setHours(7,0,0,0)), "roomId": roomId })
+                    setPercent("")
+                    setPrice("")
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Add special price success',
+                        timer: 1000
+                    })
+                    setTimeout(() => {
+                        setOpenSpecialPrice(false)
+                    },800)
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        iconColor: 'red',
+                        title: 'Oops...',
+                        text: error.response.data.message
+                    })
+                }
             }
         })
     }
