@@ -268,15 +268,20 @@ const propertiesController = {
         include: [{ model: category }, { model: rooms }],
         limit: limit,
         offset: offset,
+        where: { isDelete: false },
       });
-      const get = await properties.findAll();
+  
+      const get = await properties.findAll({
+        where: { isDelete: false },
+      });
       const length = get.length;
-
+  
       res.status(200).send({ result, length, limit });
     } catch (error) {
       res.status(400).send(error);
     }
   },
+  
   detailProperty: async (req, res) => {
     try {
       const { id } = req.params;
