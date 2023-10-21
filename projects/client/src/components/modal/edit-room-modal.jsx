@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import Swal from "sweetalert2";
 
 export const EditRoomModal = ({ setReload, reload, editModal, setEditModal, price, roomName, roomDesc, id }) => {
-    
+
     const validationSchema = Yup.object().shape({
         roomName: Yup.string().required('Room name is required'),
         roomDesc: Yup.string().required('Room description is required'),
@@ -12,10 +13,20 @@ export const EditRoomModal = ({ setReload, reload, editModal, setEditModal, pric
 
     const editRoom = async (data) => {
         try {
-            const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/room/${id}`, data)
-            setReload(!reload)
+            const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/room/${id}`, data);
+            setReload(!reload);
+            Swal.fire({
+                icon: 'success',
+                title: 'Room updated successfully',
+            });
+            setEditModal(false);
         } catch (error) {
             console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Room update failed',
+                text: 'An error occurred while updating the room data.',
+            });
         }
     }
 
