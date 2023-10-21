@@ -12,6 +12,7 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
   const [newName, setNewName] = useState("");
   const [newCategory, setNewCategory] = useState("");
   const [reload, setReload] = useState(false);
+
   const myCategories = async () => {
     try {
       const response = await axios.get(
@@ -33,70 +34,86 @@ export const AddCategoryModal = ({ openCategories, setOpenCategories }) => {
         { categoryId: value, newCategory: values.newCategory },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setOpenCategories(false);
-      setReload(!reload);
-      setValue(null);
-      setNewName(null);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        });
+        // Perbarui daftar kategori setelah berhasil mengedit
+        myCategories();
+        setOpenCategories(false);
+        setValue("");
+        setReload(!reload);
 
-  const deleteCategory = async () => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You Want to Delete This Location?",
-      confirmButtonText: 'Yes',
-      showCancelButton: true,
-      confirmButtonColor: '#2CA4A5',
-      cancelButtonColor: '#e3e3e3',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/properties/deleteCategory/${value}`)
-        setOpenCategories(false)
-        setValue("")
-
+        // Notifikasi Swal jika berhasil
         Swal.fire({
           icon: "success",
-          title: 'Success',
-          text: "Location Has Been Deleted",
-        })
+          title: "Category Edited Successfully",
+        });
+      } catch (error) {
+        console.log(error);
+
+        // Notifikasi Swal jika terjadi kesalahan
+        Swal.fire({
+          icon: "error",
+          title: "Error Editing Category",
+          text: "An error occurred while editing the category.",
+        });
       }
+    };
 
-    })
-  }
+    const deleteCategory = async () => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You Want to Delete This Location?",
+        confirmButtonText: 'Yes',
+        showCancelButton: true,
+        confirmButtonColor: '#2CA4A5',
+        cancelButtonColor: '#e3e3e3',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/properties/deleteCategory/${value}`);
+          // Perbarui daftar kategori setelah berhasil menghapus
+          myCategories();
+          setOpenCategories(false);
+          setValue("");
 
-  const addCategory = async (values) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/properties/addCategory`,
-        values,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+          Swal.fire({
+            icon: "success",
+            title: 'Success',
+            text: "Location Has Been Deleted",
+          });
         }
-      );
-      Swal.fire({
-        icon: "success",
-        title: "Location Successfully Added",
-        timer: 800
-      });
-      setTimeout(() => {
-        setOpenCategories(false);
-      },700);
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: error.response.data.message,
       });
     }
-  };
 
-  useEffect(() => {
-    myCategories();
-  }, [reload]);
+    const addCategory = async (values) => {
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/properties/addCategory`,
+          values,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          // Perbarui daftar kategori setelah berhasil menambahkan
+          myCategories();
+
+          Swal.fire({
+            icon: "success",
+            title: "Location Successfully Added",
+            timer: 800
+          });
+          setTimeout(() => {
+            setOpenCategories(false);
+          }, 700);
+        } catch (error) {
+          console.log(error);
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+          });
+        }
+      };
+
+      useEffect(() => {
+        myCategories();
+      }, [reload]);
   return (
     <div
       className={`w-full h-screen ${
