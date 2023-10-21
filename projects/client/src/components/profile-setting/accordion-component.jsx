@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import UploadPay from "../modal/upload-payment";
 import ReviewModal from "../modal/review-modal";
+import Swal from "sweetalert2";
+import axios from "axios";
+
+
 function formatDate(inputDate) {
   const date = new Date(inputDate);
   const day = date.getDate().toString().padStart(2, "0");
@@ -20,6 +24,8 @@ function stayLong(checkInDate, checkOutDate) {
     i.getDate().toString().padStart(2, "0");
   return `${long}`;
 }
+
+
 const AccordionSection = ({
   section,
   isActiveSection,
@@ -29,6 +35,26 @@ const AccordionSection = ({
   reload,
 }) => {
   const [openModal, setOpenModal] = useState(false);
+
+  const cancelOrder = async () => {
+      Swal.fire({
+        title: "Are You Sure?",
+        text: "You Want to Cancel This Order?",
+        confirmButtonText: "Yes",
+        showCancelButton: true,
+        confirmButtonColor: "#2CA4A5",
+        cancelButtonColor: "#e3e3e3",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await axios.patch(
+            "http://localhost:8000/api/order/cancel",
+            { transactionId: section.id, roomId: section.roomId }
+          );
+          setReload(!reload);
+        }
+      });
+    };
+    
   const toggleSection = () => {
     const nextIndex = isActiveSection ? null : sectionIndex;
     setActiveIndex(nextIndex);
@@ -60,29 +86,34 @@ const AccordionSection = ({
       <div className="cursor-pointer" onClick={toggleSection}>
         <div className="flex flex-wrap justify-between mb-2 w-full">
           <h3>{section.room.property.propertyName}</h3>
-          <p className="text-slate-600 text-sm">Transaction date : {formatDate(section.createdAt)}</p>
+          <p className="text-slate-600 text-sm">
+            Transaction date : {formatDate(section.createdAt)}
+          </p>
         </div>
         {isActiveSection == false ? (
           <>
-          {section.statusId == 1 ? (
-          <div className="py-1 flex flex-wrap justify-between">
-          <span className="text-sm text-slate-500">Click to see details order</span>
-            <span className={customStyle}>Need Upload Payment Receipt</span>
-          </div>
-        ) : (
-          <div className="py-1 flex flex-wrap justify-between">
-            <span className="text-sm text-slate-500">Click to see details order</span>
-            <span className={customStyle}>
-              {section.status.status}{" "}
-              {section.statusId == 7 && section.isReview == false
-                ? " - Give A Review"
-                : null}{" "}
-            </span>
-          </div>
-        )}
+            {section.statusId == 1 ? (
+              <div className="py-1 flex flex-wrap justify-between">
+                <span className="text-sm text-slate-500">
+                  Click to see details order
+                </span>
+                <span className={customStyle}>Need Upload Payment Receipt</span>
+              </div>
+            ) : (
+              <div className="py-1 flex flex-wrap justify-between">
+                <span className="text-sm text-slate-500">
+                  Click to see details order
+                </span>
+                <span className={customStyle}>
+                  {section.status.status}{" "}
+                  {section.statusId == 7 && section.isReview == false
+                    ? " - Give A Review"
+                    : null}{" "}
+                </span>
+              </div>
+            )}
           </>
-        ) : (null)}
-        
+        ) : null}
       </div>
       {isActiveSection && (
         <div>
@@ -177,7 +208,21 @@ const AccordionSection = ({
                 </div>
               ) : null}
               <div className="flex justify-end xs:mt-1">
-                <span className="bg-red-600 px-2 py-1 rounded-md cursor-pointer text-white" onClick={toggleSection}>Close</span>
+                {section.statusId === 1 || section.statusId === 2 ? (
+                  <button
+                    onClick={cancelOrder}
+                    className="p-1 bg-red-600 text-white font-semibold rounded-md hover:bg-red-500 transition-all px-2 py-1 mr-3"
+                  >
+                    Cancel Order
+                  </button>
+                ) : null}
+
+                <span
+                  className="bg-red-600 px-2 py-1 rounded-md cursor-pointer text-white"
+                  onClick={toggleSection}
+                >
+                  Close
+                </span>
               </div>
             </div>
           </div>
