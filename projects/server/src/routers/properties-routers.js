@@ -13,7 +13,7 @@ router.get('/sortProperties', propertiesController.sortProperty)
 router.get('/image/:filename', propertiesController.getPropertyimage);
 router.patch('/editCategory', verifyToken, propertiesController.editCategory);
 router.post('/addCategory', verifyToken, propertiesController.addCategory);
-router.delete('/deleteCategory', verifyToken, propertiesController.deleteCategory)
+router.delete('/deleteCategory/:id', propertiesController.deleteCategory)
 router.get('/allCategories', propertiesController.getAllCategory)
 router.patch('/delete/:id', propertiesController.deleteProperty)
 router.patch('/:id', multerUpload("/property", 'property').single("file"),checkProperty ,propertiesController.updateProperty)

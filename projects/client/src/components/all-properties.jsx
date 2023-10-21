@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
+import {
+  BsFillArrowLeftCircleFill,
+  BsFillArrowRightCircleFill,
+} from "react-icons/bs";
 
 export const AllProperties = () => {
   const navigate = useNavigate();
@@ -9,13 +12,15 @@ export const AllProperties = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState("");
   const [length, setLength] = useState("");
-  const maxPage = Math.ceil(length / limit)
+  const maxPage = Math.ceil(length / limit);
   const allProperties = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/properties?page=${page}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/properties?page=${page}`
+      );
       setData(response.data.result);
-      setLength(response.data.length)
-      setLimit(response.data.limit)
+      setLength(response.data.length);
+      setLimit(response.data.limit);
     } catch (error) {
       console.log(error);
     }
@@ -65,9 +70,10 @@ export const AllProperties = () => {
               <h2 className="text-xl font-semibold text-gray-800">
                 {item.propertyName},{" "}
                 <span className="text-sm text-gray-600 font-bold block sm:inline">
-                  {item.category.category}
+                  {item.category?.category || "No Category Selected"}
                 </span>
               </h2>
+
               <p className="mt-2 text-sm text-gray-700">{item.propertyDesc}</p>
               <p className="mt-2 text-sm font-bold text-gray-700">
                 {item.rooms[0] ? formatRupiah(item.rooms[0].price) : null}
