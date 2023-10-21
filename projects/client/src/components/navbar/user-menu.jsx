@@ -88,7 +88,7 @@ const UserMenu = () => {
             `}
             onClick={toLoginTenant}
           >
-            Cribs That Feel Like Home
+            Considering Renting Your Property?
           </div>
         }
         <div
