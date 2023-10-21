@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Mengimpor ikon mata
 import swal from "sweetalert2";
 
 const LoginTenantForm = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // Menambahkan state untuk mengontrol tampilan kata sandi
   const formik = useFormik({
     initialValues: {
       data: "",
@@ -24,31 +26,36 @@ const LoginTenantForm = () => {
           `${process.env.REACT_APP_API_BASE_URL}/tenant/loginTenant`,
           values
         );
-        localStorage.setItem("token", response.data.token)
-        swal.fire({
-          icon: 'success',
-          title: 'Login Success',
-          text: 'Welcome!',
-          timer: 1500,
-          showConfirmButton: false,
-        });
-        setTimeout(() => {
-          navigate('/dashboard')
-        }, 2000)
+        localStorage.setItem("token", response.data.token);
+        swal
+          .fire({
+            icon: "success",
+            title: "Login Success",
+            text: "Welcome!",
+            timer: 1500,
+            showConfirmButton: false,
+          })
+          .then(() => {
+            navigate("/dashboard");
+          });
       } catch (error) {
         swal.fire({
-          icon: 'warning',
-          iconColor: 'red',
-          title: 'Login Failed',
+          icon: "warning",
+          iconColor: "red",
+          title: "Login Failed",
           text: error.response.data.message,
         });
       }
     },
   });
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const back = () => {
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   return (
     <section className="flex flex-col md:flex-row h-screen items-center">
@@ -66,7 +73,7 @@ const LoginTenantForm = () => {
             Tenant Login
           </h1>
           <form className="mt-6" onSubmit={formik.handleSubmit}>
-            <div className="my-4">
+            <div className="my-4 relative">
               <label className="block text-gray-700">Email or Username</label>
               <input
                 type="text"
@@ -81,17 +88,29 @@ const LoginTenantForm = () => {
                 <div className="text-red-500">{formik.errors.data}</div>
               ) : null}
             </div>
-            <div className="my-4">
+            <div className="my-4 relative">
               <label className="block text-gray-700">Password</label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Enter Password"
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-teal-500 focus:bg-white focus:outline-none"
-                required=""
-                {...formik.getFieldProps("password")}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  placeholder="Enter Password"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-teal-500 focus:bg-white focus:outline-none"
+                  required=""
+                  {...formik.getFieldProps("password")}
+                />
+                <span
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-4 top-1/2 -mt-2 cursor-pointer text-teal-500 hover:text-teal-700"
+                >
+                  {showPassword ? (
+                    <FaEyeSlash className="text-2xl" />
+                  ) : (
+                    <FaEye className="text-2xl" />
+                  )}
+                </span>
+              </div>
               {formik.touched.password && formik.errors.password ? (
                 <div className="text-red-500">{formik.errors.password}</div>
               ) : null}
@@ -106,7 +125,7 @@ const LoginTenantForm = () => {
             </button>
           </form>
           <hr className="my-6 border-gray-300 w-full" />
-          <div className=" sm:flex block justify-between">
+          <div className="sm:flex block justify-between">
             <p className="">
               Don't have an account?{" "}
               <a
@@ -116,9 +135,12 @@ const LoginTenantForm = () => {
                 Sign Up
               </a>
             </p>
-            <p 
-            onClick={back}
-            className=" sm:mt-0 mt-2 text-gray-500 underline hover:text-gray-800 cursor-pointer text-sm sm:text-gray-500">Back to COMFYCRIBZ</p>
+            <p
+              onClick={back}
+              className="sm:mt-0 mt-2 text-gray-500 underline hover:text-gray-800 cursor-pointer text-sm sm:text-gray-500"
+            >
+              Back to Comfy Cribz
+            </p>
           </div>
         </div>
       </div>
