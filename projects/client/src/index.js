@@ -1,15 +1,13 @@
+import React, { Component, useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { routes } from "./routes";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import React, { Component, useEffect } from "react";
-import ReactDOM from "react-dom";
 import { Crisp } from "crisp-sdk-web";
+import ReactDOM from "react-dom";
 import "./global.css";
 import "./index.css";
 import App from "./App";
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter(routes);
 
@@ -22,13 +20,14 @@ class MyApp extends Component {
     return (
       <React.StrictMode>
         <Provider store={store}>
-          <RouterProvider router={router}>
+          <RouterProvider router={router}/>
             <App />
-          </RouterProvider>
         </Provider>
       </React.StrictMode>
     );
   }
 }
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(<MyApp />);
