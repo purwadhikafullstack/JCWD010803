@@ -2,8 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  BsFillArrowLeftCircleFill,
-  BsFillArrowRightCircleFill,
+  BsArrowLeft,
+  BsArrowRight,
 } from "react-icons/bs";
 
 export const AllProperties = () => {
@@ -24,6 +24,16 @@ export const AllProperties = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleArrowClick = (action) => {
+    if (action === "prev") {
+      prevPage();
+    } else if (action === "next") {
+      nextPage();
+    }
+    // Scroll back to the top of the page
+    window.scrollTo(0, 0);
   };
 
   const nextPage = () => {
@@ -69,41 +79,47 @@ export const AllProperties = () => {
             <div className="p-4">
               <h2 className="text-xl font-semibold text-gray-800">
                 {item.propertyName},{" "}
-                <span className="text-sm text-gray-600 font-bold block sm:inline">
-                  {item.category?.category || "No Category Selected"}
-                </span>
               </h2>
 
-              <p className="mt-2 text-sm text-gray-700">{item.propertyDesc}</p>
-              <p className="mt-2 text-sm font-bold text-gray-700">
-                {item.rooms[0] ? formatRupiah(item.rooms[0].price) : null}
+              <span className="text-sm text-gray-600 font-bold block sm:inline">
+                {item.category?.category || "No Category Selected"}
+              </span>
+
+              <p className="mt-2 text-sm text-gray-700">
+                {item.propertyDesc.length > 80
+                  ? item.propertyDesc.substring(0, 80) + "..."
+                  : item.propertyDesc}
+              </p>
+            </div>
+            <div className="p-4 mt-auto">
+              <p className="text-sm font-bold text-gray-700">
+                {item.rooms[0] ? formatRupiah(item.rooms[0].price) : null}{" "}
+                <span className="font-medium text-sm"> / Night </span>
               </p>
             </div>
           </div>
         ))}
       </div>
-      <div className=" flex justify-center items-center h-14 gap-5">
-        {page > 1 ? (
+      <div className="flex justify-center items-center gap-3 py-5">
+        {page > 1 && (
           <div
-            onClick={prevPage}
-            className="cursor-pointer hover:scale-110 active:scale-95"
+            onClick={() => handleArrowClick("prev")}
+            className="cursor-pointer hover:text-blue-600 transition-transform transform hover:scale-105 rounded-full w-10 h-10 bg-gray-200 flex items-center justify-center"
           >
-            {" "}
-            <BsFillArrowLeftCircleFill size={"30"} />{" "}
+            <BsArrowLeft size={24} className="mr-2" />
           </div>
-        ) : null}
-        {maxPage < 2 ? null : (
-          <div className=" text-xl font-thin"> page {page} </div>
         )}
-        {page < maxPage ? (
+        {maxPage > 1 && (
+          <div className="text-2xl font-bold col-span-2">{page}</div>
+        )}
+        {page < maxPage && (
           <div
-            onClick={nextPage}
-            className="cursor-pointer hover:scale-110 active:scale-95"
+            onClick={() => handleArrowClick("next")}
+            className="cursor-pointer hover:text-blue-600 transition-transform transform hover:scale-105 rounded-full w-10 h-10 bg-gray-200 flex items-center justify-center"
           >
-            {" "}
-            <BsFillArrowRightCircleFill size={"30"} />{" "}
+            <BsArrowRight size={24} className="ml-2" />
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );
