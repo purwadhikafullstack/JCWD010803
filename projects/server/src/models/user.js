@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       user.belongsTo(models.roles, {foreignKey : 'roleId'});
       user.hasMany(models.codeOtp)
       user.hasMany(models.categories)
+      user.hasMany(models.userTransactions)
+      user.hasMany(models.properties)
       
     }
   }
