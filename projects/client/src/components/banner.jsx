@@ -33,7 +33,7 @@ const Banner = () => {
     >
       <div className="relative bg-cover bg-center h-auto text-white pt-32 px-auto object-fill">
         <a
-          href="/register"
+          href=""
           style={{ display: "block", width: "100%", height: "100%" }}
         >
           <img
@@ -45,7 +45,7 @@ const Banner = () => {
       </div>
       <div className="relative bg-cover bg-center h-auto text-white pt-32 px-auto object-fill">
         <a
-          href="/register-tenant"
+          href=""
           style={{ display: "block", width: "100%", height: "100%" }}
         >
           <img
@@ -57,7 +57,7 @@ const Banner = () => {
       </div>  
       <div className="relative bg-cover bg-center h-auto text-white pt-32 px-auto object-fill">
         <a
-          href="/register"
+          href=""
           style={{ display: "block", width: "100%", height: "100%" }}
         >
           <img
@@ -69,7 +69,7 @@ const Banner = () => {
       </div>  
       <div className="relative bg-cover bg-center h-auto text-white pt-32 px-auto object-fill">
         <a
-          href="/register"
+          href=""
           style={{ display: "block", width: "100%", height: "100%" }}
         >
           <img
@@ -81,7 +81,7 @@ const Banner = () => {
       </div>  
       <div className="relative bg-cover bg-center h-auto text-white pt-32 px-auto object-fill">
         <a
-          href="/register"
+          href=""
           style={{ display: "block", width: "100%", height: "100%" }}
         >
           <img
