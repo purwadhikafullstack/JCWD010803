@@ -4,7 +4,7 @@ import { RxAvatar } from "react-icons/rx";
 import React, { useState, useEffect, useRef } from "react";
 import LogoImage from "../../../assets/images/dashboardtenants.png";
 import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setValue } from "../../../redux/user-slice";
 import { setData } from "../../../redux/firebase-slice";
 
@@ -14,10 +14,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
   const trigger = useRef(null);
   const sidebar = useRef(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [propertyActive, setPropertyActive] = useState(false);
-  const [sidebarExpanded, setSidebarExpanded] = useState()
+  const [sidebarExpanded, setSidebarExpanded] = useState();
   const [orderActive, setOrderActive] = useState(false);
+  const data = useSelector((state) => state.user.value);
+
   const { pathname } = location;
 
   const click = (value) => {
@@ -40,8 +42,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   };
 
   const toLandingPage = (value) => {
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   useEffect(() => {
     // {storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"}
@@ -81,8 +83,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     <div>
       {/* Sidebar backdrop (mobile only) */}
       <div
-        className={`fixed inset-0 bg-gray-400 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${sidebarOpen ? "opacity-100" : " pointer-events-none"
-          }`}
+        className={`fixed inset-0 bg-gray-400 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
+          sidebarOpen ? "opacity-100" : " pointer-events-none"
+        }`}
         aria-hidden="true"
       ></div>
 
@@ -93,8 +96,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         className={`flex flex-col absolute z-40 left-0 top-0 lg:static 
         lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll 
         lg:overflow-y-auto no-scrollbar w-64  lg:sidebar-expanded:!w-64 
-        2xl:!w-64 shrink-0 border-r shadow-xl bg-white transition-all duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-64"
-          }`}
+        2xl:!w-64 shrink-0 border-r shadow-xl bg-white transition-all duration-200 ease-in-out ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-64"
+        }`}
       >
         {/* LogoImage di tengah atas sidebar */}
         <div className="flex justify-between pr-3 sm:px-2">
@@ -111,7 +115,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </button>
         </div>
         <div className="flex justify-center p-4 items-center mb-10">
-          <img onClick={toLandingPage} src={LogoImage} alt="ComfyCribz" className="w-20 h-20" />
+          <img
+            onClick={toLandingPage}
+            src={LogoImage}
+            alt="ComfyCribz"
+            className="w-20 h-20"
+          />
         </div>
 
         {/* Sidebar header */}
@@ -121,30 +130,34 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           {/* Pages group */}
           <div>
             <div
-              className={`${pathname !== "/dashboard/order-list" && pathname !== "/dashboard/sales-report"
+              className={`${
+                pathname !== "/dashboard/order-list" &&
+                pathname !== "/dashboard/sales-report"
                   ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
                   : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
-                } `}
+              } `}
               onClick={() => click("dashboard")}
             >
               Properties
             </div>
 
             <div
-              className={`${pathname === "/dashboard/order-list"
+              className={`${
+                pathname === "/dashboard/order-list"
                   ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
                   : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
-                } `}
+              } `}
               onClick={() => click("dashboard/order-list")}
             >
               Order list
             </div>
 
             <div
-              className={`${pathname === "/dashboard/sales-report"
+              className={`${
+                pathname === "/dashboard/sales-report"
                   ? "bg-bgPrimary text-lg text-white flex cursor-pointer mb-5 justify-center items-center h-20"
                   : "text-lg text-gray-700 flex cursor-pointer mb-5 justify-center items-center h-20"
-                } `}
+              } `}
               onClick={() => click("dashboard/sales-report")}
             >
               Sales Report
@@ -155,13 +168,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         </div>
         <div className="h-full pb-5 justify-center items-end flex">
           <div>
-            <div>
-              <div className="flex justify-center w-full mb-2">
+            <div className="flex flex-col items-center py-10">
+              <div className="mb-2">
                 <RxAvatar size={"40"} />
               </div>
-              <div className=" flex justify-center mb-10 w-fit ">
-                Akmal Hamidi
-              </div>
+              <div>{data.username}</div>
             </div>
             <div className="w-full flex justify-center">
               <div
