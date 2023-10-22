@@ -47,7 +47,7 @@ const AccordionSection = ({
       }).then(async (result) => {
         if (result.isConfirmed) {
           const response = await axios.patch(
-            "http://localhost:8000/api/order/cancel",
+            `${process.env.REACT_APP_API_BASE_URL}/api/order/cancel`,
             { transactionId: section.id, roomId: section.roomId }
           );
           setReload(!reload);
