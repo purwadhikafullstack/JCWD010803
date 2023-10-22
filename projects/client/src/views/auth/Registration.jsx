@@ -96,7 +96,7 @@ const Registration = () => {
                       className="text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2"
                       for="grid-username"
                     >
-                      Username
+                      Username **
                     </label>
                     <Field
                       name="username"
@@ -116,7 +116,7 @@ const Registration = () => {
                       className=" text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2"
                       for="grid-email"
                     >
-                      Email
+                      Email **
                     </label>
                     <Field
                       name="email"
@@ -136,7 +136,7 @@ const Registration = () => {
                       className=" text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2"
                       for="grid-password"
                     >
-                      Password
+                      Password **
                     </label>
                     <Field
                       name="password"
@@ -156,16 +156,17 @@ const Registration = () => {
                       className=" text-slate-500 block  tracking-wide text-gray-700 text-md font-bold mb-2"
                       for="grid-phoneNumber"
                     >
-                      Phonenumber
+                      Phonenumber **
                     </label>
                     <Field
                       name="phonenumber"
                       className="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-phonenumber"
-                      type="text"
-                      placeholder="08********"
+                      type="tel"
+                      placeholder="080-XXX-XXXX"
                       maxLength={13}
                     ></Field>
+                    
                     <ErrorMessage
                       name="phonenumber"
                       component={"div"}
