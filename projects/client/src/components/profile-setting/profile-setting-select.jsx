@@ -99,7 +99,7 @@ export const ProfileSettingSelect = ({ reload, choose, values }) => {
 							${click === "changeProfile" ? "animate-spin" : "null"}
 							`}
             ></div>
-            <div className="my-auto">My profiles</div>
+            <div className="my-auto">Change profiles</div>
           </div>
 
           <div
