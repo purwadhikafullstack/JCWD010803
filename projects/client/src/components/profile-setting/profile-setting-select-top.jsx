@@ -48,7 +48,7 @@ export const ProfileSettingSelectTop = ({ choose, value }) => {
 					`}
           onClick={clickChangeProfile}
         >
-          Profile
+         Change Profile
         </div>
 
         <div
