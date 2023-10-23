@@ -171,7 +171,7 @@ const PropertyReport = () => {
             <NoDataPage />
           )}
         </>
-        <div className=" flex justify-center items-center h-14 gap-5">
+        {/* <div className=" flex justify-center items-center h-14 gap-5">
           {page > 1 ? (
             <div
               onClick={prevPage}
@@ -193,7 +193,7 @@ const PropertyReport = () => {
               <BsFillArrowRightCircleFill size={"30"} />{" "}
             </div>
           ) : null}
-        </div>
+        </div> */}
       </div>
     </div>
   );
