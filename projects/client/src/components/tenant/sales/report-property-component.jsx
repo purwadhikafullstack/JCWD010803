@@ -172,6 +172,8 @@ const PropertyReport = () => {
           )}
         </>
         {/* <div className=" flex justify-center items-center h-14 gap-5">
+
+       
           {page > 1 ? (
             <div
               onClick={prevPage}
@@ -194,6 +196,7 @@ const PropertyReport = () => {
             </div>
           ) : null}
         </div> */}
+
       </div>
     </div>
   );
