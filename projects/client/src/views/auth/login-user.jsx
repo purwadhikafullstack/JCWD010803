@@ -43,7 +43,7 @@ export const LoginUser = () => {
             <div> <FireBaseLogin buttonText={"Sign with google"} /> </div>
 
             <div className='flex mt-5 underline text-gray-500  w-full justify-between text-sm'>
-              <div className='cursor-pointer' onClick={handleClick}>Forgot password?</div>
+              <div className='cursor-pointer' onClick={handleClick}>Forgot passpor?</div>
               <div onClick={toRegis} className='cursor-pointer'>Don't have an account? Sign Up</div>
             </div>
             <div className=' text-gray-500 w-full flex justify-end mt-5 text-sm underline '>
